@@ -1,26 +1,170 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import { ColorType } from "./utils/enums";
+import * as vscode from "vscode";
+import { ColorTranslator } from "colortranslator";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+function parseColorString(colorRaw: string) {
+  try {
+    const color = new ColorTranslator(colorRaw);
+    const { R, G, B } = color;
+    const { a = 1 } = color.RGBAObject;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "color-picker-universal" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('color-picker-universal.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from color picker universal!');
-	});
-
-	context.subscriptions.push(disposable);
+    return new vscode.Color(R / 255, G / 255, B / 255, a);
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+class Matcher {
+  static getMatches(text: string): vscode.ColorInformation[] {
+    const result: vscode.ColorInformation[] = [];
+    const matches = [
+      ...text.matchAll(
+        /((?:rgb|rgba|hsl|hsla|cmyk|cmyka)\([\s\d%,.]+\)|#(?:[\da-f]{3,4}){2}|#(?:[\da-f]{3,4}))/gi
+      ),
+    ].reverse();
+
+    let count = 0;
+    let i = 0;
+    const lines = text.split(/(\r?\n)/g);
+
+    for (const line of lines) {
+      if (/^\r?\n$/.test(line)) {
+        count += line.length;
+        continue;
+      }
+      while (
+        matches[matches.length - 1]?.index &&
+        matches[matches.length - 1].index! <= count + line.length
+      ) {
+        const match = matches.pop();
+        if (!match?.index) continue;
+        const [colorText] = match;
+        const lineIndex = match.index - count;
+        const numOfExtraLines = colorText.match(/\r?\n/g)?.length;
+        const range = new vscode.Range(
+          new vscode.Position(i, lineIndex),
+          new vscode.Position(
+            i + (numOfExtraLines || 0),
+            !numOfExtraLines
+              ? lineIndex + colorText.length
+              : colorText.split(/\r?\n/g).pop()?.length || 0
+          )
+        );
+
+        const color = parseColorString(colorText);
+
+        if (color) {
+          result.push(new vscode.ColorInformation(range, color));
+        }
+      }
+      if (matches.length === 0) {
+        break;
+      }
+      i++;
+      count += line.length;
+    }
+
+    return result;
+  }
+}
+
+class Picker implements vscode.Disposable {
+  constructor() {
+    this.register();
+  }
+
+  private get languages() {
+    return vscode.workspace
+      .getConfiguration("color-picker-universal")
+      .get<string[]>("languages");
+  }
+
+  private register() {
+    return this.languages!.map((language) => {
+      vscode.languages.registerColorProvider(language, {
+        provideDocumentColors(document: vscode.TextDocument) {
+          return Matcher.getMatches(document.getText());
+        },
+        provideColorPresentations(_, { document, range }) {
+          try {
+            const { start, end } = range;
+            const lines = document
+              .getText()
+              .split(/\n/g)
+              .slice(start.line, end.line + 1);
+            lines[lines.length - 1] = lines[lines.length - 1].slice(
+              0,
+              end.character
+            );
+            lines[0] = lines[0].slice(start.character);
+            const colorString = lines.join("");
+
+            const color = new ColorTranslator(colorString);
+            const { A } = color;
+
+            let representationTypes: (keyof typeof ColorType)[];
+
+            representationTypes = [
+              "RGB",
+              "RGBA",
+              "HEX",
+              "HEXA",
+              "HSL",
+              "HSLA",
+              "CMYK",
+              "CMYKA",
+            ];
+
+            if (A !== 1) {
+              representationTypes = representationTypes.filter(
+                (rep) => rep[rep.length - 1] === "A"
+              );
+            }
+
+            /* TODO: REVIEW IF DOABLE DUE TO VSCODE REFRESHING DATA
+            
+            const colorType = getColorType(colorString, A !== 1);
+            
+            const currentReprIndex = representationTypes.findIndex(
+              (representation) =>
+                ColorType[colorType].startsWith(representation)
+            );
+
+            const orderedReprTypes = representationTypes
+              .slice(currentReprIndex)
+              .concat(representationTypes.slice(0, currentReprIndex));
+
+            const orderedRepresentations = orderedReprTypes.map(
+              (reprType) => color[reprType]
+            );
+
+            return orderedRepresentations.map(
+              (representation) => new vscode.ColorPresentation(representation)
+            );
+            */
+
+            const representations = representationTypes.map(
+              (reprType) => color[reprType]
+            );
+
+            return representations.map(
+              (representation) => new vscode.ColorPresentation(representation)
+            );
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      });
+    });
+  }
+
+  public dispose() {
+    //intentional
+  }
+}
+
+export function activate(context: vscode.ExtensionContext) {
+  const picker = new Picker();
+  context.subscriptions.push(picker);
+}

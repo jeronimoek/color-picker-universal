@@ -1,8 +1,9 @@
 {
   "name": "color-picker-universal",
   "displayName": "color picker universal",
-  "description": "",
-  "version": "0.0.1",
+  "description": "Provides a standard color picker for all available colors. Works with Typescript and TSX.",
+  "version": "0.0.2",
+  "publisher": "jeronimoek",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -10,16 +11,39 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:color-picker-universal.helloWorld"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "color-picker-universal.helloWorld",
-        "title": "Hello World"
+        "title": "Hello Vscode"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "color-picker-universal",
+      "properties": {
+        "color-picker-universal.languages": {
+          "type": "array",
+          "default": [
+            "css",
+            "less",
+            "sass",
+            "scss",
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+            "json",
+            "php",
+            "python",
+            "xml"
+          ],
+          "description": "Set languages to be detected by the extension"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -30,16 +54,20 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/parse-color": "^1.0.1",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
-    "typescript": "^4.9.3",
-    "@vscode/test-electron": "^2.2.0"
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "colortranslator": "^1.10.2"
   }
 }
