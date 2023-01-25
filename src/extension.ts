@@ -89,7 +89,7 @@ class Picker implements vscode.Disposable {
         provideColorPresentations(_, { document, range }) {
           try {
             const { start, end } = range;
-            const lines = document
+            const lines: string[] = document
               .getText()
               .split(/\n/g)
               .slice(start.line, end.line + 1);
@@ -142,6 +142,7 @@ class Picker implements vscode.Disposable {
             return orderedRepresentations.map(
               (representation) => new vscode.ColorPresentation(representation)
             );
+            
             */
 
             const representations = representationTypes.map(
