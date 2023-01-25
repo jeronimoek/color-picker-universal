@@ -51,23 +51,29 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "npm run test-compile && node ./out/test/runTest.js",
+    "unit-test": "npm run test-compile && node ./node_modules/mocha/bin/_mocha -u tdd --timeout 5000 --colors ./out/test/unit",
+    "test-compile": "tsc -p ./"
   },
   "devDependencies": {
-    "@types/glob": "^8.0.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
-    "@types/parse-color": "^1.0.1",
-    "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
-    "@vscode/test-electron": "^2.2.0",
-    "eslint": "^8.28.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.1.0",
-    "typescript": "^4.9.4"
+    "@types/fs-extra": "11.0.1",
+    "@types/glob": "8.0.0",
+    "@types/mocha": "10.0.1",
+    "@types/node": "16.18.11",
+    "@types/parse-color": "1.0.1",
+    "@types/sinon": "10.0.13",
+    "@types/vscode": "1.74.0",
+    "@typescript-eslint/eslint-plugin": "5.45.0",
+    "@typescript-eslint/parser": "5.45.0",
+    "@vscode/test-electron": "2.2.0",
+    "eslint": "8.28.0",
+    "fs-extra": "11.1.0",
+    "glob": "8.0.3",
+    "mocha": "10.1.0",
+    "sinon": "15.0.1",
+    "typescript": "4.9.4"
   },
   "dependencies": {
-    "colortranslator": "^1.10.2"
+    "colortranslator": "1.10.2"
   }
 }
