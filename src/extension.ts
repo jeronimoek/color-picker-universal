@@ -1,72 +1,53 @@
-import { ColorType } from "./utils/enums";
 import * as vscode from "vscode";
 import { ColorTranslator } from "colortranslator";
+import { matchColors, parseColorString } from "./utils/helpers";
+import { linesFromRange, rangeByMatch, splitInLines } from "./utils/utils";
+import {
+  colorFormats,
+  colorFormatsWithoutAlpha,
+  Regex,
+} from "./shared/constants";
 
-function parseColorString(colorRaw: string) {
-  try {
-    const color = new ColorTranslator(colorRaw);
-    const { R, G, B } = color;
-    const { a = 1 } = color.RGBAObject;
+function getMatches(text: string): vscode.ColorInformation[] {
+  const matches = matchColors(text).reverse();
 
-    return new vscode.Color(R / 255, G / 255, B / 255, a);
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-}
+  let count = 0;
+  let i = 0;
+  const lines = splitInLines(text);
 
-class Matcher {
-  static getMatches(text: string): vscode.ColorInformation[] {
-    const result: vscode.ColorInformation[] = [];
-    const matches = [
-      ...text.matchAll(
-        /((?:rgb|rgba|hsl|hsla|cmyk|cmyka)\([\s\d%,.]+\)|#(?:[\da-f]{3,4}){2}|#(?:[\da-f]{3,4}))/gi
-      ),
-    ].reverse();
+  const result: vscode.ColorInformation[] = [];
 
-    let count = 0;
-    let i = 0;
-    const lines = text.split(/(\r?\n)/g);
-
-    for (const line of lines) {
-      if (/^\r?\n$/.test(line)) {
-        count += line.length;
-        continue;
-      }
-      while (
-        matches[matches.length - 1]?.index &&
-        matches[matches.length - 1].index! <= count + line.length
-      ) {
-        const match = matches.pop();
-        if (!match?.index) continue;
-        const [colorText] = match;
-        const lineIndex = match.index - count;
-        const numOfExtraLines = colorText.match(/\r?\n/g)?.length;
-        const range = new vscode.Range(
-          new vscode.Position(i, lineIndex),
-          new vscode.Position(
-            i + (numOfExtraLines || 0),
-            !numOfExtraLines
-              ? lineIndex + colorText.length
-              : colorText.split(/\r?\n/g).pop()?.length || 0
-          )
-        );
-
-        const color = parseColorString(colorText);
-
-        if (color) {
-          result.push(new vscode.ColorInformation(range, color));
-        }
-      }
-      if (matches.length === 0) {
-        break;
-      }
-      i++;
+  for (const line of lines) {
+    if (Regex.ExactNewLine.test(line)) {
       count += line.length;
+      continue;
     }
 
-    return result;
+    while (
+      matches[matches.length - 1]?.index &&
+      matches[matches.length - 1].index! <= count + line.length
+    ) {
+      const match = matches.pop();
+      if (!match?.index) continue;
+      const [colorText] = match;
+      const index = match.index - count;
+
+      const range = rangeByMatch(i, index, colorText);
+
+      const color = parseColorString(colorText);
+
+      if (color) {
+        result.push(new vscode.ColorInformation(range, color));
+      }
+    }
+    if (matches.length === 0) {
+      break;
+    }
+    i++;
+    count += line.length;
   }
+
+  return result;
 }
 
 class Picker implements vscode.Disposable {
@@ -84,68 +65,22 @@ class Picker implements vscode.Disposable {
     return this.languages!.map((language) => {
       vscode.languages.registerColorProvider(language, {
         provideDocumentColors(document: vscode.TextDocument) {
-          return Matcher.getMatches(document.getText());
+          const text = document.getText();
+          return getMatches(text);
         },
         provideColorPresentations(_, { document, range }) {
           try {
-            const { start, end } = range;
-            const lines: string[] = document
-              .getText()
-              .split(/\n/g)
-              .slice(start.line, end.line + 1);
-            lines[lines.length - 1] = lines[lines.length - 1].slice(
-              0,
-              end.character
-            );
-            lines[0] = lines[0].slice(start.character);
+            const text = document.getText();
+            const lines = linesFromRange(text, range);
             const colorString = lines.join("");
 
             const color = new ColorTranslator(colorString);
             const { A } = color;
 
-            let representationTypes: (keyof typeof ColorType)[];
+            const representationFormats =
+              A !== 1 ? colorFormats : colorFormatsWithoutAlpha;
 
-            representationTypes = [
-              "RGB",
-              "RGBA",
-              "HEX",
-              "HEXA",
-              "HSL",
-              "HSLA",
-              "CMYK",
-              "CMYKA",
-            ];
-
-            if (A !== 1) {
-              representationTypes = representationTypes.filter(
-                (rep) => rep[rep.length - 1] === "A"
-              );
-            }
-
-            /* TODO: REVIEW IF DOABLE DUE TO VSCODE REFRESHING DATA
-            
-            const colorType = getColorType(colorString, A !== 1);
-            
-            const currentReprIndex = representationTypes.findIndex(
-              (representation) =>
-                ColorType[colorType].startsWith(representation)
-            );
-
-            const orderedReprTypes = representationTypes
-              .slice(currentReprIndex)
-              .concat(representationTypes.slice(0, currentReprIndex));
-
-            const orderedRepresentations = orderedReprTypes.map(
-              (reprType) => color[reprType]
-            );
-
-            return orderedRepresentations.map(
-              (representation) => new vscode.ColorPresentation(representation)
-            );
-            
-            */
-
-            const representations = representationTypes.map(
+            const representations = representationFormats.map(
               (reprType) => color[reprType]
             );
 
