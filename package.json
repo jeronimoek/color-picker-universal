@@ -13,7 +13,7 @@
   "activationEvents": [
     "*"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -47,13 +47,15 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "compile": "npm run clean && tsc -p tsconfig.global.json",
+    "watch": "npm run clean && tsc -watch -p tsconfig.global.json",
+    "pretest": "npm run test-compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "npm run test-compile && node ./out/test/runTest.js",
     "unit-test": "npm run test-compile && node ./node_modules/mocha/bin/_mocha -u tdd --timeout 5000 --colors ./out/test/unit",
-    "test-compile": "tsc -p ./"
+    "test-compile": "npm run clean-test && tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "clean-test": "rimraf out"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.1",
