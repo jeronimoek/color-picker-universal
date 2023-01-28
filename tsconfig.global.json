@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist/",
+    "sourceRoot": "./src"
+  },
+  // Only point to typings and the start of your source, e.g. `src/index.ts`
+  "files": ["src/extension.ts"]
+}
