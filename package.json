@@ -47,15 +47,17 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "npm run clean && tsc -p ./",
+    "watch": "npm run clean && tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "npm run test-compile && node ./out/test/runTest.js",
+    "test": "node ./out/test/runTest.js",
     "unit-test": "npm run test-compile && node ./node_modules/mocha/bin/_mocha -u tdd --timeout 5000 --colors ./out/test/unit",
-    "test-compile": "tsc -p ./"
+    "test-compile": "npm run clean && tsc -p ./",
+    "clean": "rimraf out"
   },
   "devDependencies": {
+    "@types/chai": "4.3.4",
     "@types/fs-extra": "11.0.1",
     "@types/glob": "8.0.0",
     "@types/mocha": "10.0.1",
@@ -70,10 +72,12 @@
     "fs-extra": "11.1.0",
     "glob": "8.0.3",
     "mocha": "10.1.0",
+    "rimraf": "4.1.2",
     "sinon": "15.0.1",
     "typescript": "4.9.4"
   },
   "dependencies": {
+    "chai": "4.3.7",
     "colortranslator": "1.10.2"
   }
 }
