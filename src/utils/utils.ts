@@ -1,8 +1,9 @@
 import * as vscode from "vscode";
 import { Regex } from "../shared/constants";
+import { TemplateColorFragments } from "./enums";
 
 export function splitInLines(text: string) {
-  const newLineRegex = /(\r?\n)/g;
+  const newLineRegex = /\r?\n/g;
   const lines = text.split(newLineRegex);
 
   return lines;
@@ -16,8 +17,7 @@ export function rangeByMatch(
   const lastLineText = text.match(Regex.LastLineMatch)?.[0] || "";
   const heightInLines = text.match(Regex.NewLine)?.length || 0;
   const endLine = lineStart + heightInLines;
-  const endIndex = lastLineText.length + heightInLines && indexStart;
-
+  const endIndex = lastLineText.length + heightInLines ? 0 : indexStart;
   return new vscode.Range(
     new vscode.Position(lineStart, indexStart),
     new vscode.Position(endLine, endIndex)
@@ -33,4 +33,13 @@ export function linesFromRange(text: string, range: vscode.Range) {
   lines[0] = lines[0].slice(start.character);
 
   return lines;
+}
+
+export function templateReplace(
+  text: string,
+  values: Record<TemplateColorFragments, string>
+) {
+  return text.replace(/{{(\w+)}}/g, (_, key: TemplateColorFragments) => {
+    return values[key] || "0";
+  });
 }
