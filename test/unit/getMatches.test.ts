@@ -32,6 +32,12 @@ suite("Match colors tests", () => {
 
       /* Assertions */
 
+      const rgbMultilineRange = matches[10].range;
+      chai.assert.equal(rgbMultilineRange.start.line, 15);
+      chai.assert.equal(rgbMultilineRange.start.character, 0);
+      chai.assert.equal(rgbMultilineRange.end.line, 19);
+      chai.assert.equal(rgbMultilineRange.end.character, 1);
+
       chai.assert.equal(matches.length, 26);
 
       const multiLineMatches = matches.filter(
