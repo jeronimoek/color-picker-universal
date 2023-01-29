@@ -27,17 +27,20 @@
         "color-picker-universal.languages": {
           "type": "array",
           "default": [
+            "*"
+          ],
+          "examples": [
             "css",
             "less",
             "sass",
             "scss",
+            "python",
             "javascript",
             "javascriptreact",
             "typescript",
             "typescriptreact",
             "json",
             "php",
-            "python",
             "xml"
           ],
           "description": "Set languages to be detected by the extension"
