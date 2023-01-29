@@ -9,7 +9,7 @@ export const Regex = {
 
 export const colorFormats = Object.values(ColorFormat);
 
-export const colorFormatsWithoutAlpha = colorFormats.filter(
+export const colorFormatsWithAlpha = colorFormats.filter(
   (rep) => rep[rep.length - 1] === "A"
 );
 

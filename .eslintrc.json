@@ -10,7 +10,8 @@
     "@typescript-eslint/semi": "warn",
     "eqeqeq": "warn",
     "no-throw-literal": "warn",
-    "semi": "off"
+    "semi": "off",
+    "no-console": "error"
   },
   "ignorePatterns": ["out", "dist", "**/*.d.ts"]
 }
