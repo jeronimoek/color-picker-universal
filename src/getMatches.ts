@@ -13,7 +13,7 @@ export function getMatches(text: string): vscode.ColorInformation[] {
   for (const line of lines) {
     while (
       matches[matches.length - 1]?.index &&
-      matches[matches.length - 1].index! <= count + line.length
+      matches[matches.length - 1].index! < count + line.length
     ) {
       const match = matches.pop();
       if (!match?.index) continue;
