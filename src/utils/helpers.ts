@@ -27,7 +27,7 @@ export function getColorType(color: string, hasAlpha: boolean): ColorFormat {
 
 export function matchColors(text: string) {
   const colorRegex =
-    /((?:rgb|rgba|hsl|hsla|cmyk|cmyka)\([\s\d%,.]+\)|#(?:[\da-f]{3,4}){2}|#(?:[\da-f]{3,4}))/gi;
+    /((?:rgb|rgba|hsl|hsla|cmyk|cmyka)\([\s\d%,.\/]+\)|#(?:[\da-f]{3,4}){2}|#(?:[\da-f]{3,4}))/gi;
   const matches = [...text.matchAll(colorRegex)];
 
   return matches;
@@ -41,7 +41,6 @@ export function parseColorString(colorRaw: string) {
 
     return new vscode.Color(R / 255, G / 255, B / 255, a);
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

@@ -1,22 +1,16 @@
 import { matchColors, parseColorString } from "./utils/helpers";
 import { rangeByMatch, splitInLines } from "./utils/utils";
 import * as vscode from "vscode";
-import { Regex } from "./shared/constants";
 
 export function getMatches(text: string): vscode.ColorInformation[] {
   const matches = matchColors(text).reverse();
   let count = 0;
-  let i = 0;
+  let lineIndex = 0;
   const lines = splitInLines(text);
 
   const result: vscode.ColorInformation[] = [];
 
   for (const line of lines) {
-    if (Regex.ExactNewLine.test(line)) {
-      count += line.length;
-      continue;
-    }
-
     while (
       matches[matches.length - 1]?.index &&
       matches[matches.length - 1].index! <= count + line.length
@@ -26,7 +20,7 @@ export function getMatches(text: string): vscode.ColorInformation[] {
       const [colorText] = match;
       const index = match.index - count;
 
-      const range = rangeByMatch(i, index, colorText);
+      const range = rangeByMatch(lineIndex, index, colorText);
 
       const color = parseColorString(colorText);
 
@@ -37,7 +31,7 @@ export function getMatches(text: string): vscode.ColorInformation[] {
     if (matches.length === 0) {
       break;
     }
-    i++;
+    lineIndex++;
     count += line.length;
   }
   return result;

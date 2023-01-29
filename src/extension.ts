@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { ColorTranslator } from "colortranslator";
-import { linesFromRange } from "./utils/utils";
-import { colorFormats, colorFormatsWithoutAlpha } from "./shared/constants";
+import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
 
 class Picker implements vscode.Disposable {
@@ -22,28 +21,33 @@ class Picker implements vscode.Disposable {
           const text = document.getText();
           return getMatches(text);
         },
-        provideColorPresentations(_, { document, range }) {
-          try {
-            const text = document.getText();
-            const lines = linesFromRange(text, range);
-            const colorString = lines.join("\r\n");
+        provideColorPresentations(colorRaw, { range }) {
+          const { red: r, green: g, blue: b, alpha: a } = colorRaw;
+          const color = new ColorTranslator({
+            r: r * 255,
+            g: g * 255,
+            b: b * 255,
+            a,
+          });
+          const { A } = color;
 
-            const color = new ColorTranslator(colorString);
-            const { A } = color;
+          const representationFormats =
+            A !== 1 ? colorFormatsWithAlpha : colorFormats;
 
-            const representationFormats =
-              A !== 1 ? colorFormats : colorFormatsWithoutAlpha;
+          let representations = representationFormats.map(
+            (reprType) => color[reprType]
+          );
 
-            const representations = representationFormats.map(
-              (reprType) => color[reprType]
+          const heightInLines = range.end.line - range.start.line + 1;
+          if (heightInLines > 1) {
+            representations = representations.map(
+              (rep) => rep + "\n".repeat(heightInLines - 1)
             );
-
-            return representations.map(
-              (representation) => new vscode.ColorPresentation(representation)
-            );
-          } catch (error) {
-            console.log(error);
           }
+
+          return representations.map(
+            (representation) => new vscode.ColorPresentation(representation)
+          );
         },
       });
     });
