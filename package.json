@@ -2,8 +2,12 @@
   "name": "color-picker-universal",
   "displayName": "color picker universal",
   "description": "Provides a standard color picker for all available colors. Works with Typescript and TSX.",
-  "version": "0.0.2",
-  "publisher": "jeronimoek",
+  "icon": "images/cpu-logo-128.png",
+  "version": "0.0.3",
+  "publisher": "JeronimoEkerdt",
+  "repository": {
+    "url": "https://github.com/jeronimoek/color-picker-universal"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -11,7 +15,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
