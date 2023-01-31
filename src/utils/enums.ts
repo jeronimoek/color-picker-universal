@@ -10,6 +10,7 @@ export enum ColorFormat {
 }
 
 export enum TemplateColorFragments {
+  name = "name",
   hex = "hex",
   aH = "aH",
   HEX = "HEX",
