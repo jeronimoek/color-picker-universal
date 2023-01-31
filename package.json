@@ -1,9 +1,9 @@
 {
   "name": "color-picker-universal",
-  "displayName": "color picker universal",
-  "description": "Provides a standard color picker for all available colors. Works with Typescript and TSX.",
+  "displayName": "Color Picker Universal",
+  "description": "Color picker and translator for any color format, in any file",
   "icon": "images/cpu-logo-128.png",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "JeronimoEkerdt",
   "repository": {
     "url": "https://github.com/jeronimoek/color-picker-universal"
@@ -18,40 +18,6 @@
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "color-picker-universal.helloWorld",
-        "title": "Hello Vscode"
-      }
-    ],
-    "configuration": {
-      "title": "color-picker-universal",
-      "properties": {
-        "color-picker-universal.languages": {
-          "type": "array",
-          "default": [
-            "*"
-          ],
-          "examples": [
-            "css",
-            "less",
-            "sass",
-            "scss",
-            "python",
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact",
-            "json",
-            "php",
-            "xml"
-          ],
-          "description": "Set languages to be detected by the extension"
-        }
-      }
-    }
-  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "npm run checks && npm run clean && tsc -p tsconfig.global.json",
@@ -92,5 +58,110 @@
   "dependencies": {
     "chai": "4.3.7",
     "colortranslator": "1.10.2"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "color-picker-universal.helloWorld",
+        "title": "Hello Vscode"
+      }
+    ],
+    "configuration": {
+      "title": "color-picker-universal",
+      "properties": {
+        "color-picker-universal.languages": {
+          "type": "array",
+          "default": [
+            "*"
+          ],
+          "description": "Set languages to be detected by the extension",
+          "examples": [
+            [
+              "css",
+              "less",
+              "sass",
+              "scss",
+              "python",
+              "javascript",
+              "javascriptreact",
+              "typescript",
+              "typescriptreact",
+              "json",
+              "php",
+              "xml"
+            ]
+          ],
+          "items": {
+            "type": "string",
+            "title": "language identifier",
+            "examples": [
+              "*",
+              "abap",
+              "bat",
+              "bibtex",
+              "clojure",
+              "coffeescript",
+              "c",
+              "cpp",
+              "csharp",
+              "cuda-cpp",
+              "css",
+              "diff",
+              "dockerfile",
+              "fsharp",
+              "git-commit",
+              "git-rebase",
+              "go",
+              "groovy",
+              "handlebars",
+              "haml",
+              "html",
+              "ini",
+              "java",
+              "javascript",
+              "javascriptreact",
+              "json",
+              "jsonc",
+              "latex",
+              "less",
+              "lua",
+              "makefile",
+              "markdown",
+              "objective-c",
+              "objective-cpp",
+              "perl",
+              "perl6",
+              "php",
+              "plaintext",
+              "powershell",
+              "jade",
+              "pug",
+              "python",
+              "r",
+              "razor",
+              "ruby",
+              "rust",
+              "scss",
+              "sass",
+              "shaderlab",
+              "shellscript",
+              "slim",
+              "sql",
+              "stylus",
+              "swift",
+              "typescript",
+              "typescriptreact",
+              "tex",
+              "vb",
+              "vue",
+              "vue-html",
+              "xml",
+              "xsl",
+              "yaml"
+            ]
+          }
+        }
+      }
+    }
   }
 }
