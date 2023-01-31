@@ -97,3 +97,5 @@ hsv(
     {{a}}
 )
 `;
+
+const name = "{{name}}";

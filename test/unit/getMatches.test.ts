@@ -38,7 +38,7 @@ suite("Match colors tests", () => {
       chai.assert.equal(rgbMultilineRange.end.line, 19);
       chai.assert.equal(rgbMultilineRange.end.character, 1);
 
-      chai.assert.equal(matches.length, 26);
+      chai.assert.equal(matches.length, 27);
 
       const multiLineMatches = matches.filter(
         (match) => match.range.start.line < match.range.end.line
