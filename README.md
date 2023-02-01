@@ -6,6 +6,10 @@
 
 ## This extension contributes the following settings:
 
-To see settings: ctrl + , OR ⌘ + ,
+To see settings press `CTRL + ,` OR `⌘ + ,`
 
-- `color-picker-universal.languages`: Array with the enabled languages. Use ["\*"] to enable all. Default ["\*"]. [Available identifiers](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)
+| Id                                 | Description                                      | Default value | Available values                                                                                              | Example                           |
+| ---------------------------------- | ------------------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| color-picker-universal.languages   | Array with the enabled language identifiers      | ["\*"]        | [Available identifiers](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers) | ["typescript", "typescriptreact"] |
+| color-picker-universal.formatsFrom | Array with the enabled formats to translate from | ["\*"]        | "\*" "cmyk" "hex" "hsl" "named" "rgb"                                                                         | ["rgb", "hex"]                    |
+| color-picker-universal.formatsTo   | Array with the enabled formats to translate into | ["\*"]        | "\*" "cmyk" "hex" "hsl" "rgb"                                                                                 | ["rgb", "hex"]                    |

@@ -1,5 +1,9 @@
 import { Color } from "vscode";
-import { ColorFormat, TemplateColorFragments } from "../utils/enums";
+import {
+  ColorFormatFrom,
+  ColorFormatTo,
+  TemplateColorFragments,
+} from "../utils/enums";
 
 export const Regex = {
   NewLine: /\r?\n/g,
@@ -7,10 +11,16 @@ export const Regex = {
   LastLineMatch: /(?:\r?\n)?(.+)$/,
 };
 
-export const colorFormats = Object.values(ColorFormat);
+export const colorFormats = Object.values(ColorFormatTo);
 
 export const colorFormatsWithAlpha = colorFormats.filter(
   (rep) => rep[rep.length - 1] === "A"
+);
+
+export const colorFormatsFromPrefixes = Object.values(ColorFormatFrom).filter(
+  (v) => {
+    return v !== ColorFormatFrom.NAMED && v !== ColorFormatFrom.HEX;
+  }
 );
 
 export enum TestedColors {

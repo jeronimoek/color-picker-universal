@@ -1,17 +1,41 @@
 import * as vscode from "vscode";
+import { colorFormatsFromPrefixes } from "./../shared/constants";
 import { ColorTranslator } from "colortranslator";
 import { NamedColors } from "../shared/constants";
+import { ColorFormatFrom, ColorFormatTo } from "./enums";
 
 export function matchColors(text: string) {
-  const namedColors = Object.keys(NamedColors).join("|");
-  const namedRegex = `\\b(?:${namedColors})\\b`;
+  const formatsFrom = vscode.workspace
+    .getConfiguration("color-picker-universal")
+    .get<string[]>("formatsFrom");
 
-  const formats = ["rgb", "rgba", "hsl", "hsla", "cmyk"].join("|");
-  const formatsRegex = `(?:${formats})\\([\\s\\d%,.\\/]+\\)`;
+  const formatsToJoin: string[] = [];
 
-  const hexRegex = "#(?:[\\da-f]{3,4}){2}|#(?:[\\da-f]{3,4})";
+  const includeAll = !formatsFrom?.length || formatsFrom?.includes("*");
 
-  const regex = new RegExp(`(${namedRegex}|${formatsRegex}|${hexRegex})`, "gi");
+  if (includeAll || formatsFrom?.includes(ColorFormatFrom.NAMED)) {
+    const namedColors = Object.keys(NamedColors).join("|");
+    formatsToJoin.push(`\\b(?:${namedColors})\\b`);
+  }
+
+  if (includeAll || formatsFrom?.includes(ColorFormatFrom.HEX)) {
+    formatsToJoin.push("#(?:[\\da-f]{3,4}){2}|#(?:[\\da-f]{3,4})");
+  }
+
+  const filteredFormatPrefixes = filterFormats<ColorFormatFrom>(
+    colorFormatsFromPrefixes,
+    formatsFrom?.length ? formatsFrom : ["*"]
+  );
+
+  if (filteredFormatPrefixes.length) {
+    formatsToJoin.push(
+      `(?:${filteredFormatPrefixes.join("|")})\\([\\s\\d%,.\\/]+\\)`
+    );
+  }
+
+  const formatsJoined = formatsToJoin.join("|");
+
+  const regex = new RegExp(`(${formatsJoined})`, "gi");
   const matches = [...text.matchAll(regex)];
 
   return matches;
@@ -27,4 +51,20 @@ export function parseColorString(colorRaw: string) {
   } catch (error) {
     return null;
   }
+}
+
+export function filterFormats<T extends ColorFormatTo | ColorFormatFrom>(
+  formats: T[],
+  formatsAllowed: string[]
+) {
+  if (formatsAllowed.includes("*")) return formats;
+
+  const filteredFormats = formats.filter((format) => {
+    let idFormat: string = format;
+    if (format.slice(-1).toLocaleLowerCase() === "a") {
+      idFormat = format.slice(0, -1);
+    }
+    return formatsAllowed.includes(idFormat);
+  });
+  return filteredFormats;
 }

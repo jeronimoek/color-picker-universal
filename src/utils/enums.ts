@@ -1,4 +1,4 @@
-export enum ColorFormat {
+export enum ColorFormatTo {
   RGB = "RGB",
   RGBA = "RGBA",
   HEX = "HEX",
@@ -7,6 +7,16 @@ export enum ColorFormat {
   HSLA = "HSLA",
   CMYK = "CMYK",
   CMYKA = "CMYKA",
+}
+
+export enum ColorFormatFrom {
+  RGB = "rgb",
+  RGBA = "rgba",
+  HSL = "hsl",
+  HSLA = "hsla",
+  CMYK = "cmyk",
+  NAMED = "named",
+  HEX = "hex",
 }
 
 export enum TemplateColorFragments {
