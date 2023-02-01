@@ -16,10 +16,6 @@ class Picker implements vscode.Disposable {
   }
 
   private register() {
-    const formatsTo = vscode.workspace
-      .getConfiguration("color-picker-universal")
-      .get<string[]>("formatsTo");
-
     return this.languages!.map((language) => {
       vscode.languages.registerColorProvider(language, {
         provideDocumentColors(document: vscode.TextDocument) {
@@ -27,6 +23,10 @@ class Picker implements vscode.Disposable {
           return getMatches(text);
         },
         provideColorPresentations(colorRaw, { range }) {
+          const formatsTo = vscode.workspace
+            .getConfiguration("color-picker-universal")
+            .get<string[]>("formatsTo");
+
           const { red: r, green: g, blue: b, alpha: a } = colorRaw;
           const color = new ColorTranslator({
             r: r * 255,
