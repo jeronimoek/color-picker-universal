@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { ColorTranslator } from "colortranslator";
 import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
+import { filterFormats } from "./utils/helpers";
 
 class Picker implements vscode.Disposable {
   constructor() {
@@ -15,6 +16,10 @@ class Picker implements vscode.Disposable {
   }
 
   private register() {
+    const formatsTo = vscode.workspace
+      .getConfiguration("color-picker-universal")
+      .get<string[]>("formatsTo");
+
     return this.languages!.map((language) => {
       vscode.languages.registerColorProvider(language, {
         provideDocumentColors(document: vscode.TextDocument) {
@@ -34,7 +39,14 @@ class Picker implements vscode.Disposable {
           const representationFormats =
             A !== 1 ? colorFormatsWithAlpha : colorFormats;
 
-          let representations = representationFormats.map(
+          const representationsFormatsFiltered = filterFormats(
+            representationFormats,
+            formatsTo?.length
+              ? formatsTo.map((f) => f.toLocaleUpperCase())
+              : ["*"]
+          );
+
+          let representations = representationsFormatsFiltered.map(
             (reprType) => color[reprType]
           );
 

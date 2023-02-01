@@ -69,31 +69,135 @@
     "configuration": {
       "title": "color-picker-universal",
       "properties": {
-        "color-picker-universal.languages": {
+        "color-picker-universal.formatsFrom": {
+          "description": "Set formats to be detected by the extension",
           "type": "array",
           "default": [
             "*"
           ],
-          "description": "Set languages to be detected by the extension",
           "examples": [
             [
-              "css",
-              "less",
-              "sass",
-              "scss",
-              "python",
-              "javascript",
-              "javascriptreact",
-              "typescript",
-              "typescriptreact",
-              "json",
-              "php",
-              "xml"
+              "cmyk",
+              "hex",
+              "hsl",
+              "named",
+              "rgb"
             ]
           ],
           "items": {
+            "title": "Format to be detected",
             "type": "string",
-            "title": "language identifier",
+            "examples": [
+              "*",
+              "cmyk",
+              "hex",
+              "hsl",
+              "named",
+              "rgb"
+            ]
+          }
+        },
+        "color-picker-universal.formatsTo": {
+          "description": "Set formats to translate into",
+          "type": "array",
+          "default": [
+            "*"
+          ],
+          "examples": [
+            [
+              "cmyk",
+              "hex",
+              "hsl",
+              "rgb"
+            ]
+          ],
+          "items": {
+            "title": "Format to be translated into",
+            "type": "string",
+            "examples": [
+              "*",
+              "cmyk",
+              "hex",
+              "hsl",
+              "rgb"
+            ]
+          }
+        },
+        "color-picker-universal.languages": {
+          "description": "Set languages to be detected by the extension",
+          "type": "array",
+          "default": [
+            "*"
+          ],
+          "examples": [
+            [
+              "abap",
+              "bat",
+              "bibtex",
+              "clojure",
+              "coffeescript",
+              "c",
+              "cpp",
+              "csharp",
+              "cuda-cpp",
+              "css",
+              "diff",
+              "dockerfile",
+              "fsharp",
+              "git-commit",
+              "git-rebase",
+              "go",
+              "groovy",
+              "handlebars",
+              "haml",
+              "html",
+              "ini",
+              "java",
+              "javascript",
+              "javascriptreact",
+              "json",
+              "jsonc",
+              "latex",
+              "less",
+              "lua",
+              "makefile",
+              "markdown",
+              "objective-c",
+              "objective-cpp",
+              "perl",
+              "perl6",
+              "php",
+              "plaintext",
+              "powershell",
+              "jade",
+              "pug",
+              "python",
+              "r",
+              "razor",
+              "ruby",
+              "rust",
+              "scss",
+              "sass",
+              "shaderlab",
+              "shellscript",
+              "slim",
+              "sql",
+              "stylus",
+              "swift",
+              "typescript",
+              "typescriptreact",
+              "tex",
+              "vb",
+              "vue",
+              "vue-html",
+              "xml",
+              "xsl",
+              "yaml"
+            ]
+          ],
+          "items": {
+            "title": "Language identifier",
+            "type": "string",
             "examples": [
               "*",
               "abap",
