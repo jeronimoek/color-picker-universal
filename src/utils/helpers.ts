@@ -68,3 +68,27 @@ export function filterFormats<T extends ColorFormatTo | ColorFormatFrom>(
   });
   return filteredFormats;
 }
+
+export function isValidDocument(
+  config: vscode.WorkspaceConfiguration,
+  { languageId }: vscode.TextDocument
+) {
+  let isValid = false;
+
+  if (!config.enable) {
+    return isValid;
+  }
+
+  if (config.languages.indexOf("*") > -1) {
+    isValid = true;
+  }
+
+  if (config.languages.indexOf(languageId) > -1) {
+    isValid = true;
+  }
+  if (config.languages.indexOf(`!${languageId}`) > -1) {
+    isValid = false;
+  }
+
+  return isValid;
+}
