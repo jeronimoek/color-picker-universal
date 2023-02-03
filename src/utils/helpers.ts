@@ -15,7 +15,7 @@ export function matchColors(text: string) {
 
   if (includeAll || formatsFrom?.includes(ColorFormatFrom.NAMED)) {
     const namedColors = Object.keys(NamedColors).join("|");
-    formatsToJoin.push(`\\b(?:${namedColors})\\b`);
+    formatsToJoin.push(`(?:${namedColors})`);
   }
 
   if (includeAll || formatsFrom?.includes(ColorFormatFrom.HEX)) {
@@ -35,7 +35,7 @@ export function matchColors(text: string) {
 
   const formatsJoined = formatsToJoin.join("|");
 
-  const regex = new RegExp(`(${formatsJoined})`, "gi");
+  const regex = new RegExp(`(?<![\\w-])(${formatsJoined})(?![\\w-])`, "gi");
   const matches = [...text.matchAll(regex)];
 
   return matches;
