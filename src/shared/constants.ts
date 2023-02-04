@@ -19,7 +19,7 @@ export const colorFormatsWithAlpha = colorFormats.filter(
 
 export const colorFormatsFromPrefixes = Object.values(ColorFormatFrom).filter(
   (v) => {
-    return v !== ColorFormatFrom.NAMED && v !== ColorFormatFrom.HEX;
+    return ![ColorFormatFrom.NAMED, ColorFormatFrom.HEX].includes(v);
   }
 );
 

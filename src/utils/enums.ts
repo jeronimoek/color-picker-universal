@@ -17,6 +17,7 @@ export enum ColorFormatFrom {
   CMYK = "cmyk",
   NAMED = "named",
   HEX = "hex",
+  HWB = "hwb",
 }
 
 export enum TemplateColorFragments {
