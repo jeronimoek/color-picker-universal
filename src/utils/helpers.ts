@@ -3,6 +3,25 @@ import { colorFormatsFromPrefixes } from "./../shared/constants";
 import { ColorTranslator } from "colortranslator";
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
+import { PartialBy } from "./utils";
+
+interface HWBA {
+  h: number;
+  w: number;
+  b: number;
+  a: number;
+}
+
+interface HWBAInput extends PartialBy<HWBA, "a"> {}
+
+interface RGBA {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
+interface RGBAInput extends PartialBy<RGBA, "a"> {}
 
 export function matchColors(text: string) {
   const formatsFrom = vscode.workspace
@@ -43,19 +62,30 @@ export function matchColors(text: string) {
 
 export function parseColorString(colorRaw: string) {
   try {
-    let R, G, B, a;
+    let r, g, b, a;
     if (colorRaw.startsWith(ColorFormatFrom.HWB)) {
       const values = colorRaw
         .split(ColorFormatFrom.HWB + "(")[1]
         .split(/[^\w%\.]+/);
-      [R, G, B, a] = hwbToRgb(values.map((v) => parseInt(v)) as any);
+      const hwbValues = values.map((v) => parseInt(v));
+      const [hue, white, black] = hwbValues;
+      let alpha = 1;
+      if (hwbValues[3] || hwbValues[3] === 0) {
+        alpha = hwbValues[3];
+      }
+      ({ r, g, b, a } = hwbToRgb({
+        h: hue,
+        w: white,
+        b: black,
+        a: alpha,
+      }));
     } else {
       const color = new ColorTranslator(colorRaw);
-      ({ R, G, B } = color);
+      ({ R: r, G: g, B: b } = color);
       ({ a = 1 } = color.RGBAObject);
     }
 
-    return new vscode.Color(R / 255, G / 255, B / 255, a || 1);
+    return new vscode.Color(r / 255, g / 255, b / 255, a || 1);
   } catch (error) {
     return null;
   }
@@ -100,23 +130,21 @@ export function isValidDocument(
   return isValid;
 }
 
-export function hwbToRgb(values: [number, number, number, number?]) {
-  const result = hwbToRgbFloat(values);
+export function hwbToRgb({ h, w, b, a = 1 }: HWBAInput): RGBA {
+  const result = hwbToRgbFloat({ h, w, b, a });
 
-  // To maintain array type
-  result.forEach(
-    (value, i) => value && (result[i] = i === 3 ? value : Math.round(value))
-  );
+  let property: keyof typeof result;
+
+  for (property in result) {
+    result[property] =
+      property === "a" ? result[property] : Math.round(result[property]);
+  }
 
   return result;
 }
 
-export function hwbToRgbFloat([h, w, b, a]: [
-  number,
-  number,
-  number,
-  number?
-]): [number, number, number, number?] {
+function hwbToRgbFloat(hwba: HWBA): RGBA {
+  const { h, w, b, a } = hwba;
   const hue = Number(h) / 360;
   let whiteness = Number(w) / 100;
   let blackness = Number(b) / 100;
@@ -180,8 +208,50 @@ export function hwbToRgbFloat([h, w, b, a]: [
       );
   }
 
-  const result = [red * 255, green * 255, blue * 255];
-  if (a !== undefined) result.push(a);
+  const result = {
+    r: red * 255,
+    g: green * 255,
+    b: blue * 255,
+    a: a !== undefined ? a : 1,
+  };
 
-  return result as [number, number, number, number?];
+  return result;
+}
+
+export function rgbToHwb({ r, g, b, a = 1 }: RGBAInput): HWBA {
+  const result = rgbToHwbFloat({ r, g, b, a });
+
+  let property: keyof typeof result;
+
+  // To maintain array type
+  for (property in result) {
+    result[property] =
+      property === "a" ? result[property] : Math.round(result[property]);
+  }
+
+  return result;
+}
+
+function rgbToHwbFloat(rgba: RGBA): HWBA {
+  const { r, g, b, a } = rgba;
+  const h = new ColorTranslator({ r, g, b, a }).HSLObject.h;
+  const whiteness = (1 / 255) * Math.min(r, Math.min(g, b));
+  const blackness = 1 - (1 / 255) * Math.max(r, Math.max(g, b));
+
+  const result = {
+    h,
+    w: whiteness * 100,
+    b: blackness * 100,
+    a: a !== undefined ? a : 1,
+  };
+
+  return result;
+}
+
+export function rgbToHwbString(rgb: RGBAInput) {
+  const { h, w, b, a } = rgbToHwb(rgb);
+  if (rgb.a !== undefined) {
+    return `hwb(${h},${w}%,${b}%,${a})`;
+  }
+  return `hwb(${h},${w}%,${b}%)`;
 }

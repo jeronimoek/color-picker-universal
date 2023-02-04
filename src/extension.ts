@@ -2,7 +2,11 @@ import * as vscode from "vscode";
 import { ColorTranslator } from "colortranslator";
 import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
-import { filterFormats, isValidDocument } from "./utils/helpers";
+import {
+  filterFormats,
+  isValidDocument,
+  rgbToHwbString,
+} from "./utils/helpers";
 
 class Picker implements vscode.Disposable {
   constructor() {
@@ -33,9 +37,13 @@ class Picker implements vscode.Disposable {
           );
           if (!isValidDocument(config, document)) return;
 
-          const formatsTo = vscode.workspace
+          let formatsTo = vscode.workspace
             .getConfiguration("color-picker-universal")
             .get<string[]>("formatsTo");
+
+          if (!formatsTo?.length) {
+            formatsTo = ["*"];
+          }
 
           const { red: r, green: g, blue: b, alpha: a } = colorRaw;
           const color = new ColorTranslator({
@@ -51,14 +59,31 @@ class Picker implements vscode.Disposable {
 
           const representationsFormatsFiltered = filterFormats(
             representationFormats,
-            formatsTo?.length
-              ? formatsTo.map((f) => f.toLocaleUpperCase())
-              : ["*"]
+            formatsTo.map((f) => f.toLocaleUpperCase())
           );
 
           let representations = representationsFormatsFiltered.map(
             (reprType) => color[reprType]
           );
+
+          if (formatsTo?.includes("*") || formatsTo?.includes("hwb")) {
+            A === 1 &&
+              representations.push(
+                rgbToHwbString({
+                  r: r * 255,
+                  g: g * 255,
+                  b: b * 255,
+                })
+              );
+            representations.push(
+              rgbToHwbString({
+                r: r * 255,
+                g: g * 255,
+                b: b * 255,
+                a: A,
+              })
+            );
+          }
 
           const heightInLines = range.end.line - range.start.line + 1;
           if (heightInLines > 1) {
