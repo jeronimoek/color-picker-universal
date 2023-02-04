@@ -115,7 +115,8 @@
               "cmyk",
               "hex",
               "hsl",
-              "rgb"
+              "rgb",
+              "hwb"
             ]
           ],
           "items": {
@@ -126,7 +127,8 @@
               "cmyk",
               "hex",
               "hsl",
-              "rgb"
+              "rgb",
+              "hwb"
             ]
           }
         },
