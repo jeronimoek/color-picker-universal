@@ -86,7 +86,8 @@
               "hex",
               "hsl",
               "named",
-              "rgb"
+              "rgb",
+              "hwb"
             ]
           ],
           "items": {
@@ -98,7 +99,8 @@
               "hex",
               "hsl",
               "named",
-              "rgb"
+              "rgb",
+              "hwb"
             ]
           }
         },
