@@ -21,9 +21,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - run: |
-      apt-get install xvfb x11-apps x11-xkb-utils libx11-6 libx11-xcb1
-      Xvfb -ac :99 -screen 0 1280x1024x16 & export DISPLAY=:99
+    - run: apt-get install xvfb x11-apps x11-xkb-utils libx11-6 libx11-xcb1;
+    - run: Xvfb -ac :99 -screen 0 1280x1024x16 & export DISPLAY=:99;
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
