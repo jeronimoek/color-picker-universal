@@ -5,8 +5,10 @@ import { getMatches } from "./getMatches";
 import {
   filterFormats,
   isValidDocument,
+  replaceAllColors,
   rgbToHwbString,
 } from "./utils/helpers";
+import { ColorFormatTo } from "./utils/enums";
 
 class Picker implements vscode.Disposable {
   constructor() {
@@ -20,6 +22,37 @@ class Picker implements vscode.Disposable {
   }
 
   private register() {
+    ([...Object.values(ColorFormatTo), "HWB", "HWBA"] as const).forEach(
+      (formatTo) => {
+        const command = `color-picker-universal.to${formatTo}`;
+
+        const commandHandler = () => {
+          const activeEditor = vscode.window.activeTextEditor;
+          if (!activeEditor) {
+            return;
+          }
+          const selectedText = activeEditor.document.getText(
+            new vscode.Range(
+              activeEditor.selection.start,
+              activeEditor.selection.end
+            )
+          );
+
+          activeEditor.edit((editBuilder) =>
+            editBuilder.replace(
+              new vscode.Range(
+                activeEditor.selection.start,
+                activeEditor.selection.end
+              ),
+              replaceAllColors(selectedText, formatTo)
+            )
+          );
+        };
+
+        vscode.commands.registerCommand(command, commandHandler);
+      }
+    );
+
     return this.languages!.map((language) => {
       vscode.languages.registerColorProvider(language, {
         provideDocumentColors(document: vscode.TextDocument) {
@@ -88,7 +121,9 @@ class Picker implements vscode.Disposable {
           const heightInLines = range.end.line - range.start.line + 1;
           if (heightInLines > 1) {
             representations = representations.map(
-              (rep) => rep + "\n".repeat(heightInLines - 1)
+              (rep) =>
+                rep +
+                (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
             );
           }
 

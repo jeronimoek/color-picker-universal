@@ -62,8 +62,44 @@
   "contributes": {
     "commands": [
       {
-        "command": "color-picker-universal.helloWorld",
-        "title": "Hello Vscode"
+        "command": "color-picker-universal.toCMYK",
+        "title": "Translate colors to CMYK"
+      },
+      {
+        "command": "color-picker-universal.toCMYKA",
+        "title": "Translate colors to CMYKA"
+      },
+      {
+        "command": "color-picker-universal.toHEX",
+        "title": "Translate colors to HEX"
+      },
+      {
+        "command": "color-picker-universal.toHEXA",
+        "title": "Translate colors to HEXA"
+      },
+      {
+        "command": "color-picker-universal.toHSL",
+        "title": "Translate colors to HSL"
+      },
+      {
+        "command": "color-picker-universal.toHSLA",
+        "title": "Translate colors to HSLA"
+      },
+      {
+        "command": "color-picker-universal.toRGB",
+        "title": "Translate colors to RGB"
+      },
+      {
+        "command": "color-picker-universal.toRGBA",
+        "title": "Translate colors to RGBA"
+      },
+      {
+        "command": "color-picker-universal.toHWB",
+        "title": "Translate colors to HWB"
+      },
+      {
+        "command": "color-picker-universal.toHWBA",
+        "title": "Translate colors to HWBA"
       }
     ],
     "configuration": {

@@ -67,7 +67,7 @@ export function parseColorString(colorRaw: string) {
       const values = colorRaw
         .split(ColorFormatFrom.HWB + "(")[1]
         .split(/[^\w%\.]+/);
-      const hwbValues = values.map((v) => parseInt(v));
+      const hwbValues = values.map((v) => parseFloat(v));
       const [hue, white, black] = hwbValues;
       let alpha = 1;
       if (hwbValues[3] || hwbValues[3] === 0) {
@@ -84,7 +84,6 @@ export function parseColorString(colorRaw: string) {
       ({ R: r, G: g, B: b } = color);
       ({ a = 1 } = color.RGBAObject);
     }
-
     return new vscode.Color(r / 255, g / 255, b / 255, a || 1);
   } catch (error) {
     return null;
@@ -251,7 +250,35 @@ function rgbToHwbFloat(rgba: RGBA): HWBA {
 export function rgbToHwbString(rgb: RGBAInput) {
   const { h, w, b, a } = rgbToHwb(rgb);
   if (rgb.a !== undefined) {
-    return `hwb(${h},${w}%,${b}%,${a})`;
+    return `hwb(${h} ${w}% ${b}% / ${a})`;
   }
-  return `hwb(${h},${w}%,${b}%)`;
+  return `hwb(${h} ${w}% ${b}%)`;
+}
+
+export function replaceAllColors(
+  text: string,
+  formatTo: ColorFormatTo | "HWB" | "HWBA"
+) {
+  const matches = matchColors(text);
+  matches.forEach((match) => {
+    const colorRaw = match[0];
+    const matchedColor = parseColorString(colorRaw);
+    if (!matchedColor) return;
+    const rgbaColor = {
+      r: matchedColor.red * 255,
+      g: matchedColor.green * 255,
+      b: matchedColor.blue * 255,
+      a: matchedColor.alpha,
+    };
+    if (["HWB", "HWBA"].includes(formatTo)) {
+      text = text.replace(colorRaw, rgbToHwbString(rgbaColor));
+    } else {
+      text = text.replace(
+        colorRaw,
+        new ColorTranslator(rgbaColor)[formatTo as ColorFormatTo]
+      );
+    }
+  });
+  return text;
+  // TODO: REPLACE COLORS
 }
