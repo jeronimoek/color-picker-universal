@@ -9,6 +9,11 @@ export enum ColorFormatTo {
   CMYKA = "CMYKA",
 }
 
+export enum CustomColorFormatTo {
+  HWB = "HWB",
+  HWBA = "HWBA",
+}
+
 export enum ColorFormatFrom {
   RGB = "rgb",
   RGBA = "rgba",
@@ -18,6 +23,12 @@ export enum ColorFormatFrom {
   NAMED = "named",
   HEX = "hex",
   HWB = "hwb",
+}
+
+export enum CommandType {
+  LINE = "LINE",
+  SELECTION = "SELECTION",
+  FILE = "FILE",
 }
 
 export enum TemplateColorFragments {

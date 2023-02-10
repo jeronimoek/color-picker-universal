@@ -8,7 +8,8 @@ import {
   replaceAllColors,
   rgbToHwbString,
 } from "./utils/helpers";
-import { ColorFormatTo } from "./utils/enums";
+import { ColorFormatTo, CommandType, CustomColorFormatTo } from "./utils/enums";
+import { translateColors } from "./commands/translateColors";
 
 class Picker implements vscode.Disposable {
   constructor() {
@@ -22,36 +23,58 @@ class Picker implements vscode.Disposable {
   }
 
   private register() {
-    ([...Object.values(ColorFormatTo), "HWB", "HWBA"] as const).forEach(
-      (formatTo) => {
-        const command = `color-picker-universal.to${formatTo}`;
+    const activeEditor = vscode.window.activeTextEditor;
+    if (!activeEditor) {
+      return;
+    }
 
-        const commandHandler = () => {
-          const activeEditor = vscode.window.activeTextEditor;
-          if (!activeEditor) {
-            return;
-          }
-          const selectedText = activeEditor.document.getText(
-            new vscode.Range(
-              activeEditor.selection.start,
-              activeEditor.selection.end
-            )
-          );
+    const command = `color-picker-universal.translateColors`;
 
-          activeEditor.edit((editBuilder) =>
-            editBuilder.replace(
-              new vscode.Range(
-                activeEditor.selection.start,
-                activeEditor.selection.end
-              ),
-              replaceAllColors(selectedText, formatTo)
-            )
-          );
-        };
-
-        vscode.commands.registerCommand(command, commandHandler);
+    const commandHandler = async () => {
+      const activeEditor = vscode.window.activeTextEditor;
+      if (!activeEditor) {
+        return;
       }
-    );
+
+      const selected = await translateColors();
+      const formatTo = selected.format.label as
+        | ColorFormatTo
+        | CustomColorFormatTo;
+      const commandType = selected.area.label as CommandType;
+
+      let start: vscode.Position, end: vscode.Position;
+      switch (commandType) {
+        case CommandType.LINE:
+          start = activeEditor.document.lineAt(activeEditor.selection.active)
+            .range.start;
+          end = activeEditor.document.lineAt(activeEditor.selection.active)
+            .range.end;
+          break;
+        case CommandType.SELECTION:
+          start = activeEditor.selection.start;
+          end = activeEditor.selection.end;
+          break;
+        case CommandType.FILE:
+          start = activeEditor.document.lineAt(0).range.start;
+          end = activeEditor.document.lineAt(
+            activeEditor.document.lineCount - 1
+          ).range.end;
+          break;
+      }
+
+      const selectedText = activeEditor.document.getText(
+        new vscode.Range(start, end)
+      );
+
+      activeEditor.edit((editBuilder) =>
+        editBuilder.replace(
+          new vscode.Range(start, end),
+          replaceAllColors(selectedText, formatTo)
+        )
+      );
+    };
+
+    vscode.commands.registerCommand(command, commandHandler);
 
     return this.languages!.map((language) => {
       vscode.languages.registerColorProvider(language, {

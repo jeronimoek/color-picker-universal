@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { colorFormatsFromPrefixes } from "./../shared/constants";
 import { ColorTranslator } from "colortranslator";
 import { NamedColors } from "../shared/constants";
-import { ColorFormatFrom, ColorFormatTo } from "./enums";
+import { ColorFormatFrom, ColorFormatTo, CustomColorFormatTo } from "./enums";
 import { PartialBy } from "./utils";
 
 interface HWBA {
@@ -257,7 +257,7 @@ export function rgbToHwbString(rgb: RGBAInput) {
 
 export function replaceAllColors(
   text: string,
-  formatTo: ColorFormatTo | "HWB" | "HWBA"
+  formatTo: ColorFormatTo | CustomColorFormatTo
 ) {
   const matches = matchColors(text);
   matches.forEach((match) => {
@@ -270,8 +270,23 @@ export function replaceAllColors(
       b: matchedColor.blue * 255,
       a: matchedColor.alpha,
     };
-    if (["HWB", "HWBA"].includes(formatTo)) {
-      text = text.replace(colorRaw, rgbToHwbString(rgbaColor));
+    if (
+      [CustomColorFormatTo.HWB, CustomColorFormatTo.HWBA].some(
+        (v) => v === formatTo
+      )
+    ) {
+      text = text.replace(
+        colorRaw,
+        formatTo === CustomColorFormatTo.HWBA
+          ? rgbToHwbString({
+              ...rgbaColor,
+              a: parseFloat(rgbaColor.a.toFixed(2)),
+            })
+          : rgbToHwbString({
+              ...rgbaColor,
+              a: undefined,
+            })
+      );
     } else {
       text = text.replace(
         colorRaw,
