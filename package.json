@@ -63,7 +63,7 @@
     "commands": [
       {
         "command": "color-picker-universal.translateColors",
-        "title": "Translate colors to another format"
+        "title": "Color Picker Universal: Translate colors to another format"
       }
     ],
     "menus": {
