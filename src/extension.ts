@@ -5,8 +5,11 @@ import { getMatches } from "./getMatches";
 import {
   filterFormats,
   isValidDocument,
+  replaceAllColors,
   rgbToHwbString,
 } from "./utils/helpers";
+import { ColorFormatTo, CommandType, CustomColorFormatTo } from "./utils/enums";
+import { translateColors } from "./commands/translateColors";
 
 class Picker implements vscode.Disposable {
   constructor() {
@@ -20,6 +23,59 @@ class Picker implements vscode.Disposable {
   }
 
   private register() {
+    const activeEditor = vscode.window.activeTextEditor;
+    if (!activeEditor) {
+      return;
+    }
+
+    const command = `color-picker-universal.translateColors`;
+
+    const commandHandler = async () => {
+      const activeEditor = vscode.window.activeTextEditor;
+      if (!activeEditor) {
+        return;
+      }
+
+      const selected = await translateColors();
+      const formatTo = selected.format.label as
+        | ColorFormatTo
+        | CustomColorFormatTo;
+      const commandType = selected.area.label as CommandType;
+
+      let start: vscode.Position, end: vscode.Position;
+      switch (commandType) {
+        case CommandType.LINE:
+          start = activeEditor.document.lineAt(activeEditor.selection.active)
+            .range.start;
+          end = activeEditor.document.lineAt(activeEditor.selection.active)
+            .range.end;
+          break;
+        case CommandType.SELECTION:
+          start = activeEditor.selection.start;
+          end = activeEditor.selection.end;
+          break;
+        case CommandType.FILE:
+          start = activeEditor.document.lineAt(0).range.start;
+          end = activeEditor.document.lineAt(
+            activeEditor.document.lineCount - 1
+          ).range.end;
+          break;
+      }
+
+      const selectedText = activeEditor.document.getText(
+        new vscode.Range(start, end)
+      );
+
+      activeEditor.edit((editBuilder) =>
+        editBuilder.replace(
+          new vscode.Range(start, end),
+          replaceAllColors(selectedText, formatTo)
+        )
+      );
+    };
+
+    vscode.commands.registerCommand(command, commandHandler);
+
     return this.languages!.map((language) => {
       vscode.languages.registerColorProvider(language, {
         provideDocumentColors(document: vscode.TextDocument) {
@@ -88,7 +144,9 @@ class Picker implements vscode.Disposable {
           const heightInLines = range.end.line - range.start.line + 1;
           if (heightInLines > 1) {
             representations = representations.map(
-              (rep) => rep + "\n".repeat(heightInLines - 1)
+              (rep) =>
+                rep +
+                (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
             );
           }
 

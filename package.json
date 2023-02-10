@@ -62,10 +62,18 @@
   "contributes": {
     "commands": [
       {
-        "command": "color-picker-universal.helloWorld",
-        "title": "Hello Vscode"
+        "command": "color-picker-universal.translateColors",
+        "title": "Translate colors to another format"
       }
     ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "color-picker-universal.translateColors",
+          "title": "Translate colors to another format"
+        }
+      ]
+    },
     "configuration": {
       "title": "color-picker-universal",
       "properties": {
