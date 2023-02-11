@@ -3,7 +3,7 @@
   "displayName": "Color Picker Universal",
   "description": "Color picker and translator for any color format, in any file",
   "icon": "images/cpu-logo-128.png",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "publisher": "JeronimoEkerdt",
   "repository": {
     "url": "https://github.com/jeronimoek/color-picker-universal"
