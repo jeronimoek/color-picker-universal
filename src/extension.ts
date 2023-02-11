@@ -75,86 +75,86 @@ class Picker implements vscode.Disposable {
     };
 
     vscode.commands.registerCommand(command, commandHandler);
+    vscode.languages.registerColorProvider("*", {
+      provideDocumentColors(document: vscode.TextDocument) {
+        const config = vscode.workspace.getConfiguration(
+          "color-picker-universal"
+        );
+        if (!isValidDocument(config, document)) return;
 
-    return this.languages!.map((language) => {
-      vscode.languages.registerColorProvider(language, {
-        provideDocumentColors(document: vscode.TextDocument) {
-          const config = vscode.workspace.getConfiguration(
-            "color-picker-universal"
-          );
-          if (!isValidDocument(config, document)) return;
+        const text = document.getText();
+        return getMatches(text);
+      },
+      provideColorPresentations(colorRaw, { range, document }) {
+        const config = vscode.workspace.getConfiguration(
+          "color-picker-universal"
+        );
+        if (!isValidDocument(config, document)) return;
 
-          const text = document.getText();
-          return getMatches(text);
-        },
-        provideColorPresentations(colorRaw, { range, document }) {
-          const config = vscode.workspace.getConfiguration(
-            "color-picker-universal"
-          );
-          if (!isValidDocument(config, document)) return;
+        let selectedFormatsTo = vscode.workspace
+          .getConfiguration("color-picker-universal")
+          .get<string[]>("formatsTo");
 
-          let formatsTo = vscode.workspace
-            .getConfiguration("color-picker-universal")
-            .get<string[]>("formatsTo");
+        if (!selectedFormatsTo?.length) {
+          selectedFormatsTo = ["*"];
+        }
 
-          if (!formatsTo?.length) {
-            formatsTo = ["*"];
-          }
+        const { red: r, green: g, blue: b, alpha: a } = colorRaw;
+        const color = new ColorTranslator({
+          r: r * 255,
+          g: g * 255,
+          b: b * 255,
+          a,
+        });
+        const { A } = color;
 
-          const { red: r, green: g, blue: b, alpha: a } = colorRaw;
-          const color = new ColorTranslator({
-            r: r * 255,
-            g: g * 255,
-            b: b * 255,
-            a,
-          });
-          const { A } = color;
+        const representationFormats =
+          A !== 1 ? colorFormatsWithAlpha : colorFormats;
 
-          const representationFormats =
-            A !== 1 ? colorFormatsWithAlpha : colorFormats;
+        const representationsFormatsFiltered = filterFormats(
+          representationFormats,
+          selectedFormatsTo.map((f) => f.toLocaleUpperCase())
+        );
 
-          const representationsFormatsFiltered = filterFormats(
-            representationFormats,
-            formatsTo.map((f) => f.toLocaleUpperCase())
-          );
+        let representations = representationsFormatsFiltered.map(
+          (reprType) => color[reprType]
+        );
 
-          let representations = representationsFormatsFiltered.map(
-            (reprType) => color[reprType]
-          );
-
-          if (formatsTo?.includes("*") || formatsTo?.includes("hwb")) {
-            A === 1 &&
-              representations.push(
-                rgbToHwbString({
-                  r: r * 255,
-                  g: g * 255,
-                  b: b * 255,
-                })
-              );
+        if (
+          selectedFormatsTo?.includes("*") ||
+          selectedFormatsTo?.includes("hwb")
+        ) {
+          A === 1 &&
             representations.push(
               rgbToHwbString({
                 r: r * 255,
                 g: g * 255,
                 b: b * 255,
-                a: A,
               })
             );
-          }
-
-          const heightInLines = range.end.line - range.start.line + 1;
-          if (heightInLines > 1) {
-            representations = representations.map(
-              (rep) =>
-                rep +
-                (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
-            );
-          }
-
-          return representations.map(
-            (representation) => new vscode.ColorPresentation(representation)
+          representations.push(
+            rgbToHwbString({
+              r: r * 255,
+              g: g * 255,
+              b: b * 255,
+              a: A,
+            })
           );
-        },
-      });
+        }
+
+        const heightInLines = range.end.line - range.start.line + 1;
+        if (heightInLines > 1) {
+          representations = representations.map(
+            (rep) =>
+              rep +
+              (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
+          );
+        }
+
+        return representations.map(
+          (representation) => new vscode.ColorPresentation(representation)
+        );
+      },
     });
   }
 

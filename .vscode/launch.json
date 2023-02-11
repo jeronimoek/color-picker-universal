@@ -6,6 +6,7 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
+        "${workspaceFolder}/../test-project",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--disable-extensions"
       ],
