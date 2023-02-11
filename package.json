@@ -149,15 +149,15 @@
           "examples": [
             [
               "*",
-              "!plaintext",
-              "!markdown"
-            ],
-            [
-              "*",
               "!css",
               "!less",
               "!scss",
               "!sass"
+            ],
+            [
+              "*",
+              "!plaintext",
+              "!markdown"
             ],
             [
               "abap",
