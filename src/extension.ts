@@ -3,6 +3,7 @@ import { ColorTranslator } from "colortranslator";
 import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
 import {
+  closestNamedColor,
   filterFormats,
   isValidDocument,
   replaceAllColors,
@@ -108,6 +109,7 @@ class Picker implements vscode.Disposable {
         });
         const { A } = color;
 
+        // Filter formats if alpha !== 1
         const representationFormats =
           A !== 1 ? colorFormatsWithAlpha : colorFormats;
 
@@ -120,6 +122,7 @@ class Picker implements vscode.Disposable {
           (reprType) => color[reprType]
         );
 
+        // Provide translation to hwb
         if (
           selectedFormatsTo?.includes("*") ||
           selectedFormatsTo?.includes("hwb")
@@ -142,6 +145,21 @@ class Picker implements vscode.Disposable {
           );
         }
 
+        // Provide translation to named color
+        if (
+          selectedFormatsTo?.includes("*") ||
+          selectedFormatsTo?.includes("named")
+        ) {
+          representations.push(
+            closestNamedColor({
+              r: r * 255,
+              g: g * 255,
+              b: b * 255,
+            })
+          );
+        }
+
+        // Occupy the same lines as before the translation
         const heightInLines = range.end.line - range.start.line + 1;
         if (heightInLines > 1) {
           representations = representations.map(

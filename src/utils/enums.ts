@@ -12,6 +12,7 @@ export enum ColorFormatTo {
 export enum CustomColorFormatTo {
   HWB = "HWB",
   HWBA = "HWBA",
+  NAMED = "NAMED",
 }
 
 export enum ColorFormatFrom {
