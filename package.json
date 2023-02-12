@@ -33,7 +33,8 @@
     "pre-push": "bash scripts/no-push-main.sh && npm run checks",
     "package": "vsce package",
     "publish-vsc": "vsce publish",
-    "publish-open": "env-cmd -f ./.env -x ovsx publish -p $OPENVSX_TOKEN'"
+    "publish-open": "env-cmd -f ./.env -x ovsx publish -p $OPENVSX_TOKEN'",
+    "publish": "npm run publish-vsc && npm run publish-open && npm run package"
   },
   "pre-push": [
     "pre-push"
