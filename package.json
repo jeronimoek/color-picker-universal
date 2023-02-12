@@ -19,6 +19,7 @@
   ],
   "main": "./dist/extension.js",
   "scripts": {
+    "set-env": "export $(cat .env | xargs)",
     "vscode:prepublish": "npm run compile",
     "compile": "npm run checks && npm run clean && tsc -p tsconfig.global.json",
     "watch": "npm run clean && tsc -watch -p tsconfig.global.json",
@@ -29,7 +30,10 @@
     "test-compile": "npm run clean-test && tsc -p tsconfig.json",
     "clean-test": "rimraf out",
     "checks": "npm run lint && npm run test",
-    "pre-push": "bash scripts/no-push-main.sh && npm run checks"
+    "pre-push": "bash scripts/no-push-main.sh && npm run checks",
+    "package": "vsce package",
+    "publish-vsc": "vsce publish",
+    "publish-open": "env-cmd -f ./.env -x ovsx publish -p $OPENVSX_TOKEN'"
   },
   "pre-push": [
     "pre-push"
@@ -46,6 +50,7 @@
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
     "@vscode/test-electron": "2.2.0",
+    "env-cmd": "10.1.0",
     "eslint": "8.28.0",
     "fs-extra": "11.1.0",
     "glob": "8.0.3",
