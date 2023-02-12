@@ -1,5 +1,8 @@
 import * as vscode from "vscode";
-import { colorFormatsFromPrefixes } from "./../shared/constants";
+import {
+  colorFormatsFromPrefixes,
+  namedColorsLAB,
+} from "./../shared/constants";
 import { ColorTranslator } from "colortranslator";
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo, CustomColorFormatTo } from "./enums";
@@ -270,30 +273,93 @@ export function replaceAllColors(
       b: matchedColor.blue * 255,
       a: matchedColor.alpha,
     };
-    if (
-      [CustomColorFormatTo.HWB, CustomColorFormatTo.HWBA].some(
-        (v) => v === formatTo
-      )
-    ) {
-      text = text.replace(
-        colorRaw,
-        formatTo === CustomColorFormatTo.HWBA
-          ? rgbToHwbString({
-              ...rgbaColor,
-              a: parseFloat(rgbaColor.a.toFixed(2)),
-            })
-          : rgbToHwbString({
-              ...rgbaColor,
-              a: undefined,
-            })
-      );
-    } else {
-      text = text.replace(
-        colorRaw,
-        new ColorTranslator(rgbaColor)[formatTo as ColorFormatTo]
-      );
+    switch (formatTo) {
+      case CustomColorFormatTo.HWB:
+      case CustomColorFormatTo.HWBA:
+        text = text.replace(
+          colorRaw,
+          formatTo === CustomColorFormatTo.HWBA
+            ? rgbToHwbString({
+                ...rgbaColor,
+                a: parseFloat(rgbaColor.a.toFixed(2)),
+              })
+            : rgbToHwbString({
+                ...rgbaColor,
+                a: undefined,
+              })
+        );
+        break;
+
+      case CustomColorFormatTo.NAMED:
+        text = text.replace(colorRaw, closestNamedColor(rgbaColor));
+        break;
+
+      default:
+        text = text.replace(
+          colorRaw,
+          new ColorTranslator(rgbaColor)[formatTo as ColorFormatTo]
+        );
+        break;
     }
   });
   return text;
-  // TODO: REPLACE COLORS
+}
+
+export function rgbToLab(rgb: readonly [number, number, number]) {
+  let r = rgb[0] / 255,
+    g = rgb[1] / 255,
+    b = rgb[2] / 255,
+    x,
+    y,
+    z;
+  r = r > 0.04045 ? ((r + 0.055) / 1.055) ** 2.4 : r / 12.92;
+  g = g > 0.04045 ? ((g + 0.055) / 1.055) ** 2.4 : g / 12.92;
+  b = b > 0.04045 ? ((b + 0.055) / 1.055) ** 2.4 : b / 12.92;
+  x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+  y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.0;
+  z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+  x = x > 0.008856 ? x ** 1 / 3 : 7.787 * x + 16 / 116;
+  y = y > 0.008856 ? y ** 1 / 3 : 7.787 * y + 16 / 116;
+  z = z > 0.008856 ? z ** 1 / 3 : 7.787 * z + 16 / 116;
+  return [116 * y - 16, 500 * (x - y), 200 * (y - z)] as const;
+}
+
+export function deltaE(
+  labA: ReturnType<typeof rgbToLab>,
+  labB: ReturnType<typeof rgbToLab>
+) {
+  let deltaL = labA[0] - labB[0];
+  let deltaA = labA[1] - labB[1];
+  let deltaB = labA[2] - labB[2];
+  let c1 = Math.sqrt(labA[1] ** 2 + labA[2] ** 2);
+  let c2 = Math.sqrt(labB[1] ** 2 + labB[2] ** 2);
+  let deltaC = c1 - c2;
+  let deltaH = deltaA ** 2 + deltaB ** 2 - deltaC ** 2;
+  deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
+  let sc = 1.0 + 0.045 * c1;
+  let sh = 1.0 + 0.015 * c1;
+  let deltaLKlsl = deltaL / 1.0;
+  let deltaCkcsc = deltaC / sc;
+  let deltaHkhsh = deltaH / sh;
+  let i = deltaLKlsl ** 2 + deltaCkcsc ** 2 + deltaHkhsh ** 2;
+  return i < 0 ? 0 : Math.sqrt(i);
+}
+
+export function closestNamedColor(rgb: RGBAInput) {
+  const { r, g, b } = rgb;
+  const rgbValues = [r, g, b] as const;
+
+  let minDelta = Number.POSITIVE_INFINITY;
+  let closestNamedColor = Object.keys(namedColorsLAB)[0];
+
+  Object.entries(namedColorsLAB).forEach(([namedColor, namedColorLAB]) => {
+    const rgbLabValues = rgbToLab(rgbValues);
+    const delta = deltaE(rgbLabValues, namedColorLAB);
+    if (delta < minDelta) {
+      minDelta = delta;
+      closestNamedColor = namedColor;
+    }
+  });
+
+  return closestNamedColor;
 }
