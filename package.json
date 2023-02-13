@@ -83,13 +83,13 @@
     "configuration": {
       "title": "color-picker-universal",
       "properties": {
-        "color-picker-universal.enable": {
-          "default": true,
-          "description": "Controls if plugin is enabled",
+        "color-picker-universal.disable": {
+          "default": false,
+          "description": "Controls if plugin is disabled",
           "type": "boolean"
         },
         "color-picker-universal.formatsFrom": {
-          "description": "Formats to be detected by the extension. \"*\" to translate from any format. Prepend format with \"!\" to exclude the language (e.g. \"!named\")",
+          "description": "Formats to be detected by the extension. \"*\" to translate from any format. Prepend format with \"!\" to exclude formats (e.g. \"!named\")",
           "type": "array",
           "default": [
             "*"
@@ -123,7 +123,7 @@
           }
         },
         "color-picker-universal.formatsTo": {
-          "description": "Formats to translate into. \"*\" to translate into any format. Prepend format with \"!\" to exclude the language (e.g. \"!cmyk\")",
+          "description": "Formats to translate into. \"*\" to translate into any format. Prepend format with \"!\" to exclude formats (e.g. \"!cmyk\")",
           "type": "array",
           "default": [
             "*",
@@ -159,7 +159,7 @@
           }
         },
         "color-picker-universal.languages": {
-          "description": "Languages to be detected by the extension. \"*\" to detect any language. Prepend language id with \"!\" to exclude the language (e.g. \"!markdown\")",
+          "description": "Languages to be detected by the extension. \"*\" to detect any language. Prepend language id with \"!\" to exclude languages (e.g. \"!markdown\")",
           "type": "array",
           "default": [
             "*"

@@ -116,7 +116,7 @@ export function isValidDocument(
 ) {
   let isValid = false;
 
-  if (!config.enable) {
+  if (config.disable) {
     return isValid;
   }
 
