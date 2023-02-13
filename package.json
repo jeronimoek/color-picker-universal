@@ -89,19 +89,23 @@
           "type": "boolean"
         },
         "color-picker-universal.formatsFrom": {
-          "description": "Formats to be detected by the extension. \"*\" to translate from any format.",
+          "description": "Formats to be detected by the extension. \"*\" to translate from any format. Prepend format with \"!\" to exclude the language (e.g. \"!named\")",
           "type": "array",
           "default": [
             "*"
           ],
           "examples": [
             [
+              "*",
+              "!named"
+            ],
+            [
               "cmyk",
               "hex",
               "hsl",
+              "hwb",
               "named",
-              "rgb",
-              "hwb"
+              "rgb"
             ]
           ],
           "items": {
@@ -112,26 +116,32 @@
               "cmyk",
               "hex",
               "hsl",
+              "hwb",
               "named",
-              "rgb",
-              "hwb"
+              "rgb"
             ]
           }
         },
         "color-picker-universal.formatsTo": {
-          "description": "Formats to translate into. \"*\" to translate into any format.",
+          "description": "Formats to translate into. \"*\" to translate into any format. Prepend format with \"!\" to exclude the language (e.g. \"!cmyk\")",
           "type": "array",
           "default": [
-            "*"
+            "*",
+            "!cmyk"
           ],
           "examples": [
+            [
+              "*",
+              "!cmyk",
+              "!hwb"
+            ],
             [
               "cmyk",
               "hex",
               "hsl",
+              "hwb",
               "named",
-              "rgb",
-              "hwb"
+              "rgb"
             ]
           ],
           "items": {
@@ -142,9 +152,9 @@
               "cmyk",
               "hex",
               "hsl",
+              "hwb",
               "named",
-              "rgb",
-              "hwb"
+              "rgb"
             ]
           }
         },

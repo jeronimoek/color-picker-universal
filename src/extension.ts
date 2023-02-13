@@ -4,7 +4,7 @@ import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
 import {
   closestNamedColor,
-  filterFormats,
+  isSettingEnabled,
   isValidDocument,
   replaceAllColors,
   rgbToHwbString,
@@ -15,12 +15,6 @@ import { translateColors } from "./commands/translateColors";
 class Picker implements vscode.Disposable {
   constructor() {
     this.register();
-  }
-
-  private get languages() {
-    return vscode.workspace
-      .getConfiguration("color-picker-universal")
-      .get<string[]>("languages");
   }
 
   private register() {
@@ -92,13 +86,8 @@ class Picker implements vscode.Disposable {
         );
         if (!isValidDocument(config, document)) return;
 
-        let selectedFormatsTo = vscode.workspace
-          .getConfiguration("color-picker-universal")
-          .get<string[]>("formatsTo");
-
-        if (!selectedFormatsTo?.length) {
-          selectedFormatsTo = ["*"];
-        }
+        const formatsToSetting = config.get<string[]>("formatsTo");
+        const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
         const { red: r, green: g, blue: b, alpha: a } = colorRaw;
         const color = new ColorTranslator({
@@ -110,23 +99,21 @@ class Picker implements vscode.Disposable {
         const { A } = color;
 
         // Filter formats if alpha !== 1
-        const representationFormats =
-          A !== 1 ? colorFormatsWithAlpha : colorFormats;
+        const formats = A !== 1 ? colorFormatsWithAlpha : colorFormats;
 
-        const representationsFormatsFiltered = filterFormats(
-          representationFormats,
-          selectedFormatsTo.map((f) => f.toLocaleUpperCase())
+        const formatsFiltered = formats.filter((format) =>
+          isSettingEnabled(
+            formatsTo.map((f) => f.toLocaleUpperCase()),
+            format
+          )
         );
 
-        let representations = representationsFormatsFiltered.map(
+        let representations = formatsFiltered.map(
           (reprType) => color[reprType]
         );
 
         // Provide translation to hwb
-        if (
-          selectedFormatsTo?.includes("*") ||
-          selectedFormatsTo?.includes("hwb")
-        ) {
+        if (isSettingEnabled(formatsTo, "hwb")) {
           A === 1 &&
             representations.push(
               rgbToHwbString({
@@ -146,10 +133,7 @@ class Picker implements vscode.Disposable {
         }
 
         // Provide translation to named color
-        if (
-          selectedFormatsTo?.includes("*") ||
-          selectedFormatsTo?.includes("named")
-        ) {
+        if (isSettingEnabled(formatsTo, "named")) {
           representations.push(
             closestNamedColor({
               r: r * 255,

@@ -27,37 +27,38 @@ interface RGBA {
 interface RGBAInput extends PartialBy<RGBA, "a"> {}
 
 export function matchColors(text: string) {
-  const formatsFrom = vscode.workspace
+  const formatsFromSetting = vscode.workspace
     .getConfiguration("color-picker-universal")
     .get<string[]>("formatsFrom");
 
-  const formatsToJoin: string[] = [];
+  const formatsFrom = formatsFromSetting?.length ? formatsFromSetting : ["*"];
 
-  const includeAll = !formatsFrom?.length || formatsFrom?.includes("*");
+  const formatsRegexes: string[] = [];
 
-  if (includeAll || formatsFrom?.includes(ColorFormatFrom.NAMED)) {
+  if (isSettingEnabled(formatsFrom, ColorFormatFrom.NAMED)) {
     const namedColors = Object.keys(NamedColors).join("|");
-    formatsToJoin.push(`(?:${namedColors})`);
+    formatsRegexes.push(`(?:${namedColors})`);
   }
 
-  if (includeAll || formatsFrom?.includes(ColorFormatFrom.HEX)) {
-    formatsToJoin.push("#(?:[\\da-f]{3,4}){2}|#(?:[\\da-f]{3,4})");
+  if (isSettingEnabled(formatsFrom, ColorFormatFrom.HEX)) {
+    formatsRegexes.push("#(?:[\\da-f]{3,4}){2}|#(?:[\\da-f]{3,4})");
   }
 
-  const filteredFormatPrefixes = filterFormats<ColorFormatFrom>(
-    colorFormatsFromPrefixes,
-    formatsFrom?.length ? formatsFrom : ["*"]
+  // Create regex of enabled formats with prefixes. e.g. "rgb(...)"
+  const filteredFormatPrefixes = colorFormatsFromPrefixes.filter((format) =>
+    isSettingEnabled(formatsFrom, format)
   );
 
   if (filteredFormatPrefixes.length) {
-    formatsToJoin.push(
+    formatsRegexes.push(
       `(?:${filteredFormatPrefixes.join("|")})\\([\\s\\d%,.\\/]+\\)`
     );
   }
 
-  const formatsJoined = formatsToJoin.join("|");
+  const formatsRegex = formatsRegexes.join("|");
 
-  const regex = new RegExp(`(?<![\\w-])(${formatsJoined})(?![\\w-])`, "gi");
+  // Match colors without a letter or a dash before or after it
+  const regex = new RegExp(`(?<![\\w-])(${formatsRegex})(?![\\w-])`, "gi");
   const matches = [...text.matchAll(regex)];
 
   return matches;
@@ -119,13 +120,19 @@ export function isValidDocument(
     return isValid;
   }
 
-  if (config.languages.indexOf("*") > -1) {
+  return isSettingEnabled(config.languages, languageId);
+}
+
+export function isSettingEnabled(settings: string[], target: string) {
+  let isValid = false;
+
+  if (settings.indexOf("*") > -1) {
     isValid = true;
   }
-  if (config.languages.indexOf(languageId) > -1) {
+  if (settings.indexOf(target) > -1) {
     isValid = true;
   }
-  if (config.languages.indexOf(`!${languageId}`) > -1) {
+  if (settings.indexOf(`!${target}`) > -1) {
     isValid = false;
   }
 
