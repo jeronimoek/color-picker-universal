@@ -8,18 +8,28 @@ on:
       - "package.json"
       - "CHANGELOG.md"
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - run: npm ci --prod
+      - run: git add node_modules -f
+
+      - name: Generate changelog
+        id: changelog
+        uses: ./
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Bump version and push tag
-        uses: TriPSs/conventional-changelog-action@v3.18.0
+          github-token: ${{ secrets.github_token }}
+          create-summary: true
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        if: steps.changelog.outputs.skipped != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          git-message: "chore(release): {version}"
-          preset: "angular"
-          tag-prefix: ""
-          output-file: "CHANGELOG.md"
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
