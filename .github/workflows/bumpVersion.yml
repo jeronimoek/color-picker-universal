@@ -1,0 +1,27 @@
+name: Bump version
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: "0"
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.61.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          MAJOR_STRING_TOKEN: BREAKING_CHANGE
+          MINOR_STRING_TOKEN: feat
+          PATCH_STRING_TOKEN: fix
+          NONE_STRING_TOKEN: draft
