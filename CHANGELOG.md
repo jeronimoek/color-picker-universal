@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/jeronimoek/color-picker-universal/compare/v1.5.0...v1.5.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* remove paths ignore ([2b4a281](https://github.com/jeronimoek/color-picker-universal/commit/2b4a2811cc279fcdc87ee90016e981a4382ee1b9))
+
+
+
 # [1.5.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.4.0...v1.5.0) (2023-02-14)
 
 
