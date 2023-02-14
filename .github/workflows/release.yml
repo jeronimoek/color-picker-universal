@@ -4,9 +4,6 @@ on:
     branches:
       - master
       - release-automation
-    paths-ignore:
-      - "package.json"
-      - "CHANGELOG.md"
 permissions:
   contents: write
 jobs:
