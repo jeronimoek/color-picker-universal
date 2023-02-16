@@ -1,7 +1,7 @@
 name: Bump version
 on:
   pull_request:
-    branches: ["main", "release-publish-automation"]
+    branches: ["main"]
     types: [closed]
 
 permissions:
