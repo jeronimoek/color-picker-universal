@@ -1,4 +1,4 @@
-# [1.7.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.4.0...v1.7.0) (2023-02-16)
+# [1.5.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.4.0...v1.5.0) (2023-02-16)
 
 
 ### Bug Fixes
@@ -9,6 +9,7 @@
 * bump version action permissions ([e87fa3b](https://github.com/jeronimoek/color-picker-universal/commit/e87fa3b494fbe7d16f48cb3708540f2bd91b28f9))
 * change secret ([93b3ff0](https://github.com/jeronimoek/color-picker-universal/commit/93b3ff06ea596aff5874144656485ed8fa0f9880))
 * checkout code on release automation action ([c3a6d72](https://github.com/jeronimoek/color-picker-universal/commit/c3a6d72c28e873d9d5135bd85d6045a01a964f9a))
+* minor ([8405e3c](https://github.com/jeronimoek/color-picker-universal/commit/8405e3ca1eccde677d055c83f5ffdfe897796046))
 * remove paths ignore ([2b4a281](https://github.com/jeronimoek/color-picker-universal/commit/2b4a2811cc279fcdc87ee90016e981a4382ee1b9))
 * rename enable setting and fix readme and package.json ([8262f9e](https://github.com/jeronimoek/color-picker-universal/commit/8262f9ea00240b9624a48197fa0e98a1cad05b1c))
 * restrict action to main branch ([1ee10e5](https://github.com/jeronimoek/color-picker-universal/commit/1ee10e5dbd6efa27c20136b770e2c90980669c3c))
