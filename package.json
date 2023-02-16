@@ -20,7 +20,6 @@
   "main": "./dist/extension.js",
   "scripts": {
     "set-env": "export $(cat .env | xargs)",
-    "vscode:prepublish": "npm run compile",
     "compile": "npm run checks && npm run clean && tsc -p tsconfig.global.json",
     "watch": "npm run clean && tsc -watch -p tsconfig.global.json",
     "lint": "eslint src --ext ts",
@@ -32,6 +31,7 @@
     "checks": "npm run lint && npm run test",
     "pre-push": "bash scripts/no-push-main.sh && npm run checks",
     "package": "vsce package",
+    "vscode:prepublish": "npm run compile",
     "publish-vsc": "vsce publish",
     "publish-open": "env-cmd -x ovsx publish -p $OPENVSX_TOKEN",
     "publish": "npm run publish-vsc && npm run publish-open && npm run package"
