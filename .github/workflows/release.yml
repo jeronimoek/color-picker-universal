@@ -1,8 +1,8 @@
 name: Bump version
 on:
   pull_request:
-    branches: ["main", "release-publish-automation"],
-    types: [ closed ]
+    branches: ["main", "release-publish-automation"]
+    types: [closed]
 
 permissions:
   contents: write
@@ -46,4 +46,19 @@ jobs:
           body: ${{ steps.changelog.outputs.clean_changelog }}
           files: "color-picker-universal-*.vsix"
 
+      - name: npm publish
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+          npm run publish
 
+      # - name: Create Release
+      #   uses: actions/create-release@v1 # https://github.com/marketplace/actions/create-release
+      #   if: steps.changelog.outputs.skipped != 'true'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.github_token }}
+      #   with:
+      #     tag_name: ${{ steps.changelog.outputs.tag }} # tag or tag_name?
+      #     release_name: ${{ steps.changelog.outputs.tag }}
+      #     body: ${{ steps.changelog.outputs.clean_changelog }}
