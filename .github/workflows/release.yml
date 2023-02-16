@@ -1,10 +1,12 @@
 name: Bump version
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: ["main"]
+    types: [closed]
+
 permissions:
   contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -12,7 +14,49 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Conventional Changelog Action
+      - name: Generate changelog
+        id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.github_token }}
+          create-summary: true
+
+      - run: sudo apt-get install xvfb;
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: npm run package
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+          npm i -g vsce
+          npm run package
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.15
+        if: steps.changelog.outputs.skipped != 'true'
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+          files: "color-picker-universal-*.vsix"
+
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v1
+        if: steps.changelog.outputs.skipped != 'true'
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          extensionFile: "color-picker-universal-*.vsix"
+
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v1
+        if: steps.changelog.outputs.skipped != 'true'
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          extensionFile: "color-picker-universal-*.vsix"
