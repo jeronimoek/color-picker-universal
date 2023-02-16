@@ -1,4 +1,4 @@
-# [1.5.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.4.0...v1.5.0) (2023-02-16)
+# [1.6.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.4.0...v1.6.0) (2023-02-16)
 
 
 ### Bug Fixes
@@ -14,6 +14,7 @@
 * rename enable setting and fix readme and package.json ([8262f9e](https://github.com/jeronimoek/color-picker-universal/commit/8262f9ea00240b9624a48197fa0e98a1cad05b1c))
 * restrict action to main branch ([1ee10e5](https://github.com/jeronimoek/color-picker-universal/commit/1ee10e5dbd6efa27c20136b770e2c90980669c3c))
 * return to default token ([c49a58b](https://github.com/jeronimoek/color-picker-universal/commit/c49a58bd2f804416cfda468b80df082925ae4abd))
+* reuse packaged extension file ([1d3370e](https://github.com/jeronimoek/color-picker-universal/commit/1d3370e3c4c9824a5e40c71bd0898c1c370c1c48))
 * run with default values ([a8666ff](https://github.com/jeronimoek/color-picker-universal/commit/a8666ff8e3e7ca27dc4156b184b4e1e36880e5c3))
 * specify version in release automation action ([f59d5d6](https://github.com/jeronimoek/color-picker-universal/commit/f59d5d68a98903e0359a695a2464fe321de000d2))
 * updated following the example ([f9deba9](https://github.com/jeronimoek/color-picker-universal/commit/f9deba9942431341e90311b309d4af496efe9c4e))
