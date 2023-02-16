@@ -44,14 +44,14 @@ jobs:
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
-          files: "color-picker-universal-*.vsix"
+          files: "color-picker-universal.vsix"
 
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v1
         if: steps.changelog.outputs.skipped != 'true'
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          extensionFile: "color-picker-universal-*.vsix"
+          extensionFile: "color-picker-universal.vsix"
 
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
@@ -59,4 +59,4 @@ jobs:
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
-          extensionFile: "color-picker-universal-*.vsix"
+          extensionFile: "color-picker-universal.vsix"

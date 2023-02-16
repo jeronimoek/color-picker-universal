@@ -30,7 +30,7 @@
     "clean-test": "rimraf out",
     "checks": "npm run lint && npm run test",
     "pre-push": "bash scripts/no-push-main.sh && npm run checks",
-    "package": "vsce package",
+    "package": "vsce package --out color-picker-universal.vsix",
     "vscode:prepublish": "npm run compile",
     "publish-vsc": "vsce publish",
     "publish-open": "env-cmd -x ovsx publish -p $OPENVSX_TOKEN",
