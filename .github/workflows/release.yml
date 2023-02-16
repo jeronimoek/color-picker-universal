@@ -1,10 +1,13 @@
 name: Bump version
 on:
   push:
-    branches:
-      - main
+    branches: ["main", "release-automatic"]
+  pull_request:
+    branches: ["main", "release-automatic"]
+
 permissions:
   contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -12,7 +15,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Conventional Changelog Action
+      - name: Generate changelog
+        id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.github_token }}
+          create-summary: true
+
+      - run: sudo apt-get install xvfb;
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: npm test
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+          npm run package
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.15
+        if: steps.changelog.outputs.skipped != 'true'
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+          files: "color-picker-universal-*.vsix"
+
+      - name: npm publish
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+          npm run publish
