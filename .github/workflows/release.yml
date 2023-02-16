@@ -1,9 +1,9 @@
 name: Bump version
 on:
   push:
-    branches: ["main", "release-automatic"]
+    branches: ["main", "release-publish-automation"]
   pull_request:
-    branches: ["main", "release-automatic"]
+    branches: ["main", "release-publish-automation"]
 
 permissions:
   contents: write
