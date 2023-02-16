@@ -23,10 +23,9 @@ jobs:
 
       - run: sudo apt-get install xvfb;
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           cache: "npm"
 
       - run: npm ci
@@ -41,18 +40,23 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v0.1.15
-        if: steps.changelog.outputs.skipped != 'true'
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
           files: "color-picker-universal-*.vsix"
 
-      - name: npm publish
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-          npm run publish
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v1
+        id: publishToOpenVSX
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}
 
       # - name: Create Release
       #   uses: actions/create-release@v1 # https://github.com/marketplace/actions/create-release
