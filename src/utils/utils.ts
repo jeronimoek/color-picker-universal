@@ -35,3 +35,16 @@ export function templateReplace(
     return values[key] || "0";
   });
 }
+
+export function replaceTextInMatch(
+  match: RegExpMatchArray,
+  text: string,
+  newText: string
+) {
+  if (!match.index) return text;
+  return (
+    text.slice(0, match.index) +
+    newText +
+    text.slice(match.index + match[0].length)
+  );
+}

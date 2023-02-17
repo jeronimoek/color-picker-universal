@@ -37,36 +37,40 @@ class Picker implements vscode.Disposable {
         | CustomColorFormatTo;
       const commandType = selected.area.label as CommandType;
 
-      let start: vscode.Position, end: vscode.Position;
+      let ranges: vscode.Range[];
       switch (commandType) {
         case CommandType.LINE:
-          start = activeEditor.document.lineAt(activeEditor.selection.active)
-            .range.start;
-          end = activeEditor.document.lineAt(activeEditor.selection.active)
-            .range.end;
+          ranges = activeEditor.selections.map(
+            (selection) =>
+              new vscode.Range(
+                activeEditor.document.lineAt(selection.active).range.start,
+                activeEditor.document.lineAt(selection.active).range.end
+              )
+          );
           break;
         case CommandType.SELECTION:
-          start = activeEditor.selection.start;
-          end = activeEditor.selection.end;
+          ranges = activeEditor.selections.map(
+            (selection) => new vscode.Range(selection.start, selection.end)
+          );
           break;
         case CommandType.FILE:
-          start = activeEditor.document.lineAt(0).range.start;
-          end = activeEditor.document.lineAt(
-            activeEditor.document.lineCount - 1
-          ).range.end;
+          ranges = [
+            new vscode.Range(
+              activeEditor.document.lineAt(0).range.start,
+              activeEditor.document.lineAt(
+                activeEditor.document.lineCount - 1
+              ).range.end
+            ),
+          ];
           break;
       }
 
-      const selectedText = activeEditor.document.getText(
-        new vscode.Range(start, end)
-      );
-
-      activeEditor.edit((editBuilder) =>
-        editBuilder.replace(
-          new vscode.Range(start, end),
-          replaceAllColors(selectedText, formatTo)
-        )
-      );
+      activeEditor.edit((editBuilder) => {
+        for (const range of ranges) {
+          const selectedText = activeEditor.document.getText(range);
+          editBuilder.replace(range, replaceAllColors(selectedText, formatTo));
+        }
+      });
     };
 
     vscode.commands.registerCommand(command, commandHandler);
