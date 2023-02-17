@@ -6,7 +6,7 @@ Pick and translate between multiple color formats, in any file.
 
 Formats supported: rgb/a, hex/a, hsl/a, hwb/a, cmyk/a, and named colors.
 
-This extension can be used through it's color pickers, commands, or context menu options.
+This extension can be used through its color pickers, commands, or context menu options.
 
 ![Color pickers](images/demo.png)
 
