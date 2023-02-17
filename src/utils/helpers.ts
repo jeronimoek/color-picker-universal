@@ -6,7 +6,7 @@ import {
 import { ColorTranslator } from "colortranslator";
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo, CustomColorFormatTo } from "./enums";
-import { PartialBy } from "./utils";
+import { PartialBy, replaceTextInMatch } from "./utils";
 
 interface HWBA {
   h: number;
@@ -58,14 +58,18 @@ export function matchColors(text: string) {
   const formatsRegex = formatsRegexes.join("|");
 
   // Match colors without a letter or a dash before or after it
-  const regex = new RegExp(`(?<![\\w-])(${formatsRegex})(?![\\w-])`, "gi");
+  const regex = new RegExp(
+    `(?<![\\w-@\\.])(${formatsRegex})(?![\\w-@:])`,
+    "gi"
+  );
   const matches = [...text.matchAll(regex)];
 
   return matches;
 }
 
-export function parseColorString(colorRaw: string) {
+export function parseColorString(initialColor: string) {
   try {
+    const colorRaw = initialColor.toLocaleLowerCase();
     let r, g, b, a;
     if (colorRaw.startsWith(ColorFormatFrom.HWB)) {
       const values = colorRaw
@@ -270,6 +274,7 @@ export function replaceAllColors(
   formatTo: ColorFormatTo | CustomColorFormatTo
 ) {
   const matches = matchColors(text);
+  matches.reverse();
   matches.forEach((match) => {
     const colorRaw = match[0];
     const matchedColor = parseColorString(colorRaw);
@@ -283,8 +288,9 @@ export function replaceAllColors(
     switch (formatTo) {
       case CustomColorFormatTo.HWB:
       case CustomColorFormatTo.HWBA:
-        text = text.replace(
-          colorRaw,
+        text = replaceTextInMatch(
+          match,
+          text,
           formatTo === CustomColorFormatTo.HWBA
             ? rgbToHwbString({
                 ...rgbaColor,
@@ -298,12 +304,13 @@ export function replaceAllColors(
         break;
 
       case CustomColorFormatTo.NAMED:
-        text = text.replace(colorRaw, closestNamedColor(rgbaColor));
+        text = replaceTextInMatch(match, text, closestNamedColor(rgbaColor));
         break;
 
       default:
-        text = text.replace(
-          colorRaw,
+        text = replaceTextInMatch(
+          match,
+          text,
           new ColorTranslator(rgbaColor)[formatTo as ColorFormatTo]
         );
         break;
