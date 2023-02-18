@@ -39,11 +39,9 @@ To see the editor's context menu options press `right click` inside a file conte
 
 ## 🐞 Known Issues
 
-When working with **css**, **less**, **sass** and **scss** files, the color pickers get duplicated due to the default vscode color picker. Currently the only workaround is excluding these file extensions in the `color-picker-universal.languages` setting (see example value above)
+[#68](https://github.com/jeronimoek/color-picker-universal/issues/68) When working with **css**, **less**, **sass** and **scss** files, the color picker is duplicated due to the default Vscode color picker. Currently the only workaround is excluding these file extensions in the `color-picker-universal.languages` setting (see example value above)
 
 ![Duplicated picker in css file](images/css-duplication.png)
-
-See https://github.com/microsoft/vscode/issues/144036
 
 ## 🌐 Links
 
