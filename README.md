@@ -8,7 +8,7 @@ Formats supported: rgb/a, hex/a, hsl/a, hwb/a, cmyk/a, and named colors.
 
 This extension can be used through its color pickers, commands, or context menu options.
 
-![Color pickers](images/demo.png)
+![Demo](images/demo.gif)
 
 ## ⚙ Settings
 
