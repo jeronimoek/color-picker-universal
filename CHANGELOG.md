@@ -1,3 +1,12 @@
+## [1.7.2](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.1...v1.7.2) (2023-02-18)
+
+
+### Bug Fixes
+
+* remake the readme demo in gif format ([#67](https://github.com/jeronimoek/color-picker-universal/issues/67)) ([ba0be69](https://github.com/jeronimoek/color-picker-universal/commit/ba0be6979252df12e1709f12bc01324698a58196))
+
+
+
 ## [1.7.1](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.0...v1.7.1) (2023-02-17)
 
 
