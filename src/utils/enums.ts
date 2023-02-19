@@ -7,9 +7,6 @@ export enum ColorFormatTo {
   HSLA = "HSLA",
   CMYK = "CMYK",
   CMYKA = "CMYKA",
-}
-
-export enum CustomColorFormatTo {
   HWB = "HWB",
   HWBA = "HWBA",
   NAMED = "NAMED",
