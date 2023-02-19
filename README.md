@@ -14,28 +14,29 @@ This extension can be used through its color pickers, commands, or context menu 
 
 To see settings press `CTRL + ,` OR `⌘ + ,`
 
-| Id                                 | Description                                                   | Default         | Available values                                                                                            | Example                                   |
-| ---------------------------------- | ------------------------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| color-picker-universal.disable     | Controls if plugin is disabled                                | false           | true false                                                                                                  | true                                      |
-| color-picker-universal.languages   | Enabled language identifiers. Use "!" to exclude languages    | ["\*"]          | [Default identifiers](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers) | ["\*", "!css", "!less", "!sass", "!scss"] |
-| color-picker-universal.formatsFrom | Enabled formats to translate from. Use "!" to exclude formats | ["\*"]          | "\*" "cmyk" "hex" "hsl" "hwb" "named" "rgb"                                                                 | ["*", "!named"]                           |
-| color-picker-universal.formatsTo   | Enabled formats to translate into. Use "!" to exclude formats | ["\*", "!cmyk"] | "\*" "cmyk" "hex" "hsl" "hwb" "named" "rgb"                                                                 | ["*", "!cmyk", "!hwb"]                    |
+| Id                                 | Description                                                                                                                                              | Default         | Available values                                                                                            | Example                                   |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| color-picker-universal.disable     | Controls if plugin is disabled                                                                                                                           | false           | true false                                                                                                  | true                                      |
+| color-picker-universal.strictAlpha | If enabled, when bulk translating color formats, if the target format includes Alpha (e.g. RGBA), alpha will be by default 1, otherwise it'll be trimmed | true            | true false                                                                                                  | false                                     |
+| color-picker-universal.languages   | Enabled language identifiers. Use "!" to exclude languages                                                                                               | ["\*"]          | [Default identifiers](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers) | ["\*", "!css", "!less", "!sass", "!scss"] |
+| color-picker-universal.formatsFrom | Enabled formats to translate from. Use "!" to exclude formats                                                                                            | ["\*"]          | "\*" "cmyk" "hex" "hsl" "hwb" "named" "rgb"                                                                 | ["*", "!named"]                           |
+| color-picker-universal.formatsTo   | Enabled formats to translate into. Use "!" to exclude formats                                                                                            | ["\*", "!cmyk"] | "\*" "cmyk" "hex" "hsl" "hwb" "named" "rgb"                                                                 | ["*", "!cmyk", "!hwb"]                    |
 
 ## ✍ Commands
 
 To see commands press `F1` and type `Color Picker Universal`
 
-| Name                               | Description                |
-| ---------------------------------- | -------------------------- |
-| Translate colors to another format | Multiple color translation |
+| Name                               | Description                   |
+| ---------------------------------- | ----------------------------- |
+| Translate colors to another format | Bulk color format translation |
 
 ## 🗨 Editor's context menu options
 
 To see the editor's context menu options press `right click` inside a file content's editor
 
-| Name                               | Description                |
-| ---------------------------------- | -------------------------- |
-| Translate colors to another format | Multiple color translation |
+| Name                               | Description                   |
+| ---------------------------------- | ----------------------------- |
+| Translate colors to another format | Bulk color format translation |
 
 ## 🐞 Known Issues
 

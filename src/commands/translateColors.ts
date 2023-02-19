@@ -1,11 +1,21 @@
+import * as vscode from "vscode";
 import { QuickPickItem } from "vscode";
 import { MultiStepInput } from "../multiStepInput";
+import { colorFormatsWithAlpha } from "../shared/constants";
 import { ColorFormatTo, CommandType } from "../utils/enums";
 
 export async function translateColors() {
+  const config = vscode.workspace.getConfiguration("color-picker-universal");
+  const strictAlpha = config.get<boolean>("strictAlpha");
+
   const title = "Translate colors";
 
-  const formats = [...Object.values(ColorFormatTo)] as const;
+  let formats = [...Object.values(ColorFormatTo)] as const;
+  if (strictAlpha === false) {
+    formats = formats.filter(
+      (format) => !colorFormatsWithAlpha.includes(format)
+    );
+  }
   const formatItems: QuickPickItem[] = formats.map((label) => ({ label }));
 
   const areas = Object.values(CommandType);

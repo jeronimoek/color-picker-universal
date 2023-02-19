@@ -1,6 +1,9 @@
 import { ColorTranslatorExtended } from "./../colorTranslatorExtended";
 import * as vscode from "vscode";
-import { colorFormatsFromPrefixes } from "./../shared/constants";
+import {
+  colorFormatsFromPrefixes,
+  colorFormatsWithAlpha,
+} from "./../shared/constants";
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
 import { replaceTextInMatch } from "./utils";
@@ -110,6 +113,9 @@ export function isSettingEnabled(settings: string[], target: string) {
 }
 
 export function replaceAllColors(text: string, formatTo: ColorFormatTo) {
+  const config = vscode.workspace.getConfiguration("color-picker-universal");
+  const strictAlpha = config.get<boolean>("strictAlpha");
+
   const matches = matchColors(text);
   matches.reverse();
   matches.forEach((match) => {
@@ -123,10 +129,20 @@ export function replaceAllColors(text: string, formatTo: ColorFormatTo) {
       a: matchedColor.alpha,
     };
 
+    let currentFormatTo = formatTo;
+    if (
+      strictAlpha === false &&
+      rgbaColor.a !== 1 &&
+      !colorFormatsWithAlpha.includes(currentFormatTo) &&
+      formatTo !== ColorFormatTo.NAMED
+    ) {
+      currentFormatTo = (currentFormatTo + "A") as ColorFormatTo;
+    }
+
     text = replaceTextInMatch(
       match,
       text,
-      new ColorTranslatorExtended(rgbaColor)[formatTo]
+      new ColorTranslatorExtended(rgbaColor)[currentFormatTo]
     );
   });
   return text;
