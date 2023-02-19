@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.2...v1.8.0) (2023-02-19)
+
+
+### Bug Fixes
+
+* code refactoring ([557cc1e](https://github.com/jeronimoek/color-picker-universal/commit/557cc1e7e3b850d530c450551694eeac1f4bfd12))
+
+
+### Features
+
+* add strict alpha setting ([fb37b1a](https://github.com/jeronimoek/color-picker-universal/commit/fb37b1ab79c47947118b20696b07af5acc898b5d))
+
+
+
 ## [1.7.2](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.1...v1.7.2) (2023-02-18)
 
 
