@@ -1,3 +1,12 @@
+## [1.8.1](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.0...v1.8.1) (2023-02-19)
+
+
+### Bug Fixes
+
+* add package lock to release action ([3049671](https://github.com/jeronimoek/color-picker-universal/commit/304967107d6733e6ccf380905a274cadf70bb526))
+
+
+
 # [1.8.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.2...v1.8.0) (2023-02-19)
 
 
