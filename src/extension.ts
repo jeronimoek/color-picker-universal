@@ -1,16 +1,14 @@
 import * as vscode from "vscode";
-import { ColorTranslator } from "colortranslator";
 import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
 import {
-  closestNamedColor,
   isSettingEnabled,
   isValidDocument,
   replaceAllColors,
-  rgbToHwbString,
 } from "./utils/helpers";
-import { ColorFormatTo, CommandType, CustomColorFormatTo } from "./utils/enums";
+import { ColorFormatTo, CommandType } from "./utils/enums";
 import { translateColors } from "./commands/translateColors";
+import { ColorTranslatorExtended } from "./colorTranslatorExtended";
 
 class Picker implements vscode.Disposable {
   constructor() {
@@ -32,9 +30,7 @@ class Picker implements vscode.Disposable {
       }
 
       const selected = await translateColors();
-      const formatTo = selected.format.label as
-        | ColorFormatTo
-        | CustomColorFormatTo;
+      const formatTo = selected.format.label as ColorFormatTo;
       const commandType = selected.area.label as CommandType;
 
       let ranges: vscode.Range[];
@@ -94,7 +90,7 @@ class Picker implements vscode.Disposable {
         const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
         const { red: r, green: g, blue: b, alpha: a } = colorRaw;
-        const color = new ColorTranslator({
+        const color = new ColorTranslatorExtended({
           r: r * 255,
           g: g * 255,
           b: b * 255,
@@ -115,37 +111,6 @@ class Picker implements vscode.Disposable {
         let representations = formatsFiltered.map(
           (reprType) => color[reprType]
         );
-
-        // Provide translation to hwb
-        if (isSettingEnabled(formatsTo, "hwb")) {
-          A === 1 &&
-            representations.push(
-              rgbToHwbString({
-                r: r * 255,
-                g: g * 255,
-                b: b * 255,
-              })
-            );
-          representations.push(
-            rgbToHwbString({
-              r: r * 255,
-              g: g * 255,
-              b: b * 255,
-              a: A,
-            })
-          );
-        }
-
-        // Provide translation to named color
-        if (isSettingEnabled(formatsTo, "named")) {
-          representations.push(
-            closestNamedColor({
-              r: r * 255,
-              g: g * 255,
-              b: b * 255,
-            })
-          );
-        }
 
         // Occupy the same lines as before the translation
         const heightInLines = range.end.line - range.start.line + 1;

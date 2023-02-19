@@ -1,4 +1,3 @@
-import { CustomColorFormatTo } from "./../utils/enums";
 import { QuickPickItem } from "vscode";
 import { MultiStepInput } from "../multiStepInput";
 import { ColorFormatTo, CommandType } from "../utils/enums";
@@ -6,10 +5,7 @@ import { ColorFormatTo, CommandType } from "../utils/enums";
 export async function translateColors() {
   const title = "Translate colors";
 
-  const formats = [
-    ...Object.values(ColorFormatTo),
-    ...Object.values(CustomColorFormatTo),
-  ] as const;
+  const formats = [...Object.values(ColorFormatTo)] as const;
   const formatItems: QuickPickItem[] = formats.map((label) => ({ label }));
 
   const areas = Object.values(CommandType);
