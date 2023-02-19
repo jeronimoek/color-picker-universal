@@ -1,5 +1,5 @@
 import chai from "chai";
-import { hwbToRgb, rgbToHwb } from "../../src/utils/helpers";
+import { hwbToRgb, rgbToHwb } from "../../src/colorTranslatorExtended";
 
 suite("Translate HWB to RGB", () => {
   test("HWB to RGB", () => {

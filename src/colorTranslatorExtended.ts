@@ -15,7 +15,7 @@ interface HWBA {
 
 interface HWBAInput extends PartialBy<HWBA, "a"> {}
 
-function rgbToHwb({ r, g, b, a = 1 }: RGBAInput): HWBA {
+export function rgbToHwb({ r, g, b, a = 1 }: RGBAInput): HWBA {
   const result = rgbToHwbFloat({ r, g, b, a });
 
   let property: keyof typeof result;
@@ -93,7 +93,7 @@ function deltaE(
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function hwbToRgb({ h, w, b, a = 1 }: HWBAInput): RGBA {
+export function hwbToRgb({ h, w, b, a = 1 }: HWBAInput): RGBA {
   const result = hwbToRgbFloat({ h, w, b, a });
 
   let property: keyof typeof result;
