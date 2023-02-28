@@ -5,6 +5,18 @@
   "icon": "images/cpu-logo-128.png",
   "version": "1.8.3",
   "publisher": "JeronimoEkerdt",
+  "keywords": [
+    "color",
+    "picker",
+    "translator",
+    "vscode",
+    "extension"
+  ],
+  "author": {
+    "email": "jeronimoek@gmail.com",
+    "name": "Jerónimo Ekerdt"
+  },
+  "license": "MIT",
   "repository": {
     "url": "https://github.com/jeronimoek/color-picker-universal"
   },
