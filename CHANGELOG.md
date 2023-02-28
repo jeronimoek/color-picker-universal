@@ -1,3 +1,12 @@
+## [1.8.4](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.3...v1.8.4) (2023-02-28)
+
+
+### Bug Fixes
+
+* improve package.json ([#73](https://github.com/jeronimoek/color-picker-universal/issues/73)) ([3f3ac74](https://github.com/jeronimoek/color-picker-universal/commit/3f3ac74e9ae1ce5a47ce637bc566a8a4c520ed3f))
+
+
+
 ## [1.8.3](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.2...v1.8.3) (2023-02-26)
 
 
@@ -36,15 +45,6 @@
 ### Features
 
 * add strict alpha setting ([fb37b1a](https://github.com/jeronimoek/color-picker-universal/commit/fb37b1ab79c47947118b20696b07af5acc898b5d))
-
-
-
-## [1.7.2](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.1...v1.7.2) (2023-02-18)
-
-
-### Bug Fixes
-
-* remake the readme demo in gif format ([#67](https://github.com/jeronimoek/color-picker-universal/issues/67)) ([ba0be69](https://github.com/jeronimoek/color-picker-universal/commit/ba0be6979252df12e1709f12bc01324698a58196))
 
 
 
