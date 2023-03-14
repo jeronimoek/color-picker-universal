@@ -10,7 +10,7 @@ jobs:
 
       - name: Update README
         id: readme
-        uses: jeronimoek/markdown-vscode-contributions-action@v1.0.2
+        uses: jeronimoek/markdown-vscode-contributions-action@v1.0.3
         with:
           github-token: ${{ secrets.github_token }}
 
