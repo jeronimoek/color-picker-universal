@@ -15,4 +15,4 @@ jobs:
           github-token: ${{ secrets.github_token }}
 
       - name: Get the output README
-        run: echo "The new readme is '${{ steps.readme.outputs.markdown_output }}'"
+        run: echo "The new readme is '${{ toJSON(steps.readme.outputs.markdown_output) }}'"
