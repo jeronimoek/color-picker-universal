@@ -28,9 +28,9 @@ To see commands press `F1` and type `Color Picker Universal`
 
 [//]: # "vscode-table-commands(title:Name|command:Command)"
 
-| Name                               | Description                   |
-| ---------------------------------- | ----------------------------- |
-| Translate colors to another format | Bulk color format translation |
+| Name                               | Command                                |
+| ---------------------------------- | -------------------------------------- |
+| Translate colors to another format | color-picker-universal.translateColors |
 
 ## 🗨 Editor's context menu options
 
@@ -38,9 +38,9 @@ To see the editor's context menu options press `right click` inside a file conte
 
 [//]: # "vscode-table-menus(title:Name|command:Command)"
 
-| Name                               | Description                   |
-| ---------------------------------- | ----------------------------- |
-| Translate colors to another format | Bulk color format translation |
+| Name                               | Command                                |
+| ---------------------------------- | -------------------------------------- |
+| Translate colors to another format | color-picker-universal.translateColors |
 
 ## 🐞 Known Issues
 
