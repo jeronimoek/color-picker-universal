@@ -81,7 +81,7 @@
     "commands": [
       {
         "command": "color-picker-universal.translateColors",
-        "title": "Translate colors to another format",
+        "title": "Translate colors to formats",
         "category": "Color Picker Universal"
       }
     ],
@@ -89,7 +89,7 @@
       "editor/context": [
         {
           "command": "color-picker-universal.translateColors",
-          "title": "Translate colors to another format"
+          "title": "Translate colors to formats"
         }
       ]
     },
