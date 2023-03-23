@@ -8,13 +8,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - run: |
-          echo ${{ github.workspace }}
-          echo $GITHUB_WORKSPACE
-
       - name: Update README
         id: readme
-        uses: jeronimoek/markdown-vscode-contributions-action@v1.0.12
+        uses: jeronimoek/markdown-vscode-contributions-action@v1.0.13
         with:
           github-token: ${{ secrets.github_token }}
 
