@@ -14,14 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Update Readme
-      #   id: readme
-      #   uses: jeronimoek/markdown-vscode-contributions-action@v1.0.2
-      #   with:
-      #     github-token: ${{ secrets.github_token }}
-
-      # - name: Get the output readme
-      #   run: echo "The new readme is ${{ steps.readme.outputs.markdown_output }}"
+      - name: Update README
+        id: readme
+        uses: jeronimoek/markdown-vscode-contributions-action@v1.0.13
+        with:
+          github-token: ${{ secrets.github_token }}
 
       - name: Generate changelog
         id: changelog
