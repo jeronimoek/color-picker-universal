@@ -1,3 +1,12 @@
+# [1.9.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.4...v1.9.0) (2023-03-23)
+
+
+### Features
+
+* Add automatic readme vscode contributions table ([#74](https://github.com/jeronimoek/color-picker-universal/issues/74)) ([e95d874](https://github.com/jeronimoek/color-picker-universal/commit/e95d874d3367dc528c6bbaec63dfda139ed11ec1))
+
+
+
 ## [1.8.4](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.3...v1.8.4) (2023-02-28)
 
 
@@ -31,20 +40,6 @@
 ### Bug Fixes
 
 * add package lock to release action ([3049671](https://github.com/jeronimoek/color-picker-universal/commit/304967107d6733e6ccf380905a274cadf70bb526))
-
-
-
-# [1.8.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.7.2...v1.8.0) (2023-02-19)
-
-
-### Bug Fixes
-
-* code refactoring ([557cc1e](https://github.com/jeronimoek/color-picker-universal/commit/557cc1e7e3b850d530c450551694eeac1f4bfd12))
-
-
-### Features
-
-* add strict alpha setting ([fb37b1a](https://github.com/jeronimoek/color-picker-universal/commit/fb37b1ab79c47947118b20696b07af5acc898b5d))
 
 
 

@@ -3,7 +3,7 @@
   "displayName": "Color Picker Universal",
   "description": "Color picker and translator for any color format, in any file",
   "icon": "images/cpu-logo-128.png",
-  "version": "1.8.4",
+  "version": "1.9.0",
   "publisher": "JeronimoEkerdt",
   "keywords": [
     "color",
