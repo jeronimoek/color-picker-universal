@@ -1,3 +1,12 @@
+# [1.10.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.9.0...v1.10.0) (2023-03-24)
+
+
+### Features
+
+* add support for hex 0x color format ([#76](https://github.com/jeronimoek/color-picker-universal/issues/76)) ([7033028](https://github.com/jeronimoek/color-picker-universal/commit/7033028f16c02af163ff1667a1381fae791242b7))
+
+
+
 # [1.9.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.4...v1.9.0) (2023-03-23)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * update package-lock version ([2b4e679](https://github.com/jeronimoek/color-picker-universal/commit/2b4e679fe44ce795d916290b51185811ef1d06f0))
-
-
-
-## [1.8.1](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.0...v1.8.1) (2023-02-19)
-
-
-### Bug Fixes
-
-* add package lock to release action ([3049671](https://github.com/jeronimoek/color-picker-universal/commit/304967107d6733e6ccf380905a274cadf70bb526))
 
 
 
