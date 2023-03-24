@@ -115,11 +115,13 @@
           "examples": [
             [
               "*",
+              "!hex_0x",
               "!named"
             ],
             [
               "cmyk",
               "hex",
+              "hex_0x",
               "hsl",
               "hwb",
               "named",
@@ -132,6 +134,7 @@
             "examples": [
               "*",
               "cmyk",
+              "hex_0x",
               "hex",
               "hsl",
               "hwb",
@@ -144,18 +147,19 @@
           "description": "Formats to translate into. \"*\" to translate into any format. Prepend format with \"!\" to exclude formats (e.g. \"!cmyk\")",
           "type": "array",
           "default": [
-            "*",
-            "!cmyk"
+            "*"
           ],
           "examples": [
             [
               "*",
+              "!hex_0x",
               "!cmyk",
               "!hwb"
             ],
             [
               "cmyk",
               "hex",
+              "hex_0x",
               "hsl",
               "hwb",
               "named",
@@ -169,6 +173,7 @@
               "*",
               "cmyk",
               "hex",
+              "hex_0x",
               "hsl",
               "hwb",
               "named",

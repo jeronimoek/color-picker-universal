@@ -33,6 +33,10 @@ export function matchColors(text: string) {
     formatsRegexes.push("#(?:[\\da-f]{3,4}){2}|#(?:[\\da-f]{3,4})");
   }
 
+  if (isSettingEnabled(formatsFrom, ColorFormatFrom.HEX_0X)) {
+    formatsRegexes.push("0x(?:[\\da-f]{1,6})");
+  }
+
   // Create regex of enabled formats with prefixes. e.g. "rgb(...)"
   const filteredFormatPrefixes = colorFormatsFromPrefixes.filter((format) =>
     isSettingEnabled(formatsFrom, format)
@@ -134,7 +138,8 @@ export function replaceAllColors(text: string, formatTo: ColorFormatTo) {
       strictAlpha === false &&
       rgbaColor.a !== 1 &&
       !colorFormatsWithAlpha.includes(currentFormatTo) &&
-      formatTo !== ColorFormatTo.NAMED
+      formatTo !== ColorFormatTo.NAMED &&
+      formatTo !== ColorFormatTo.HEX_0X
     ) {
       currentFormatTo = (currentFormatTo + "A") as ColorFormatTo;
     }

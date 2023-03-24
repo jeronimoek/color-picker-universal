@@ -5,7 +5,12 @@ const hexa = "#{{hex}}{{aH}}";
 const hexLarge = "#{{HEX}}";
 const hexaLarge = "#{{HEX}}{{AH}}";
 
+// HEX 0x
+
+const hex0xLarge = "0x{{HEX}}";
+
 // RGB
+
 const rgb = "rgb({{r}},{{g}},{{b}})";
 const rgbAlt = "rgba({{r}},{{g}},{{b}})";
 const rgba = "rgb({{r}},{{g}},{{b}},{{a}})";
