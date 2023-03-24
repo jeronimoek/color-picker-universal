@@ -204,6 +204,13 @@ export class ColorTranslatorExtended extends ColorTranslator {
         a: alpha,
       });
       super(rgbInput);
+    } else if (
+      typeof colorInput === "string" &&
+      colorInput.toLocaleLowerCase().startsWith("0x")
+    ) {
+      const hex0xString = colorInput.split("0x")[1];
+      const hexString = "#" + hex0xString.padStart(6, "0");
+      super(hexString);
     } else {
       super(...input);
     }
@@ -215,6 +222,10 @@ export class ColorTranslatorExtended extends ColorTranslator {
 
   get HWBA(): string {
     return rgbToHwbString(this.RGBAObject);
+  }
+
+  get HEX_0X(): string {
+    return this.HEX.replace("#", "0x");
   }
 
   get NAMED(): string {

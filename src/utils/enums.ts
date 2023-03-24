@@ -9,6 +9,7 @@ export enum ColorFormatTo {
   CMYKA = "CMYKA",
   HWB = "HWB",
   HWBA = "HWBA",
+  HEX_0X = "HEX_0X",
   NAMED = "NAMED",
 }
 
@@ -20,6 +21,7 @@ export enum ColorFormatFrom {
   CMYK = "cmyk",
   NAMED = "named",
   HEX = "hex",
+  HEX_0X = "hex_0x",
   HWB = "hwb",
 }
 
