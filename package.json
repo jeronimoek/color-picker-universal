@@ -98,7 +98,7 @@
       "properties": {
         "color-picker-universal.disable": {
           "default": false,
-          "description": "Controls if plugin is disabled",
+          "description": "Disables the extension",
           "type": "boolean"
         },
         "color-picker-universal.strictAlpha": {
