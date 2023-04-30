@@ -1,3 +1,12 @@
+# [1.11.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.10.1...v1.11.0) (2023-04-30)
+
+
+### Features
+
+* add setting to exclude variable names ([2b9ea8c](https://github.com/jeronimoek/color-picker-universal/commit/2b9ea8cc0e9cd13cbf7c259ab4fa9fe0488abe6f))
+
+
+
 ## [1.10.1](https://github.com/jeronimoek/color-picker-universal/compare/v1.10.0...v1.10.1) (2023-03-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * improve package.json ([#73](https://github.com/jeronimoek/color-picker-universal/issues/73)) ([3f3ac74](https://github.com/jeronimoek/color-picker-universal/commit/3f3ac74e9ae1ce5a47ce637bc566a8a4c520ed3f))
-
-
-
-## [1.8.3](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.2...v1.8.3) (2023-02-26)
-
-
-### Bug Fixes
-
-* give a category to the command ([#72](https://github.com/jeronimoek/color-picker-universal/issues/72)) ([12ff1e5](https://github.com/jeronimoek/color-picker-universal/commit/12ff1e5f38cba12397e3a121d9c5fe800d0e5366))
 
 
 
