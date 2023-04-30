@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { Document } from "../models/Document";
 import { Regex } from "../shared/constants";
 import { TemplateColorFragments } from "./enums";
 
@@ -37,14 +38,18 @@ export function templateReplace(
 }
 
 export function replaceTextInMatch(
-  match: RegExpMatchArray,
   text: string,
+  match: vscode.Range,
   newText: string
 ) {
-  if (!match.index) return text;
-  return (
-    text.slice(0, match.index) +
-    newText +
-    text.slice(match.index + match[0].length)
-  );
+  const currentTextDocument = new Document(text);
+
+  const startIndex = currentTextDocument.offsetAt(match.start);
+  const endIndex = currentTextDocument.offsetAt(match.end);
+
+  return text.slice(0, startIndex) + newText + text.slice(endIndex);
+}
+
+export function clamp(num: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, num));
 }

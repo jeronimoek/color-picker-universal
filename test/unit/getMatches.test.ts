@@ -5,6 +5,7 @@ import path = require("path");
 import { getMatches } from "../../src/getMatches";
 import { colorsFragments } from "../../src/shared/constants";
 import { templateReplace } from "../../src/utils/utils";
+import * as vscode from "vscode";
 
 suite("Match colors tests", () => {
   let colorFormatsFile: string;
@@ -21,24 +22,32 @@ suite("Match colors tests", () => {
     );
   });
 
-  test("Matches all colors in ts file", () => {
+  test("Matches all colors in ts file", async () => {
     const testedColors = Object.values(TestedColors);
-    testedColors.forEach((color) => {
+
+    /* TODO: test for exclusion of variable names
+     * const testPathUri = vscode.Uri.file(
+     *   path.join(__dirname, "../dummyData/colorFormats.js")
+     * );
+     * await vscode.window.showTextDocument(testPathUri, { preview: false });
+     */
+
+    for (const color of testedColors) {
       const colorFormatsText = templateReplace(
         colorFormatsFile,
         colorsFragments[color]
       );
-      const matches = getMatches(colorFormatsText);
+      const matches = await getMatches(colorFormatsText);
 
       /* Assertions */
+
+      chai.assert.equal(matches.length, 28);
 
       const rgbMultilineRange = matches[11].range;
       chai.assert.equal(rgbMultilineRange.start.line, 20);
       chai.assert.equal(rgbMultilineRange.start.character, 0);
       chai.assert.equal(rgbMultilineRange.end.line, 24);
       chai.assert.equal(rgbMultilineRange.end.character, 1);
-
-      chai.assert.equal(matches.length, 28);
 
       const multiLineMatches = matches.filter(
         (match) => match.range.start.line < match.range.end.line
@@ -48,6 +57,6 @@ suite("Match colors tests", () => {
       matches.forEach((match) => {
         chai.assert.deepEqual(match.color, colorsRGBAValues[color]);
       });
-    });
+    }
   });
 });

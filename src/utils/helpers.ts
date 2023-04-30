@@ -7,6 +7,7 @@ import {
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
 import { replaceTextInMatch } from "./utils";
+import { getMatches } from "../getMatches";
 
 export interface RGBA {
   r: number;
@@ -16,9 +17,7 @@ export interface RGBA {
 }
 
 export function matchColors(text: string) {
-  const formatsFromSetting = vscode.workspace
-    .getConfiguration("color-picker-universal")
-    .get<string[]>("formatsFrom");
+  const formatsFromSetting = getSetting<string[]>("formatsFrom");
 
   const formatsFrom = formatsFromSetting?.length ? formatsFromSetting : ["*"];
 
@@ -87,17 +86,18 @@ export function filterFormats<T extends ColorFormatTo | ColorFormatFrom>(
   return filteredFormats;
 }
 
-export function isValidDocument(
-  config: vscode.WorkspaceConfiguration,
-  { languageId }: vscode.TextDocument
-) {
-  let isValid = false;
-
-  if (config.disable) {
-    return isValid;
+export function isValidDocument({ languageId }: vscode.TextDocument) {
+  const disable = getSetting<boolean>("disable");
+  if (disable) {
+    return false;
   }
 
-  return isSettingEnabled(config.languages, languageId);
+  const languages = getSetting<string[]>("languages");
+  if (!languages) {
+    return false;
+  }
+
+  return isSettingEnabled(languages, languageId);
 }
 
 export function isSettingEnabled(settings: string[], target: string) {
@@ -116,16 +116,17 @@ export function isSettingEnabled(settings: string[], target: string) {
   return isValid;
 }
 
-export function replaceAllColors(text: string, formatTo: ColorFormatTo) {
-  const config = vscode.workspace.getConfiguration("color-picker-universal");
-  const strictAlpha = config.get<boolean>("strictAlpha");
+export async function replaceAllColors(
+  text: string,
+  formatTo: ColorFormatTo,
+  offset: number = 0
+) {
+  const strictAlpha = getSetting<boolean>("strictAlpha");
 
-  const matches = matchColors(text);
+  const matches = await getMatches(text, offset);
   matches.reverse();
-  matches.forEach((match) => {
-    const colorRaw = match[0];
-    const matchedColor = parseColorString(colorRaw);
-    if (!matchedColor) return;
+  for (const match of matches) {
+    const matchedColor = match.color;
     const rgbaColor = {
       r: matchedColor.red * 255,
       g: matchedColor.green * 255,
@@ -145,10 +146,32 @@ export function replaceAllColors(text: string, formatTo: ColorFormatTo) {
     }
 
     text = replaceTextInMatch(
-      match,
       text,
+      match.range,
       new ColorTranslatorExtended(rgbaColor)[currentFormatTo]
     );
-  });
+  }
   return text;
+}
+
+export function ensureActiveEditorIsSet(
+  timeout: number = 100
+): Promise<vscode.TextEditor> {
+  const start = Date.now();
+  return new Promise((resolve, reject) => {
+    function waitForEditor() {
+      if (vscode.window.activeTextEditor)
+        resolve(vscode.window.activeTextEditor);
+      else if (timeout && Date.now() - start >= timeout)
+        reject(new Error("timeout"));
+      else setTimeout(() => waitForEditor(), 10);
+    }
+    waitForEditor();
+  });
+}
+
+export function getSetting<T>(setting: string) {
+  return vscode.workspace
+    .getConfiguration("color-picker-universal")
+    .get<T>(setting);
 }
