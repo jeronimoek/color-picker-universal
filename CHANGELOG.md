@@ -1,3 +1,12 @@
+## [1.11.1](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.0...v1.11.1) (2023-04-30)
+
+
+### Bug Fixes
+
+* add new setting to readme ([1681448](https://github.com/jeronimoek/color-picker-universal/commit/1681448d8f7e15fecc9ddf7a0a22d816e47cd84f))
+
+
+
 # [1.11.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.10.1...v1.11.0) (2023-04-30)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * Add automatic readme vscode contributions table ([#74](https://github.com/jeronimoek/color-picker-universal/issues/74)) ([e95d874](https://github.com/jeronimoek/color-picker-universal/commit/e95d874d3367dc528c6bbaec63dfda139ed11ec1))
-
-
-
-## [1.8.4](https://github.com/jeronimoek/color-picker-universal/compare/v1.8.3...v1.8.4) (2023-02-28)
-
-
-### Bug Fixes
-
-* improve package.json ([#73](https://github.com/jeronimoek/color-picker-universal/issues/73)) ([3f3ac74](https://github.com/jeronimoek/color-picker-universal/commit/3f3ac74e9ae1ce5a47ce637bc566a8a4c520ed3f))
 
 
 
