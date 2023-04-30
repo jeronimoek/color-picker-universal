@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
 import {
+  getSetting,
   isSettingEnabled,
   isValidDocument,
   replaceAllColors,
@@ -61,32 +62,28 @@ class Picker implements vscode.Disposable {
           break;
       }
 
-      activeEditor.edit((editBuilder) => {
-        for (const range of ranges) {
-          const selectedText = activeEditor.document.getText(range);
-          editBuilder.replace(range, replaceAllColors(selectedText, formatTo));
-        }
-      });
+      for (const range of ranges) {
+        const selectedText = activeEditor.document.getText(range);
+        const offset = activeEditor.document.offsetAt(range.start);
+        const newText = await replaceAllColors(selectedText, formatTo, offset);
+        activeEditor.edit((editBuilder) => {
+          editBuilder.replace(range, newText);
+        });
+      }
     };
 
     vscode.commands.registerCommand(command, commandHandler);
     vscode.languages.registerColorProvider("*", {
       provideDocumentColors(document: vscode.TextDocument) {
-        const config = vscode.workspace.getConfiguration(
-          "color-picker-universal"
-        );
-        if (!isValidDocument(config, document)) return;
+        if (!isValidDocument(document)) return;
 
         const text = document.getText();
         return getMatches(text);
       },
       provideColorPresentations(colorRaw, { range, document }) {
-        const config = vscode.workspace.getConfiguration(
-          "color-picker-universal"
-        );
-        if (!isValidDocument(config, document)) return;
+        if (!isValidDocument(document)) return;
 
-        const formatsToSetting = config.get<string[]>("formatsTo");
+        const formatsToSetting = getSetting<string[]>("formatsTo");
         const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
         const { red: r, green: g, blue: b, alpha: a } = colorRaw;

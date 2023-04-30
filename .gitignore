@@ -4,3 +4,4 @@ node_modules/
 .vscode-test/
 .user-data-dir-test/
 .env
+.vscode/settings.json

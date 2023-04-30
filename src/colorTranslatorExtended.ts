@@ -190,7 +190,7 @@ export class ColorTranslatorExtended extends ColorTranslator {
     ) {
       const values = colorInput
         .split(ColorFormatFrom.HWB + "(")[1]
-        .split(/[^\w%\.]+/);
+        .split(/[^\w%.]+/);
       const hwbValues = values.map((v) => parseFloat(v));
       const [hue, white, black] = hwbValues;
       let alpha = 1;
