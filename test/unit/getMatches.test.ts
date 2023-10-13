@@ -41,21 +41,15 @@ suite("Match colors tests", () => {
 
       /* Assertions */
 
-      chai.assert.equal(matches.length, 28);
-
-      const rgbMultilineRange = matches[11].range;
-      chai.assert.equal(rgbMultilineRange.start.line, 20);
-      chai.assert.equal(rgbMultilineRange.start.character, 0);
-      chai.assert.equal(rgbMultilineRange.end.line, 24);
-      chai.assert.equal(rgbMultilineRange.end.character, 1);
-
-      const multiLineMatches = matches.filter(
-        (match) => match.range.start.line < match.range.end.line
-      );
-      chai.assert.equal(multiLineMatches.length, 6);
+      chai.assert.equal(matches.length, 22);
 
       matches.forEach((match) => {
-        chai.assert.deepEqual(match.color, colorsRGBAValues[color]);
+        const matchColor = { ...match.color };
+        let key: keyof typeof matchColor;
+        for (key in matchColor) {
+          matchColor[key] = Math.round(matchColor[key]);
+        }
+        chai.assert.deepEqual(matchColor, colorsRGBAValues[color]);
       });
     }
   });

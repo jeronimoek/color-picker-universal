@@ -93,10 +93,10 @@ class Picker implements vscode.Disposable {
           b: b * 255,
           a,
         });
-        const { A } = color;
+        const { alpha } = color.rgb;
 
         // Filter formats if alpha !== 1
-        const formats = A !== 1 ? colorFormatsWithAlpha : colorFormats;
+        const formats = alpha !== 1 ? colorFormatsWithAlpha : colorFormats;
 
         const formatsFiltered = formats.filter((format) =>
           isSettingEnabled(
@@ -120,7 +120,8 @@ class Picker implements vscode.Disposable {
         }
 
         return representations.map(
-          (representation) => new vscode.ColorPresentation(representation)
+          (representation) =>
+            new vscode.ColorPresentation(representation.toString())
         );
       },
     });

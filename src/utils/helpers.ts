@@ -63,8 +63,8 @@ export function parseColorString(initialColor: string) {
   try {
     const colorRaw = initialColor.toLocaleLowerCase();
     const color = new ColorTranslatorExtended(colorRaw);
-    const { r, g, b, a = 1 } = color.RGBAObject;
-    return new vscode.Color(r / 255, g / 255, b / 255, a || 1);
+    const { r, g, b, alpha = 1 } = color.rgb;
+    return new vscode.Color(r / 255, g / 255, b / 255, alpha || 1);
   } catch (error) {
     return null;
   }
@@ -140,7 +140,7 @@ export async function replaceAllColors(
       rgbaColor.a !== 1 &&
       !colorFormatsWithAlpha.includes(currentFormatTo) &&
       formatTo !== ColorFormatTo.NAMED &&
-      formatTo !== ColorFormatTo.HEX_0X
+      formatTo !== ColorFormatTo.HEX0X
     ) {
       currentFormatTo = (currentFormatTo + "A") as ColorFormatTo;
     }
@@ -148,7 +148,7 @@ export async function replaceAllColors(
     text = replaceTextInMatch(
       text,
       match.range,
-      new ColorTranslatorExtended(rgbaColor)[currentFormatTo]
+      new ColorTranslatorExtended(rgbaColor)[currentFormatTo].toString()
     );
   }
   return text;
