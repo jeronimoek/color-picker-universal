@@ -10,7 +10,8 @@
     "picker",
     "translator",
     "vscode",
-    "extension"
+    "extension",
+    "universal"
   ],
   "author": {
     "email": "jeronimoek@gmail.com",
