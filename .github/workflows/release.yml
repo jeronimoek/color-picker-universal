@@ -26,6 +26,7 @@ jobs:
         with:
           github-token: ${{ secrets.github_token }}
           version-file: "./package.json, ./package-lock.json"
+          skip-on-empty: "false"
 
       - run: sudo apt-get install xvfb;
 
