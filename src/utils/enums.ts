@@ -11,6 +11,10 @@ export enum ColorFormatTo {
   // HWBA = "hwba",
   HEX0X = "hex0x",
   NAMED = "named",
+  LAB = "lab",
+  LCH = "lch",
+  OKLAB = "oklab",
+  OKLCH = "oklch",
 }
 
 export enum ColorFormatFrom {
@@ -21,8 +25,12 @@ export enum ColorFormatFrom {
   CMYK = "device-cmyk",
   NAMED = "named",
   HEX = "hex",
-  HEX_0X = "hex_0x",
+  HEX_0X = "hex0x",
   HWB = "hwb",
+  LAB = "lab",
+  LCH = "lch",
+  OKLAB = "oklab",
+  OKLCH = "oklch",
 }
 
 export enum CommandType {

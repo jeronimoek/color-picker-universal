@@ -35,10 +35,6 @@ export class ColorTranslatorExtended extends ColorTranslator {
     }
   }
 
-  get HEX_0X(): string {
-    return this.hex.toString().replace("#", "0x");
-  }
-
   get named(): string {
     let minDelta = Number.POSITIVE_INFINITY;
     let closestNamedColor = Object.keys(namedColorsLAB)[0];

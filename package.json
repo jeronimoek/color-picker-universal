@@ -75,7 +75,7 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "color-translate": "^0.3.1"
+    "color-translate": "^0.3.3"
   },
   "contributes": {
     "commands": [
@@ -111,6 +111,11 @@
           "description": "If enabled, ignores colors in variables names",
           "type": "boolean"
         },
+        "color-picker-universal.preferLegacy": {
+          "default": false,
+          "description": "If enabled, colors are displayed in legacy mode when possible",
+          "type": "boolean"
+        },
         "color-picker-universal.formatsFrom": {
           "description": "Formats to be detected by the extension. \"*\" to translate from any format. Prepend format with \"!\" to exclude formats (e.g. \"!named\")",
           "type": "array",
@@ -120,17 +125,21 @@
           "examples": [
             [
               "*",
-              "!hex_0x",
+              "!hex0x",
               "!named"
             ],
             [
-              "cmyk",
+              "device-cmyk",
               "hex",
-              "hex_0x",
+              "hex0x",
               "hsl",
               "hwb",
               "named",
-              "rgb"
+              "rgb",
+              "lab",
+              "lch",
+              "oklab",
+              "oklch"
             ]
           ],
           "items": {
@@ -138,13 +147,17 @@
             "type": "string",
             "examples": [
               "*",
-              "cmyk",
-              "hex_0x",
+              "device-cmyk",
+              "hex0x",
               "hex",
               "hsl",
               "hwb",
               "named",
-              "rgb"
+              "rgb",
+              "lab",
+              "lch",
+              "oklab",
+              "oklch"
             ]
           }
         },
@@ -157,18 +170,22 @@
           "examples": [
             [
               "*",
-              "!hex_0x",
+              "!hex0x",
               "!cmyk",
               "!hwb"
             ],
             [
               "cmyk",
               "hex",
-              "hex_0x",
+              "hex0x",
               "hsl",
               "hwb",
               "named",
-              "rgb"
+              "rgb",
+              "lab",
+              "lch",
+              "oklab",
+              "oklch"
             ]
           ],
           "items": {
@@ -178,11 +195,15 @@
               "*",
               "cmyk",
               "hex",
-              "hex_0x",
+              "hex0x",
               "hsl",
               "hwb",
               "named",
-              "rgb"
+              "rgb",
+              "lab",
+              "lch",
+              "oklab",
+              "oklch"
             ]
           }
         },
