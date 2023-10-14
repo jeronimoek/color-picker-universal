@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { colorFormats, colorFormatsWithAlpha } from "./shared/constants";
+import { colorFormatsTo, colorFormatsWithAlpha } from "./shared/constants";
 import { getMatches } from "./getMatches";
 import {
   getSetting,
@@ -93,10 +93,15 @@ class Picker implements vscode.Disposable {
           b: b * 255,
           a,
         });
-        const { A } = color;
+        const { alpha } = color.rgb;
+
+        const preferLegacy = getSetting<boolean>("preferLegacy");
+        if (preferLegacy) {
+          color.updateOptions({ legacy: true });
+        }
 
         // Filter formats if alpha !== 1
-        const formats = A !== 1 ? colorFormatsWithAlpha : colorFormats;
+        const formats = alpha !== 1 ? colorFormatsWithAlpha : colorFormatsTo;
 
         const formatsFiltered = formats.filter((format) =>
           isSettingEnabled(
@@ -105,8 +110,8 @@ class Picker implements vscode.Disposable {
           )
         );
 
-        let representations = formatsFiltered.map(
-          (reprType) => color[reprType]
+        let representations = formatsFiltered.map((reprType) =>
+          color[reprType].toString()
         );
 
         // Occupy the same lines as before the translation
@@ -120,7 +125,8 @@ class Picker implements vscode.Disposable {
         }
 
         return representations.map(
-          (representation) => new vscode.ColorPresentation(representation)
+          (representation) =>
+            new vscode.ColorPresentation(representation.toString())
         );
       },
     });

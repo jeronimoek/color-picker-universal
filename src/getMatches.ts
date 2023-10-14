@@ -34,7 +34,7 @@ export async function getMatches(
     };
   }
 
-  const matches = matchColors(text).reverse();
+  const matchedColors = matchColors(text).reverse();
   const result: vscode.ColorInformation[] = [];
 
   const currentTextDocument = new Document(text);
@@ -66,28 +66,30 @@ export async function getMatches(
     }
   }
 
-  // TODO: Optimize to avoid O(matches*vars) time. Eg: sort and discard variables once the match is after it
-  while (matches.length) {
-    const match = matches.pop();
-    const startIndex = match?.index;
-    if (!startIndex) continue;
+  while (matchedColors.length) {
+    const matchedColor = matchedColors.pop();
+    const startIndex = matchedColor?.index;
+    if (matchedColor === undefined || startIndex === undefined) continue;
 
-    const [colorText] = match;
+    const [colorText] = matchedColor;
 
     const endIndex = startIndex + colorText.length;
     const range = new vscode.Range(
       currentTextDocument.positionAt(startIndex),
       currentTextDocument.positionAt(endIndex)
     );
-
+    while (
+      variables.length &&
+      currentTextDocument.offsetAt(
+        variables[variables.length - 1].selectionRange.end
+      ) < startIndex
+    ) {
+      variables.pop();
+    }
+    const lastVar = variables[variables.length - 1];
     if (
-      !variables.every(
-        (currVariable) =>
-          currentTextDocument.offsetAt(currVariable.selectionRange.end) <
-            startIndex ||
-          currentTextDocument.offsetAt(currVariable.selectionRange.start) >
-            endIndex
-      )
+      lastVar &&
+      currentTextDocument.offsetAt(lastVar.selectionRange.start) < endIndex
     ) {
       continue;
     }

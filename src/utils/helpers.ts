@@ -1,13 +1,22 @@
 import { ColorTranslatorExtended } from "./../colorTranslatorExtended";
 import * as vscode from "vscode";
-import {
-  colorFormatsFromPrefixes,
-  colorFormatsWithAlpha,
-} from "./../shared/constants";
+import { colorFormatsFrom, colorFormatsWithAlpha } from "./../shared/constants";
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
 import { replaceTextInMatch } from "./utils";
 import { getMatches } from "../getMatches";
+import {
+  hexRegex,
+  hex0xRegex,
+  cmykRegex,
+  hslRegex,
+  hwbRegex,
+  labRegex,
+  lchRegex,
+  oklabRegex,
+  oklchRegex,
+  rgbRegex,
+} from "color-translate";
 
 export interface RGBA {
   r: number;
@@ -24,34 +33,63 @@ export function matchColors(text: string) {
   const formatsRegexes: string[] = [];
 
   if (isSettingEnabled(formatsFrom, ColorFormatFrom.NAMED)) {
-    const namedColors = Object.keys(NamedColors).join("|");
-    formatsRegexes.push(`(?:${namedColors})`);
-  }
-
-  if (isSettingEnabled(formatsFrom, ColorFormatFrom.HEX)) {
-    formatsRegexes.push("#(?:[\\da-f]{3,4}){2}|#(?:[\\da-f]{3,4})");
-  }
-
-  if (isSettingEnabled(formatsFrom, ColorFormatFrom.HEX_0X)) {
-    formatsRegexes.push("0x(?:[\\da-f]{1,6})");
+    formatsRegexes.push();
   }
 
   // Create regex of enabled formats with prefixes. e.g. "rgb(...)"
-  const filteredFormatPrefixes = colorFormatsFromPrefixes.filter((format) =>
-    isSettingEnabled(formatsFrom, format)
-  );
+  colorFormatsFrom
+    .filter((format) => isSettingEnabled(formatsFrom, format))
+    .forEach((format) => {
+      let regex = new RegExp("");
+      switch (format) {
+        case ColorFormatFrom.CMYK:
+          regex = cmykRegex;
+          break;
+        case ColorFormatFrom.HEX:
+          regex = hexRegex;
+          break;
+        case ColorFormatFrom.HEX_0X:
+          regex = hex0xRegex;
+          break;
+        case ColorFormatFrom.HSL:
+        case ColorFormatFrom.HSLA:
+          regex = hslRegex;
+          break;
+        case ColorFormatFrom.HWB:
+          regex = hwbRegex;
+          break;
+        case ColorFormatFrom.LAB:
+          regex = labRegex;
+          break;
+        case ColorFormatFrom.LCH:
+          regex = lchRegex;
+          break;
+        case ColorFormatFrom.OKLAB:
+          regex = oklabRegex;
+          break;
+        case ColorFormatFrom.OKLCH:
+          regex = oklchRegex;
+          break;
+        case ColorFormatFrom.RGB:
+        case ColorFormatFrom.RGBA:
+          regex = rgbRegex;
+          break;
+        case ColorFormatFrom.NAMED:
+          const namedColors = Object.keys(NamedColors).join("|");
+          regex = new RegExp(`(?:${namedColors})`);
+          break;
+        default:
+          break;
+      }
 
-  if (filteredFormatPrefixes.length) {
-    formatsRegexes.push(
-      `(?:${filteredFormatPrefixes.join("|")})\\([\\s\\d%,.\\/]+\\)`
-    );
-  }
+      regex.source && formatsRegexes.push(regex.source.replace(/\^|\$/g, ""));
+    });
 
   const formatsRegex = formatsRegexes.join("|");
 
   // Match colors without a letter or a dash before or after it
   const regex = new RegExp(
-    `(?<![\\w-@\\.])(${formatsRegex})(?![\\w-@:])`,
+    `(?<![\\w\\-@\\.])(${formatsRegex})(?![\\w\\-@:])`,
     "gi"
   );
   const matches = [...text.matchAll(regex)];
@@ -63,8 +101,8 @@ export function parseColorString(initialColor: string) {
   try {
     const colorRaw = initialColor.toLocaleLowerCase();
     const color = new ColorTranslatorExtended(colorRaw);
-    const { r, g, b, a = 1 } = color.RGBAObject;
-    return new vscode.Color(r / 255, g / 255, b / 255, a || 1);
+    const { r, g, b, alpha = 1 } = color.rgb;
+    return new vscode.Color(r / 255, g / 255, b / 255, alpha || 1);
   } catch (error) {
     return null;
   }
@@ -140,7 +178,7 @@ export async function replaceAllColors(
       rgbaColor.a !== 1 &&
       !colorFormatsWithAlpha.includes(currentFormatTo) &&
       formatTo !== ColorFormatTo.NAMED &&
-      formatTo !== ColorFormatTo.HEX_0X
+      formatTo !== ColorFormatTo.HEX0X
     ) {
       currentFormatTo = (currentFormatTo + "A") as ColorFormatTo;
     }
@@ -148,7 +186,7 @@ export async function replaceAllColors(
     text = replaceTextInMatch(
       text,
       match.range,
-      new ColorTranslatorExtended(rgbaColor)[currentFormatTo]
+      new ColorTranslatorExtended(rgbaColor)[currentFormatTo].toString()
     );
   }
   return text;
