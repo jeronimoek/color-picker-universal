@@ -1,3 +1,12 @@
+## [1.11.3](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.2...v1.11.3) (2023-10-14)
+
+
+### Bug Fixes
+
+* match color optimization ([298048d](https://github.com/jeronimoek/color-picker-universal/commit/298048d52c48ed9a5b54eb793ba43a3e14d868c5))
+
+
+
 ## [1.11.2](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.1...v1.11.2) (2023-04-30)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * update readme ([#77](https://github.com/jeronimoek/color-picker-universal/issues/77)) ([0b7909a](https://github.com/jeronimoek/color-picker-universal/commit/0b7909a2221e1d85e613bd50dc63727d80149e87))
-
-
-
-# [1.10.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.9.0...v1.10.0) (2023-03-24)
-
-
-### Features
-
-* add support for hex 0x color format ([#76](https://github.com/jeronimoek/color-picker-universal/issues/76)) ([7033028](https://github.com/jeronimoek/color-picker-universal/commit/7033028f16c02af163ff1667a1381fae791242b7))
 
 
 
