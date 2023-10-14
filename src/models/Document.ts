@@ -6,9 +6,11 @@ import { clamp } from "../utils/utils";
  */
 export class Document {
   private text: string;
+  private lineOffsets: number[];
 
   constructor(text: string) {
     this.text = text;
+    this.lineOffsets = this.getLineOffsets();
   }
 
   /**
@@ -56,16 +58,15 @@ export class Document {
   positionAt(offset: number): Position {
     offset = clamp(offset, 0, this.getTextLength());
 
-    const lineOffsets = this.getLineOffsets();
     let low = 0;
-    let high = lineOffsets.length;
+    let high = this.lineOffsets.length;
     if (high === 0) {
       return new Position(0, offset);
     }
 
     while (low < high) {
       const mid = Math.floor((low + high) / 2);
-      if (lineOffsets[mid] > offset) {
+      if (this.lineOffsets[mid] > offset) {
         high = mid;
       } else {
         low = mid + 1;
@@ -75,7 +76,7 @@ export class Document {
     // low is the least x for which the line offset is larger than the current offset
     // or array.length if no line offset is larger than the current offset
     const line = low - 1;
-    return new Position(line, offset - lineOffsets[line]);
+    return new Position(line, offset - this.lineOffsets[line]);
   }
 
   /**
@@ -83,18 +84,16 @@ export class Document {
    * @param position Line and character position
    */
   offsetAt(position: Position): number {
-    const lineOffsets = this.getLineOffsets();
-
-    if (position.line >= lineOffsets.length) {
+    if (position.line >= this.lineOffsets.length) {
       return this.getTextLength();
     } else if (position.line < 0) {
       return 0;
     }
 
-    const lineOffset = lineOffsets[position.line];
+    const lineOffset = this.lineOffsets[position.line];
     const nextLineOffset =
-      position.line + 1 < lineOffsets.length
-        ? lineOffsets[position.line + 1]
+      position.line + 1 < this.lineOffsets.length
+        ? this.lineOffsets[position.line + 1]
         : this.getTextLength();
 
     return clamp(nextLineOffset, lineOffset, lineOffset + position.character);
