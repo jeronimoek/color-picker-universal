@@ -11,3 +11,4 @@ tsconfig.*
 **/*.map
 **/*.ts
 out/**
+node_modules/**
