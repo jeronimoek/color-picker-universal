@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.0.0...v2.1.0) (2023-10-15)
+
+
+### Features
+
+* bundle release using esbuild ([0cc0ef3](https://github.com/jeronimoek/color-picker-universal/commit/0cc0ef3192eb03042d9084bc1dc3d38cbbeec73c))
+
+
+
 # [2.0.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.3...v2.0.0) (2023-10-14)
 
 
@@ -26,15 +35,6 @@
 ### Bug Fixes
 
 * add new setting to readme ([1681448](https://github.com/jeronimoek/color-picker-universal/commit/1681448d8f7e15fecc9ddf7a0a22d816e47cd84f))
-
-
-
-# [1.11.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.10.1...v1.11.0) (2023-04-30)
-
-
-### Features
-
-* add setting to exclude variable names ([2b9ea8c](https://github.com/jeronimoek/color-picker-universal/commit/2b9ea8cc0e9cd13cbf7c259ab4fa9fe0488abe6f))
 
 
 
