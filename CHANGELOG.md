@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.1...v2.1.2) (2023-10-15)
+
+
+### Bug Fixes
+
+* ignore node modules in extension bundle ([bcf01a6](https://github.com/jeronimoek/color-picker-universal/commit/bcf01a6c7fad67d6c7485bf2db96a5ef41d15609))
+
+
+
 ## [2.1.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.0...v2.1.1) (2023-10-15)
 
 
@@ -26,15 +35,6 @@
 ### Bug Fixes
 
 * match color optimization ([298048d](https://github.com/jeronimoek/color-picker-universal/commit/298048d52c48ed9a5b54eb793ba43a3e14d868c5))
-
-
-
-## [1.11.2](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.1...v1.11.2) (2023-04-30)
-
-
-### Bug Fixes
-
-* minor setting description fix ([8372efa](https://github.com/jeronimoek/color-picker-universal/commit/8372efa797e95fb7f1a21d4613280b7ffd8c1d0d))
 
 
 
