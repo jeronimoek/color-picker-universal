@@ -34,7 +34,7 @@
   "scripts": {
     "set-env": "export $(cat .env | xargs)",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node",
-    "compile": "npm run checks && npm run clean && esbuild-base -- --minify",
+    "compile": "npm run checks && npm run clean && npm run esbuild-base -- --minify",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "watch": "npm run clean && npm run esbuild-watch",
