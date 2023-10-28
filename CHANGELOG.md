@@ -1,3 +1,12 @@
+## [2.1.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.2...v2.1.3) (2023-10-28)
+
+
+### Bug Fixes
+
+* consider alpha value ([d45ffdf](https://github.com/jeronimoek/color-picker-universal/commit/d45ffdfca2c0e9304d1e33082ad967d09b2077ba))
+
+
+
 ## [2.1.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.1...v2.1.2) (2023-10-15)
 
 
@@ -26,15 +35,6 @@
 
 
 # [2.0.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.3...v2.0.0) (2023-10-14)
-
-
-
-## [1.11.3](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.2...v1.11.3) (2023-10-14)
-
-
-### Bug Fixes
-
-* match color optimization ([298048d](https://github.com/jeronimoek/color-picker-universal/commit/298048d52c48ed9a5b54eb793ba43a3e14d868c5))
 
 
 
