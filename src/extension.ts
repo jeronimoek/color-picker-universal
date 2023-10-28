@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { colorFormatsTo, colorFormatsWithAlpha } from "./shared/constants";
+import { colorFormatsTo } from "./shared/constants";
 import { getMatches } from "./getMatches";
 import {
   getSetting,
@@ -86,24 +86,20 @@ class Picker implements vscode.Disposable {
         const formatsToSetting = getSetting<string[]>("formatsTo");
         const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
-        const { red: r, green: g, blue: b, alpha: a } = colorRaw;
+        const { red: r, green: g, blue: b, alpha } = colorRaw;
         const color = new ColorTranslatorExtended({
           r: r * 255,
           g: g * 255,
           b: b * 255,
-          a,
+          alpha,
         });
-        const { alpha } = color.rgb;
 
         const preferLegacy = getSetting<boolean>("preferLegacy");
         if (preferLegacy) {
           color.updateOptions({ legacy: true });
         }
 
-        // Filter formats if alpha !== 1
-        const formats = alpha !== 1 ? colorFormatsWithAlpha : colorFormatsTo;
-
-        const formatsFiltered = formats.filter((format) =>
+        const formatsFiltered = colorFormatsTo.filter((format) =>
           isSettingEnabled(
             formatsTo.map((f) => f.toLocaleUpperCase()),
             format

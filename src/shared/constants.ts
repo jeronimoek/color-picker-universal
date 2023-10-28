@@ -13,10 +13,6 @@ export const Regex = {
 
 export const colorFormatsTo = Object.values(ColorFormatTo);
 
-export const colorFormatsWithAlpha = colorFormatsTo.filter(
-  (rep) => rep[rep.length - 1] === "A"
-);
-
 export const colorFormatsFrom = Object.values(ColorFormatFrom);
 
 export enum TestedColors {
