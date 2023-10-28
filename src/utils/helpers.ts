@@ -1,6 +1,6 @@
 import { ColorTranslatorExtended } from "./../colorTranslatorExtended";
 import * as vscode from "vscode";
-import { colorFormatsFrom, colorFormatsWithAlpha } from "./../shared/constants";
+import { colorFormatsFrom } from "./../shared/constants";
 import { NamedColors } from "../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
 import { replaceTextInMatch } from "./utils";
@@ -159,8 +159,6 @@ export async function replaceAllColors(
   formatTo: ColorFormatTo,
   offset: number = 0
 ) {
-  const strictAlpha = getSetting<boolean>("strictAlpha");
-
   const matches = await getMatches(text, offset);
   matches.reverse();
   for (const match of matches) {
@@ -172,21 +170,10 @@ export async function replaceAllColors(
       a: matchedColor.alpha,
     };
 
-    let currentFormatTo = formatTo;
-    if (
-      strictAlpha === false &&
-      rgbaColor.a !== 1 &&
-      !colorFormatsWithAlpha.includes(currentFormatTo) &&
-      formatTo !== ColorFormatTo.NAMED &&
-      formatTo !== ColorFormatTo.HEX0X
-    ) {
-      currentFormatTo = (currentFormatTo + "A") as ColorFormatTo;
-    }
-
     text = replaceTextInMatch(
       text,
       match.range,
-      new ColorTranslatorExtended(rgbaColor)[currentFormatTo].toString()
+      new ColorTranslatorExtended(rgbaColor)[formatTo].toString()
     );
   }
   return text;

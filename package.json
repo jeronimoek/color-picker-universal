@@ -106,11 +106,6 @@
           "description": "Disables the extension",
           "type": "boolean"
         },
-        "color-picker-universal.strictAlpha": {
-          "default": true,
-          "description": "If enabled, when bulk translating color formats, if the target format includes Alpha (e.g. RGBA), alpha will be by default 1, otherwise it'll be trimmed",
-          "type": "boolean"
-        },
         "color-picker-universal.ignoreVariableName": {
           "default": true,
           "description": "If enabled, ignores colors in variables names",
