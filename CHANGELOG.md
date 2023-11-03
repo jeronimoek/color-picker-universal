@@ -1,3 +1,12 @@
+## [2.1.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.3...v2.1.4) (2023-11-03)
+
+
+### Bug Fixes
+
+* alpha 0 colors ([f87f81f](https://github.com/jeronimoek/color-picker-universal/commit/f87f81f5f4871f8649cf3885536d56fdd7842bab))
+
+
+
 ## [2.1.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.2...v2.1.3) (2023-10-28)
 
 
@@ -31,10 +40,6 @@
 ### Features
 
 * bundle release using esbuild ([0cc0ef3](https://github.com/jeronimoek/color-picker-universal/commit/0cc0ef3192eb03042d9084bc1dc3d38cbbeec73c))
-
-
-
-# [2.0.0](https://github.com/jeronimoek/color-picker-universal/compare/v1.11.3...v2.0.0) (2023-10-14)
 
 
 
