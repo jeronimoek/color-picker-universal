@@ -101,8 +101,8 @@ export function parseColorString(initialColor: string) {
   try {
     const colorRaw = initialColor.toLocaleLowerCase();
     const color = new ColorTranslatorExtended(colorRaw);
-    const { r, g, b, alpha = 1 } = color.rgb;
-    return new vscode.Color(r / 255, g / 255, b / 255, alpha || 1);
+    const { r, g, b, alpha } = color.rgb;
+    return new vscode.Color(r / 255, g / 255, b / 255, alpha ?? 1);
   } catch (error) {
     return null;
   }
