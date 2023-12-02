@@ -82,7 +82,8 @@ export async function getMatches(
       variables.length &&
       currentTextDocument.offsetAt(
         variables[variables.length - 1].selectionRange.end
-      ) < startIndex
+      ) <
+        offset + startIndex
     ) {
       variables.pop();
     }
