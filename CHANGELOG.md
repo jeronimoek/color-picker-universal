@@ -1,3 +1,12 @@
+## [2.1.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.4...v2.1.5) (2023-12-02)
+
+
+### Bug Fixes
+
+* selection translation doesn't work ([87192b5](https://github.com/jeronimoek/color-picker-universal/commit/87192b5962b8d83a3ceb13b11c57574dd49fa5e7))
+
+
+
 ## [2.1.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.3...v2.1.4) (2023-11-03)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * compile script ([f64ab3e](https://github.com/jeronimoek/color-picker-universal/commit/f64ab3e542cb342239b0e64b98c405514809af68))
-
-
-
-# [2.1.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.0.0...v2.1.0) (2023-10-15)
-
-
-### Features
-
-* bundle release using esbuild ([0cc0ef3](https://github.com/jeronimoek/color-picker-universal/commit/0cc0ef3192eb03042d9084bc1dc3d38cbbeec73c))
 
 
 
