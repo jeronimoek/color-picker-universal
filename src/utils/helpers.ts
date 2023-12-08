@@ -167,7 +167,7 @@ export async function replaceAllColors(
       r: matchedColor.red * 255,
       g: matchedColor.green * 255,
       b: matchedColor.blue * 255,
-      a: matchedColor.alpha,
+      alpha: matchedColor.alpha,
     };
 
     text = replaceTextInMatch(
