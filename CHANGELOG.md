@@ -1,3 +1,12 @@
+## [2.1.6](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.5...v2.1.6) (2023-12-08)
+
+
+### Bug Fixes
+
+* maintain alpha value when using the command ([7df323d](https://github.com/jeronimoek/color-picker-universal/commit/7df323de1208eb29089a24ebecd414d2409b8e93))
+
+
+
 ## [2.1.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.4...v2.1.5) (2023-12-02)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * ignore node modules in extension bundle ([bcf01a6](https://github.com/jeronimoek/color-picker-universal/commit/bcf01a6c7fad67d6c7485bf2db96a5ef41d15609))
-
-
-
-## [2.1.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.0...v2.1.1) (2023-10-15)
-
-
-### Bug Fixes
-
-* compile script ([f64ab3e](https://github.com/jeronimoek/color-picker-universal/commit/f64ab3e542cb342239b0e64b98c405514809af68))
 
 
 
