@@ -66,7 +66,7 @@
     "@types/vscode": "1.74.0",
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
-    "@vscode/test-electron": "2.2.0",
+    "@vscode/test-electron": "^2.3.8",
     "chai": "4.3.7",
     "env-cmd": "10.1.0",
     "esbuild": "^0.19.4",
