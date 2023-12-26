@@ -80,7 +80,7 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "color-translate": "^0.3.3"
+    "color-translate": "^0.4.2"
   },
   "contributes": {
     "commands": [
