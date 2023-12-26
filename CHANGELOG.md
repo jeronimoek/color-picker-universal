@@ -1,3 +1,17 @@
+# [2.2.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.7...v2.2.0) (2023-12-26)
+
+
+### Bug Fixes
+
+* windows testing ([a2963af](https://github.com/jeronimoek/color-picker-universal/commit/a2963af5b93971f057d368ba1f98a4d99a101e57))
+
+
+### Features
+
+* BREAKING CHANGE: drop node 14 support ([b39b175](https://github.com/jeronimoek/color-picker-universal/commit/b39b1758cc572fa2d90338e0e457a323a68928ad))
+
+
+
 ## [2.1.7](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.6...v2.1.7) (2023-12-26)
 
 
@@ -31,15 +45,6 @@
 ### Bug Fixes
 
 * alpha 0 colors ([f87f81f](https://github.com/jeronimoek/color-picker-universal/commit/f87f81f5f4871f8649cf3885536d56fdd7842bab))
-
-
-
-## [2.1.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.2...v2.1.3) (2023-10-28)
-
-
-### Bug Fixes
-
-* consider alpha value ([d45ffdf](https://github.com/jeronimoek/color-picker-universal/commit/d45ffdfca2c0e9304d1e33082ad967d09b2077ba))
 
 
 
