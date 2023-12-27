@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.0...v2.2.1) (2023-12-27)
+
+
+### Bug Fixes
+
+* update dependency ([f11653f](https://github.com/jeronimoek/color-picker-universal/commit/f11653f678ca40264ff65a2afc7590c4c0373afa))
+
+
+
 # [2.2.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.7...v2.2.0) (2023-12-26)
 
 
@@ -36,15 +45,6 @@
 ### Bug Fixes
 
 * selection translation doesn't work ([87192b5](https://github.com/jeronimoek/color-picker-universal/commit/87192b5962b8d83a3ceb13b11c57574dd49fa5e7))
-
-
-
-## [2.1.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.3...v2.1.4) (2023-11-03)
-
-
-### Bug Fixes
-
-* alpha 0 colors ([f87f81f](https://github.com/jeronimoek/color-picker-universal/commit/f87f81f5f4871f8649cf3885536d56fdd7842bab))
 
 
 
