@@ -1,3 +1,12 @@
+## [2.2.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.1...v2.2.2) (2024-03-16)
+
+
+### Bug Fixes
+
+* add preferLegacy setting to README ([5d44cb6](https://github.com/jeronimoek/color-picker-universal/commit/5d44cb680e7ac6babc5be490ef1f8768288e067a))
+
+
+
 ## [2.2.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.0...v2.2.1) (2023-12-27)
 
 
@@ -36,15 +45,6 @@
 ### Bug Fixes
 
 * maintain alpha value when using the command ([7df323d](https://github.com/jeronimoek/color-picker-universal/commit/7df323de1208eb29089a24ebecd414d2409b8e93))
-
-
-
-## [2.1.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.4...v2.1.5) (2023-12-02)
-
-
-### Bug Fixes
-
-* selection translation doesn't work ([87192b5](https://github.com/jeronimoek/color-picker-universal/commit/87192b5962b8d83a3ceb13b11c57574dd49fa5e7))
 
 
 
