@@ -84,106 +84,99 @@ class Picker implements vscode.Disposable {
         return [...(await getMatches(text)), ...getCustomMatches(text)];
       },
       provideColorPresentations(colorRaw, { range, document }) {
+        if (!isValidDocument(document)) return;
+
+        const text = document.getText(range);
+
+        // Check if custom format
+        let isCustomFormat = false;
         try {
-          if (!isValidDocument(document)) return;
+          new ColorTranslatorExtended(text);
+        } catch (_e) {
+          isCustomFormat = true;
+        }
 
-          const text = document.getText(range);
+        const formatsToSetting = getSetting<string[]>("formatsTo");
+        const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
-          // Check if custom format
-          let isCustomFormat = false;
-          try {
-            new ColorTranslatorExtended(text);
-          } catch (_e) {
-            isCustomFormat = true;
-          }
+        const { red: r, green: g, blue: b, alpha } = colorRaw;
+        const color = new ColorTranslatorExtended({
+          r: r * 255,
+          g: g * 255,
+          b: b * 255,
+          alpha,
+        });
 
-          const formatsToSetting = getSetting<string[]>("formatsTo");
-          const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
+        const preferLegacy = getSetting<boolean>("preferLegacy");
+        if (preferLegacy) {
+          color.updateOptions({ legacy: true });
+        }
 
-          const { red: r, green: g, blue: b, alpha } = colorRaw;
-          const color = new ColorTranslatorExtended({
-            r: r * 255,
-            g: g * 255,
-            b: b * 255,
-            alpha,
-          });
+        const formatsFiltered = colorFormatsTo.filter((format) =>
+          isSettingEnabled(
+            formatsTo.map((f) => f.toLocaleUpperCase()),
+            format
+          )
+        );
 
-          const preferLegacy = getSetting<boolean>("preferLegacy");
-          if (preferLegacy) {
-            color.updateOptions({ legacy: true });
-          }
+        let representations = formatsFiltered.map((reprType) =>
+          color[reprType].toString()
+        );
 
-          const formatsFiltered = colorFormatsTo.filter((format) =>
-            isSettingEnabled(
-              formatsTo.map((f) => f.toLocaleUpperCase()),
-              format
-            )
+        // Occupy the same lines as before the translation
+        const heightInLines = range.end.line - range.start.line + 1;
+        if (heightInLines > 1) {
+          representations = representations.map(
+            (rep) =>
+              rep +
+              (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
           );
+        }
 
-          let representations = formatsFiltered.map((reprType) =>
-            color[reprType].toString()
-          );
+        const finalRepresentations: vscode.ColorPresentation[] = [];
 
-          // Occupy the same lines as before the translation
-          const heightInLines = range.end.line - range.start.line + 1;
-          if (heightInLines > 1) {
-            representations = representations.map(
-              (rep) =>
-                rep +
-                (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
+        // Add custom format representation
+        // TODO: ugly asf
+        if (isCustomFormat) {
+          const customFormat = findCustomFormat(text);
+          if (customFormat) {
+            const { format, regexMatch } = customFormat;
+            const formatColor = color[format].toString();
+            const formatRegex = getFormatRegex(format);
+            const globalFormatRegex = new RegExp(formatRegex.source, "gi");
+            const [formatMatch] = [...formatColor.matchAll(globalFormatRegex)];
+            let updatedText = text;
+            const indices = regexMatch.indices?.slice(1).filter((v) => v) || [];
+            indices.reverse();
+            const formatValues = formatMatch
+              .slice(2, indices.length + 3)
+              .filter((v) => v);
+
+            indices.forEach(([start, end], i) => {
+              if (i === indices.length) return;
+              const diff = indices.length - formatValues.length;
+              let value = formatValues[formatValues.length - i - 1 + diff];
+              if (i === 0 && diff === 1) {
+                value = "1";
+              }
+              if (value) {
+                updatedText = replaceRange(updatedText, start, end, value);
+              }
+            });
+
+            finalRepresentations.push(
+              new vscode.ColorPresentation(updatedText)
             );
           }
-
-          const finalRepresentations: vscode.ColorPresentation[] = [];
-
-          // Add custom format representation
-          // TODO: ugly asf
-          if (isCustomFormat) {
-            const customFormat = findCustomFormat(text);
-            if (customFormat) {
-              const { format, regexMatch } = customFormat;
-              const formatColor = color[format].toString();
-              const formatRegex = getFormatRegex(format);
-              const globalFormatRegex = new RegExp(formatRegex.source, "gi");
-              const [formatMatch] = [
-                ...formatColor.matchAll(globalFormatRegex),
-              ];
-              let updatedText = text;
-              const indices =
-                regexMatch.indices?.slice(1).filter((v) => v) || [];
-              indices.reverse();
-              const formatValues = formatMatch
-                .slice(2, indices.length + 3)
-                .filter((v) => v);
-
-              indices.forEach(([start, end], i) => {
-                if (i === indices.length) return;
-                const diff = indices.length - formatValues.length;
-                let value = formatValues[formatValues.length - i - 1 + diff];
-                if (i === 0 && diff === 1) {
-                  value = "1";
-                }
-                if (value) {
-                  updatedText = replaceRange(updatedText, start, end, value);
-                }
-              });
-
-              finalRepresentations.push(
-                new vscode.ColorPresentation(updatedText)
-              );
-            }
-          }
-
-          finalRepresentations.push(
-            ...representations.map(
-              (representation) => new vscode.ColorPresentation(representation)
-            )
-          );
-
-          return finalRepresentations;
-        } catch (error) {
-          console.error(error);
         }
+
+        finalRepresentations.push(
+          ...representations.map(
+            (representation) => new vscode.ColorPresentation(representation)
+          )
+        );
+
+        return finalRepresentations;
       },
     });
   }
