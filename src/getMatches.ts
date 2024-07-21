@@ -1,6 +1,7 @@
 import {
   customMatchColors,
   ensureActiveEditorIsSet,
+  getReferences,
   getSetting,
   matchColors,
   parseColorString,
@@ -9,19 +10,6 @@ import * as vscode from "vscode";
 import { Document } from "./models/Document";
 import { ColorFormatFrom, ColorFormatTo } from "./utils/enums";
 import { Color } from "color-translate";
-
-function findVars(
-  symbols: vscode.DocumentSymbol[] = []
-): vscode.DocumentSymbol[] {
-  const vars = symbols.filter(
-    (symbol) => symbol.kind === vscode.SymbolKind.Variable
-  );
-  return vars.concat(
-    symbols
-      .map((symbol) => findVars(symbol.children))
-      .reduce((acc, curr) => acc.concat(curr), [])
-  );
-}
 
 export async function getMatches(
   text: string,
@@ -52,18 +40,39 @@ export async function getMatches(
           activeEditor.document.uri
         )
       : [];
-  let variables = findVars(symbols).reverse();
+
+  const allReferences: vscode.Location[] = [];
+
+  for (const symbol of symbols) {
+    allReferences.push(
+      ...(await getReferences(symbol, activeEditor.document.uri))
+    );
+  }
+
+  allReferences
+    .sort((a, b) => {
+      const { line: aLine, character: aCharacter } = a.range.start;
+      const { line: bLine, character: bCharacter } = b.range.start;
+      // compare lines
+      if (aLine < bLine) return -1;
+      else if (aLine > bLine) return 1;
+
+      // lines were equal, try characters
+      if (aCharacter < bCharacter) return -1;
+      else if (aCharacter > bCharacter) return 1;
+
+      return 0;
+    })
+    .reverse();
 
   if (offset) {
-    for (const currVariable of variables) {
-      currVariable.selectionRange = new vscode.Range(
+    for (const currVariable of allReferences) {
+      currVariable.range = new vscode.Range(
         currentTextDocument.positionAt(
-          activeEditor.document.offsetAt(currVariable.selectionRange.start) -
-            offset
+          activeEditor.document.offsetAt(currVariable.range.start) - offset
         ),
         currentTextDocument.positionAt(
-          activeEditor.document.offsetAt(currVariable.selectionRange.end) -
-            offset
+          activeEditor.document.offsetAt(currVariable.range.end) - offset
         )
       );
     }
@@ -82,18 +91,18 @@ export async function getMatches(
       currentTextDocument.positionAt(endIndex)
     );
     while (
-      variables.length &&
+      allReferences.length &&
       currentTextDocument.offsetAt(
-        variables[variables.length - 1].selectionRange.end
+        allReferences[allReferences.length - 1].range.end
       ) <
         offset + startIndex
     ) {
-      variables.pop();
+      allReferences.pop();
     }
-    const lastVar = variables[variables.length - 1];
+    const lastVar = allReferences[allReferences.length - 1];
     if (
       lastVar &&
-      currentTextDocument.offsetAt(lastVar.selectionRange.start) < endIndex
+      currentTextDocument.offsetAt(lastVar.range.start) < endIndex
     ) {
       continue;
     }

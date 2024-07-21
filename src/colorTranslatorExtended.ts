@@ -1,5 +1,6 @@
 import { NamedColors, namedColorsLAB } from "./shared/constants";
 import ColorTranslator from "color-translate";
+import { getSetting } from "./utils/helpers";
 
 function deltaE(
   labA: [number, number, number],
@@ -24,14 +25,15 @@ function deltaE(
 
 export class ColorTranslatorExtended extends ColorTranslator {
   constructor(...input: ConstructorParameters<typeof ColorTranslator>) {
-    const colorInput = input[0];
+    const maxDigits = getSetting<number>("maxDigits");
+    const [colorInput, options] = input;
     if (
       typeof colorInput === "string" &&
       NamedColors[colorInput as keyof typeof NamedColors]
     ) {
-      super(NamedColors[colorInput as keyof typeof NamedColors]);
+      super(NamedColors[colorInput as keyof typeof NamedColors], options);
     } else {
-      super(...input);
+      super(colorInput, { ...options, maxDigits });
     }
   }
 
