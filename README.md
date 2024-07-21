@@ -14,7 +14,7 @@
 
 Pick and translate between multiple color formats, in any file.
 
-Formats supported: rgb/a, hex/a, hsl/a, hwb/a, cmyk/a, hex 0x, lab, lch, oklab, oklch and named colors.
+Formats supported: rgb/a, hex/a, hsl/a, hwb/a, cmyk/a, hex 0x, lab, lch, oklab, oklch, and named colors.
 
 This extension can be used through its color pickers, commands, or context menu options.
 
@@ -81,10 +81,10 @@ Is one of "formatsTo" ("cmyk", "hex", "hsl", "hwb", "named", "rgb", "hex0x", "la
 
 #### \<regex\>
 
-Is an escaped regex expression which matches the values of the color, and an optional alpha value (3 to 5 values, depending on the format).
+Is an escaped regex expression that matches the values of the color, and an optional alpha value (3 to 5 values, depending on the format).
 The values MUST be in the same format as in the standard presentation (can't pass a percentage value into a property that would typically only accept decimals, otherwise there could be unexpected outcomes).
 
-- Recommendation: test the standard presentations to check the allowed color properties presentations
+- Recommendation: test the standard presentations to check the allowed color properties of presentations
 
 Here is a table with the standard presentations of each color format property (this follows closely the [W3C standards](https://www.w3.org/TR/css-color-4/))
 
@@ -104,7 +104,7 @@ Here is a table with the standard presentations of each color format property (t
 | OKLCH                | c                   | Number/String 0-0.4, String Percentage                                       | 0.2, '0.2', '50%'                                  |
 | CMYK                 | c, m, y, k          | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
 
-Here is a rgb regex example where we match r, g and b values, and an optional alpha. Note that it's missing percentage support
+Here is a rgb regex example where we match r, g, and b values, and an optional alpha. Note that it's missing percentage support.
 
 ```json
 "my-rgb\\((\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?)(?: \\$ (\\d+(?:\\.\\d+)?))?\\)"
@@ -112,12 +112,12 @@ Here is a rgb regex example where we match r, g and b values, and an optional al
 
 #### Regex Tips:
 
-- Doublequotes (") and backslashes (\\) are escaped with a backslash (\\).
+- Double quotes (") and backslashes (\\) are escaped with a backslash (\\).
 - The regex capture groups must only capture the required values, and the optional one (alpha) if desired
 - https://regexper.com/ This website is a great way to visualize and tweak regexes. [Here](https://regexper.com/#my-rgb%5C%28%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%20%5C%24%20%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%20%5C%24%20%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%28%3F%3A%20%5C%24%20%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%29%3F%5C%29) is the regex above visualized there. Note that **escape backslashes (\\) MUST be removed** when entering the regex there
 
 ## 🐞 Known Issues
 
-[#68](https://github.com/jeronimoek/color-picker-universal/issues/68) When working with **css**, **less**, **sass** and **scss** files, the color picker is duplicated due to the default Vscode color picker. Currently the only workaround is excluding these file extensions in the `color-picker-universal.languages` setting (see example value above)
+[#68](https://github.com/jeronimoek/color-picker-universal/issues/68) When working with **css**, **less**, **sass**, and **scss** files, the color picker is duplicated due to the default Vscode color picker. Currently, the only workaround is excluding these file extensions in the `color-picker-universal.languages` setting (see example value above)
 
 ![Duplicated picker in css file](images/css-duplication.png)
