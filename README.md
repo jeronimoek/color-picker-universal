@@ -33,7 +33,7 @@ To see settings press `CTRL + ,` OR `⌘ + ,`
 | color-picker-universal.formatsFrom        | Enabled formats to translate from. Use "!" to exclude formats | ["*"]   | "\*" "device-cmyk" "hex" "hsl" "hwb" "named" "rgb" "hex0x" "lab" "lch" "oklab" "oklch" "a98"                | ["*", "!hex_0x", "!named"]                                                                                              |
 | color-picker-universal.formatsTo          | Enabled formats to translate into. Use "!" to exclude formats | ["*"]   | "\*" "cmyk" "hex" "hsl" "hwb" "named" "rgb" "hex0x" "lab" "lch" "oklab" "oklch" "a98"                       | ["*", "!hex_0x", "!cmyk", "!hwb"]                                                                                       |
 | color-picker-universal.maxDigits          | Max number of decimal digits                                  | 2       | <integer>                                                                                                   | 5                                                                                                                       |
-| color-picker-universal.customRegexes      | Set custom regexes. See #-custom-regexes                      | {}      | See #-custom-regexes                                                                                        | { "a98": ["my-a98\\((\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?)(?: \\$ (\\d+(?:\\.\\d+)?))?\\)",]} |
+| color-picker-universal.customRegexes      | Set custom regexes. See [Custom Regexes](#-custom-regexes)    | {}      | See [Custom Regexes](#-custom-regexes)                                                                      | { "a98": ["my-a98\\((\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?)(?: \\$ (\\d+(?:\\.\\d+)?))?\\)",]} |
 
 ## ✍ Commands
 
@@ -57,7 +57,7 @@ To see the editor's context menu options press `right click` inside a file conte
 
 ## 🔧 Custom Regexes
 
-Soon...
+TODO: Soon...
 
 ## 🐞 Known Issues
 
