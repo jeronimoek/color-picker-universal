@@ -14,7 +14,7 @@
 
 Pick and translate between multiple color formats, in any file.
 
-Formats supported: rgb/a, hex/a, hsl/a, hwb/a, cmyk/a, hex 0x, lab, lch, oklab, oklch and named colors.
+Formats supported: rgb/a, a98, hex/a, hsl/a, hwb/a, cmyk/a, hex 0x, lab, lch, oklab, oklch and named colors.
 
 This extension can be used through its color pickers, commands, or context menu options.
 
