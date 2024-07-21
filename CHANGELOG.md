@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.3...v2.3.0) (2024-07-21)
+
+
+### Features
+
+* add custom format presentations support, add a98 support ([755f1f0](https://github.com/jeronimoek/color-picker-universal/commit/755f1f0ef36a9990ea3a9914844e2290fc64d356))
+
+
+
 ## [2.2.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.2...v2.2.3) (2024-03-16)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * BREAKING CHANGE: drop node 14 support ([b39b175](https://github.com/jeronimoek/color-picker-universal/commit/b39b1758cc572fa2d90338e0e457a323a68928ad))
-
-
-
-## [2.1.7](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.6...v2.1.7) (2023-12-26)
-
-
-### Bug Fixes
-
-* update color translator dependency ([1f5ad99](https://github.com/jeronimoek/color-picker-universal/commit/1f5ad994e93390950dc2dc7ee0bcf4a6db4cb9f1))
 
 
 
