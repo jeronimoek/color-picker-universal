@@ -1,9 +1,8 @@
 import { ColorTranslatorExtended } from "./../colorTranslatorExtended";
 import * as vscode from "vscode";
-import { colorFormatsFrom } from "./../shared/constants";
-import { NamedColors } from "../shared/constants";
+import { colorFormatsFrom, namedColorsRegex } from "./../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
-import { replaceTextInMatch } from "./utils";
+import { isColorFormat, replaceTextInMatch } from "./utils";
 import { getMatches } from "../getMatches";
 import {
   hexRegex,
@@ -15,7 +14,9 @@ import {
   lchRegex,
   oklabRegex,
   oklchRegex,
+  a98Regex,
   rgbRegex,
+  Color,
 } from "color-translate";
 
 export interface RGBA {
@@ -31,10 +32,6 @@ export function matchColors(text: string) {
   const formatsFrom = formatsFromSetting?.length ? formatsFromSetting : ["*"];
 
   const formatsRegexes: string[] = [];
-
-  if (isSettingEnabled(formatsFrom, ColorFormatFrom.NAMED)) {
-    formatsRegexes.push();
-  }
 
   // Create regex of enabled formats with prefixes. e.g. "rgb(...)"
   colorFormatsFrom
@@ -70,13 +67,15 @@ export function matchColors(text: string) {
         case ColorFormatFrom.OKLCH:
           regex = oklchRegex;
           break;
+        case ColorFormatFrom.A98:
+          regex = a98Regex;
+          break;
         case ColorFormatFrom.RGB:
         case ColorFormatFrom.RGBA:
           regex = rgbRegex;
           break;
         case ColorFormatFrom.NAMED:
-          const namedColors = Object.keys(NamedColors).join("|");
-          regex = new RegExp(`(?:${namedColors})`);
+          regex = namedColorsRegex;
           break;
         default:
           break;
@@ -97,10 +96,38 @@ export function matchColors(text: string) {
   return matches;
 }
 
-export function parseColorString(initialColor: string) {
+export function customMatchColors(text: string) {
+  const customRegexesSetting: Record<string, string[]> =
+    getSetting("customRegexes") ?? {};
+
+  const matches = {} as { [key in ColorFormatTo]: RegExpExecArray[] };
+
+  for (const format in customRegexesSetting) {
+    const regexes = customRegexesSetting[format];
+    if (isColorFormat(format)) {
+      for (const regexString of regexes) {
+        const regex = new RegExp(regexString, "gid");
+        const regexMatches = [...text.matchAll(regex)];
+        if (regexMatches.length) {
+          matches[format] ??= [];
+          matches[format].push(...regexMatches);
+        }
+      }
+    }
+  }
+
+  return matches;
+}
+
+export function parseColorString(initialColor: string | Color) {
   try {
-    const colorRaw = initialColor.toLocaleLowerCase();
-    const color = new ColorTranslatorExtended(colorRaw);
+    let color: ColorTranslatorExtended;
+    if (typeof initialColor === "string") {
+      const colorLowerCase = initialColor.toLocaleLowerCase();
+      color = new ColorTranslatorExtended(colorLowerCase);
+    } else {
+      color = new ColorTranslatorExtended(initialColor);
+    }
     const { r, g, b, alpha } = color.rgb;
     return new vscode.Color(r / 255, g / 255, b / 255, alpha ?? 1);
   } catch (error) {
@@ -199,4 +226,52 @@ export function getSetting<T>(setting: string) {
   return vscode.workspace
     .getConfiguration("color-picker-universal")
     .get<T>(setting);
+}
+
+export function findCustomFormat(text: string) {
+  const customRegexesSetting: Record<string, string[]> =
+    getSetting("customRegexes") ?? {};
+
+  for (const format in customRegexesSetting) {
+    const regexes = customRegexesSetting[format];
+    if (isColorFormat(format)) {
+      for (const regexString of regexes) {
+        const regex = new RegExp(regexString, "gid");
+        const [regexMatch] = [...text.matchAll(regex)];
+        if (regexMatch) {
+          return { format, regexMatch };
+        }
+      }
+    }
+  }
+}
+
+export function getFormatRegex(format: ColorFormatTo) {
+  switch (format) {
+    case ColorFormatTo.A98:
+      return a98Regex;
+    case ColorFormatTo.CMYK:
+      return cmykRegex;
+    case ColorFormatTo.HEX:
+      return hexRegex;
+    case ColorFormatTo.HEX0X:
+      return hex0xRegex;
+    case ColorFormatTo.HSL:
+      return hslRegex;
+    case ColorFormatTo.HWB:
+      return hwbRegex;
+    case ColorFormatTo.LAB:
+      return labRegex;
+    case ColorFormatTo.LCH:
+      return lchRegex;
+    case ColorFormatTo.NAMED:
+      return namedColorsRegex;
+    case ColorFormatTo.OKLAB:
+      return oklabRegex;
+    case ColorFormatTo.OKLCH:
+      return oklchRegex;
+    case ColorFormatTo.RGB:
+    default:
+      return rgbRegex;
+  }
 }
