@@ -1,3 +1,12 @@
+# [2.4.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.3.0...v2.4.0) (2024-07-21)
+
+
+### Features
+
+* add maxDigits setting, fix ignoreVariableName functionality ([6c478ee](https://github.com/jeronimoek/color-picker-universal/commit/6c478ee0fb2d0c1db9800cce2f2cf1fb56f01e49))
+
+
+
 # [2.3.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.3...v2.3.0) (2024-07-21)
 
 
@@ -26,20 +35,6 @@
 ### Bug Fixes
 
 * update dependency ([f11653f](https://github.com/jeronimoek/color-picker-universal/commit/f11653f678ca40264ff65a2afc7590c4c0373afa))
-
-
-
-# [2.2.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.1.7...v2.2.0) (2023-12-26)
-
-
-### Bug Fixes
-
-* windows testing ([a2963af](https://github.com/jeronimoek/color-picker-universal/commit/a2963af5b93971f057d368ba1f98a4d99a101e57))
-
-
-### Features
-
-* BREAKING CHANGE: drop node 14 support ([b39b175](https://github.com/jeronimoek/color-picker-universal/commit/b39b1758cc572fa2d90338e0e457a323a68928ad))
 
 
 
