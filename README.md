@@ -1,5 +1,16 @@
 # 🌌 Color Picker Universal 🌌
 
+
+## 🌐 Links
+
+[Website](https://jeronimoek.github.io/color-translate-web/)
+
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=JeronimoEkerdt.color-picker-universal)
+
+[Open VSX Registry](https://open-vsx.org/extension/JeronimoEkerdt/color-picker-universal)
+
+[Github Repository](https://github.com/jeronimoek/color-picker-universal)
+
 ## ✅ Features
 
 Pick and translate between multiple color formats, in any file.
@@ -48,11 +59,3 @@ To see the editor's context menu options press `right click` inside a file conte
 [#68](https://github.com/jeronimoek/color-picker-universal/issues/68) When working with **css**, **less**, **sass** and **scss** files, the color picker is duplicated due to the default Vscode color picker. Currently the only workaround is excluding these file extensions in the `color-picker-universal.languages` setting (see example value above)
 
 ![Duplicated picker in css file](images/css-duplication.png)
-
-## 🌐 Links
-
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=JeronimoEkerdt.color-picker-universal)
-
-[Open VSX Registry](https://open-vsx.org/extension/JeronimoEkerdt/color-picker-universal)
-
-[Github Repository](https://github.com/jeronimoek/color-picker-universal)
