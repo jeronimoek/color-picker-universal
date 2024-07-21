@@ -275,3 +275,24 @@ export function getFormatRegex(format: ColorFormatTo) {
       return rgbRegex;
   }
 }
+
+export async function getReferences(
+  symbol: vscode.DocumentSymbol,
+  uri: vscode.Uri
+) {
+  const symbolReferences: vscode.Location[] = [];
+
+  for (const childSym of symbol.children) {
+    symbolReferences.push(...(await getReferences(childSym, uri)));
+  }
+
+  const references = await vscode.commands.executeCommand<vscode.Location[]>(
+    "vscode.executeReferenceProvider",
+    uri,
+    symbol.range.start
+  );
+
+  symbolReferences.push(...references);
+
+  return symbolReferences;
+}
