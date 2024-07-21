@@ -1,3 +1,12 @@
+## [2.4.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.4.2...v2.4.3) (2024-07-21)
+
+
+### Bug Fixes
+
+* add Custom Regexes README info ([23857b0](https://github.com/jeronimoek/color-picker-universal/commit/23857b03d824fe5e74064b46ba58664709339308))
+
+
+
 ## [2.4.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.4.1...v2.4.2) (2024-07-21)
 
 
@@ -31,10 +40,6 @@
 ### Features
 
 * add custom format presentations support, add a98 support ([755f1f0](https://github.com/jeronimoek/color-picker-universal/commit/755f1f0ef36a9990ea3a9914844e2290fc64d356))
-
-
-
-## [2.2.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.2.2...v2.2.3) (2024-03-16)
 
 
 
