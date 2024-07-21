@@ -1,9 +1,13 @@
 import * as vscode from "vscode";
 import { Document } from "../models/Document";
 import { Regex } from "../shared/constants";
-import { TemplateColorFragments } from "./enums";
+import { ColorFormatTo, TemplateColorFragments } from "./enums";
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export function isColorFormat(format: string): format is ColorFormatTo {
+  return Object.values(ColorFormatTo).includes(format as any);
+}
 
 export function splitInLines(text: string) {
   const lineRegex = /(.*)(\r?\n)?/g;
@@ -52,4 +56,13 @@ export function replaceTextInMatch(
 
 export function clamp(num: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, num));
+}
+
+export function replaceRange(
+  s: string,
+  start: number,
+  end: number,
+  substitute: string
+) {
+  return s.substring(0, start) + substitute + s.substring(end);
 }

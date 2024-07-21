@@ -227,6 +227,10 @@ export const NamedColors = {
   yellowgreen: "#9ACD32",
 };
 
+export const namedColorsRegex = new RegExp(
+  `${Object.keys(NamedColors).join("|")}`
+);
+
 export const namedColorsLAB = {
   aliceblue: [97.12, -1.77, -4.36],
   antiquewhite: [93.86, 2.86, 11.64],

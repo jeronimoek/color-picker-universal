@@ -80,7 +80,7 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "color-translate": "^0.5.0"
+    "color-translate": "^1.1.1"
   },
   "contributes": {
     "commands": [
@@ -360,6 +360,22 @@
               "yaml"
             ]
           }
+        },
+        "color-picker-universal.customRegexes": {
+          "default": {},
+          "description": "Set custom regexes",
+          "type": "object",
+          "examples": [
+            {
+              "a98": [
+                "my-a98-alpha-format\\((\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?)(?: \\$ (\\d+(?:\\.\\d+)?))?\\)",
+                "other-a98-format\\((\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?)\\)"
+              ],
+              "hsl": [
+                "the-hsl-format\\((\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?) \\$ (\\d+(?:\\.\\d+)?)\\)"
+              ]
+            }
+          ]
         }
       }
     }

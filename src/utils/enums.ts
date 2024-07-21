@@ -15,6 +15,7 @@ export enum ColorFormatTo {
   LCH = "lch",
   OKLAB = "oklab",
   OKLCH = "oklch",
+  A98 = "a98",
 }
 
 export enum ColorFormatFrom {
@@ -31,6 +32,7 @@ export enum ColorFormatFrom {
   LCH = "lch",
   OKLAB = "oklab",
   OKLCH = "oklch",
+  A98 = "a98",
 }
 
 export enum CommandType {

@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
 import { colorFormatsTo } from "./shared/constants";
-import { getMatches } from "./getMatches";
+import { getCustomMatches, getMatches } from "./getMatches";
 import {
+  findCustomFormat,
+  getFormatRegex,
   getSetting,
   isSettingEnabled,
   isValidDocument,
@@ -10,7 +12,7 @@ import {
 import { ColorFormatTo, CommandType } from "./utils/enums";
 import { translateColors } from "./commands/translateColors";
 import { ColorTranslatorExtended } from "./colorTranslatorExtended";
-
+import { replaceRange } from "./utils/utils";
 class Picker implements vscode.Disposable {
   constructor() {
     this.register();
@@ -74,56 +76,114 @@ class Picker implements vscode.Disposable {
 
     vscode.commands.registerCommand(command, commandHandler);
     vscode.languages.registerColorProvider("*", {
-      provideDocumentColors(document: vscode.TextDocument) {
+      async provideDocumentColors(document: vscode.TextDocument) {
         if (!isValidDocument(document)) return;
 
         const text = document.getText();
-        return getMatches(text);
+
+        return [...(await getMatches(text)), ...getCustomMatches(text)];
       },
       provideColorPresentations(colorRaw, { range, document }) {
-        if (!isValidDocument(document)) return;
+        try {
+          if (!isValidDocument(document)) return;
 
-        const formatsToSetting = getSetting<string[]>("formatsTo");
-        const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
+          const text = document.getText(range);
 
-        const { red: r, green: g, blue: b, alpha } = colorRaw;
-        const color = new ColorTranslatorExtended({
-          r: r * 255,
-          g: g * 255,
-          b: b * 255,
-          alpha,
-        });
+          // Check if custom format
+          let isCustomFormat = false;
+          try {
+            new ColorTranslatorExtended(text);
+          } catch (_e) {
+            isCustomFormat = true;
+          }
 
-        const preferLegacy = getSetting<boolean>("preferLegacy");
-        if (preferLegacy) {
-          color.updateOptions({ legacy: true });
-        }
+          const formatsToSetting = getSetting<string[]>("formatsTo");
+          const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
-        const formatsFiltered = colorFormatsTo.filter((format) =>
-          isSettingEnabled(
-            formatsTo.map((f) => f.toLocaleUpperCase()),
-            format
-          )
-        );
+          const { red: r, green: g, blue: b, alpha } = colorRaw;
+          const color = new ColorTranslatorExtended({
+            r: r * 255,
+            g: g * 255,
+            b: b * 255,
+            alpha,
+          });
 
-        let representations = formatsFiltered.map((reprType) =>
-          color[reprType].toString()
-        );
+          const preferLegacy = getSetting<boolean>("preferLegacy");
+          if (preferLegacy) {
+            color.updateOptions({ legacy: true });
+          }
 
-        // Occupy the same lines as before the translation
-        const heightInLines = range.end.line - range.start.line + 1;
-        if (heightInLines > 1) {
-          representations = representations.map(
-            (rep) =>
-              rep +
-              (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
+          const formatsFiltered = colorFormatsTo.filter((format) =>
+            isSettingEnabled(
+              formatsTo.map((f) => f.toLocaleUpperCase()),
+              format
+            )
           );
-        }
 
-        return representations.map(
-          (representation) =>
-            new vscode.ColorPresentation(representation.toString())
-        );
+          let representations = formatsFiltered.map((reprType) =>
+            color[reprType].toString()
+          );
+
+          // Occupy the same lines as before the translation
+          const heightInLines = range.end.line - range.start.line + 1;
+          if (heightInLines > 1) {
+            representations = representations.map(
+              (rep) =>
+                rep +
+                (document.eol === 1 ? "\n" : "\r\n").repeat(heightInLines - 1)
+            );
+          }
+
+          const finalRepresentations: vscode.ColorPresentation[] = [];
+
+          // Add custom format representation
+          // TODO: ugly asf
+          if (isCustomFormat) {
+            const customFormat = findCustomFormat(text);
+            if (customFormat) {
+              const { format, regexMatch } = customFormat;
+              const formatColor = color[format].toString();
+              const formatRegex = getFormatRegex(format);
+              const globalFormatRegex = new RegExp(formatRegex.source, "gi");
+              const [formatMatch] = [
+                ...formatColor.matchAll(globalFormatRegex),
+              ];
+              let updatedText = text;
+              const indices =
+                regexMatch.indices?.slice(1).filter((v) => v) || [];
+              indices.reverse();
+              const formatValues = formatMatch
+                .slice(2, indices.length + 3)
+                .filter((v) => v);
+
+              indices.forEach(([start, end], i) => {
+                if (i === indices.length) return;
+                const diff = indices.length - formatValues.length;
+                let value = formatValues[formatValues.length - i - 1 + diff];
+                if (i === 0 && diff === 1) {
+                  value = "1";
+                }
+                if (value) {
+                  updatedText = replaceRange(updatedText, start, end, value);
+                }
+              });
+
+              finalRepresentations.push(
+                new vscode.ColorPresentation(updatedText)
+              );
+            }
+          }
+
+          finalRepresentations.push(
+            ...representations.map(
+              (representation) => new vscode.ColorPresentation(representation)
+            )
+          );
+
+          return finalRepresentations;
+        } catch (error) {
+          console.error(error);
+        }
       },
     });
   }
