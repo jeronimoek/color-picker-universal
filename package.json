@@ -381,6 +381,11 @@
               ]
             }
           ]
+        },
+        "color-picker-universal.avoidDuplicate": {
+          "default": false,
+          "description": "If enabled, duplicate color pickers will be avoided. Note: On these built-in color pickers, the extension formats and configurations won't apply",
+          "type": "boolean"
         }
       }
     }

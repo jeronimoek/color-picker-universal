@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { colorFormatsTo } from "./shared/constants";
+import { colorFormatsTo, formatsBuiltinPicker } from "./shared/constants";
 import { getCustomMatches, getMatches } from "./getMatches";
 import {
   findCustomFormat,
@@ -19,10 +19,7 @@ class Picker implements vscode.Disposable {
   }
 
   private register() {
-    const activeEditor = vscode.window.activeTextEditor;
-    if (!activeEditor) {
-      return;
-    }
+    let disabled = false;
 
     const command = `color-picker-universal.translateColors`;
 
@@ -77,12 +74,60 @@ class Picker implements vscode.Disposable {
     vscode.commands.registerCommand(command, commandHandler);
     vscode.languages.registerColorProvider("*", {
       async provideDocumentColors(document: vscode.TextDocument) {
+        if (disabled) {
+          disabled = false;
+          return;
+        }
+
         if (!isValidDocument(document)) return;
 
         const text = document.getText();
 
-        return [...(await getMatches(text)), ...getCustomMatches(text)];
+        let matches = [...(await getMatches(text)), ...getCustomMatches(text)];
+
+        const avoidDuplicate = getSetting<boolean>("avoidDuplicate");
+        if (
+          avoidDuplicate &&
+          matches.length &&
+          formatsBuiltinPicker.includes(document.languageId)
+        ) {
+          disabled = true;
+
+          const builtinPickerColors = await vscode.commands.executeCommand<
+            vscode.ColorInformation[]
+          >("vscode.executeDocumentColorProvider", document.uri);
+
+          const lineCharBuiltinColors = builtinPickerColors.reduce<
+            Record<string, true>
+          >((acc, curr) => {
+            const { start, end } = curr.range;
+            const values = [
+              start.line,
+              start.character,
+              end.line,
+              end.character,
+            ];
+            const key = values.join("-");
+            acc[key] = true;
+            return acc;
+          }, {});
+
+          matches = matches.filter((match) => {
+            const { start, end } = match.range;
+            const values = [
+              start.line,
+              start.character,
+              end.line,
+              end.character,
+            ];
+            const key = values.join("-");
+            return !lineCharBuiltinColors[key];
+          });
+        }
+
+        return matches;
       },
+
       provideColorPresentations(colorRaw, { range, document }) {
         if (!isValidDocument(document)) return;
 
@@ -136,7 +181,7 @@ class Picker implements vscode.Disposable {
         const finalRepresentations: vscode.ColorPresentation[] = [];
 
         // Add custom format representation
-        // TODO: ugly asf
+        // TODO: improve code quality
         if (isCustomFormat) {
           const customFormat = findCustomFormat(text);
           if (customFormat) {

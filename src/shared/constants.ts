@@ -381,3 +381,5 @@ export const namedColorsLAB = {
   yellow: [97.61, -15.75, 93.38],
   yellowgreen: [76.77, -33.1, 65.61],
 } satisfies Record<string, [number, number, number]>;
+
+export const formatsBuiltinPicker = ["css", "less", "sass", "scss"];
