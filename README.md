@@ -89,21 +89,21 @@ The values MUST be in the same format as in the standard presentation (can't pas
 
 Here is a table with the standard presentations of each color format property (this follows closely the [W3C standards](https://www.w3.org/TR/css-color-4/))
 
-| Color Format/s       | Property/ies        | Presentations                                                                | Examples                                           |
-| -------------------- | ------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------- |
-| _ALL FORMATS_        | alpha (default = 1) | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
-| RGB                  | r, g, b             | Number/String 0-255, String Percentage                                       | 123, '123', '50%'                                  |
-| A98                  | r, g, b             | Number/String 0-1                                                            | 0.5, '0.5'                                         |
-| HSL, HWB, LCH, OKLCH | h                   | Number/String 0-360, String Percentage, String Grad, String Rad, String Turn | 180, '180', '50%', '200grad', '3.14rad', '0.5turn' |
-| HSL                  | s, l                | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
-| HWB                  | w, b                | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
-| LAB, LCH             | l                   | Number/String 0-100, String Percentage                                       | 50, '50', '50%'                                    |
-| LAB                  | a, b                | Number/String -125 - 125, String Percentage -100% - 100%                     | -62.5, '-62.5', '-50%'                             |
-| LCH                  | c                   | Number/String 0-150, String Percentage                                       | 75, '75', '50%'                                    |
-| OKLAB, OKLCH         | l                   | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
-| OKLAB                | a, b                | Number/String -0.4 - 0.4, String Percentage -100% - 100%                     | -0.2, '-0.2', '-50%'                               |
-| OKLCH                | c                   | Number/String 0-0.4, String Percentage                                       | 0.2, '0.2', '50%'                                  |
-| CMYK                 | c, m, y, k          | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
+| Color Format/s       | Property/ies        | Presentations                       | Examples                                      |
+| -------------------- | ------------------- | ----------------------------------- | --------------------------------------------- |
+| _ALL FORMATS_        | alpha (default = 1) | 0-1, Percentage                     | '0.5', '50%'                                  |
+| RGB                  | r, g, b             | 0-255, Percentage                   | '123', '50%'                                  |
+| A98                  | r, g, b             | 0-1                                 | '0.5'                                         |
+| HSL, HWB, LCH, OKLCH | h                   | 0-360, Percentage, Grad, Rad, Turn  | '180', '50%', '200grad', '3.14rad', '0.5turn' |
+| HSL                  | s, l                | 0-1, Percentage                     | '0.5', '50%'                                  |
+| HWB                  | w, b                | 0-1, Percentage                     | '0.5', '50%'                                  |
+| LAB, LCH             | l                   | 0-100, Percentage                   | '50', '50%'                                   |
+| LAB                  | a, b                | -125 - 125, Percentage -100% - 100% | '-62.5', '-50%'                               |
+| LCH                  | c                   | 0-150, Percentage                   | '75', '50%'                                   |
+| OKLAB, OKLCH         | l                   | 0-1, Percentage                     | '0.5', '50%'                                  |
+| OKLAB                | a, b                | -0.4 - 0.4, Percentage -100% - 100% | '-0.2', '-50%'                                |
+| OKLCH                | c                   | 0-0.4, Percentage                   | '0.2', '50%'                                  |
+| CMYK                 | c, m, y, k          | 0-1, Percentage                     | '0.5', '50%'                                  |
 
 Here is a rgb regex example where we match r, g, and b values, and an optional alpha. Note that it's missing percentage support.
 
