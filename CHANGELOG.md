@@ -1,3 +1,12 @@
+# [2.5.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.4.4...v2.5.0) (2024-07-28)
+
+
+### Features
+
+* allow to disable color picker only on duplicated pickers ([529df18](https://github.com/jeronimoek/color-picker-universal/commit/529df183a4e2e4788f1b681d29d65a75fee4eee0))
+
+
+
 ## [2.4.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.4.3...v2.4.4) (2024-07-21)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * improve readme ([4923c10](https://github.com/jeronimoek/color-picker-universal/commit/4923c103ee53bf0e7c5e62fbd90003a3c893e20f))
-
-
-
-# [2.4.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.3.0...v2.4.0) (2024-07-21)
-
-
-### Features
-
-* add maxDigits setting, fix ignoreVariableName functionality ([6c478ee](https://github.com/jeronimoek/color-picker-universal/commit/6c478ee0fb2d0c1db9800cce2f2cf1fb56f01e49))
 
 
 
