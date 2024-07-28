@@ -1,6 +1,6 @@
 import { ColorTranslatorExtended } from "./../colorTranslatorExtended";
 import * as vscode from "vscode";
-import { colorFormatsFrom, namedColorsRegex } from "./../shared/constants";
+import { colorFormatsFrom } from "./../shared/constants";
 import { ColorFormatFrom, ColorFormatTo } from "./enums";
 import { isColorFormat, replaceTextInMatch } from "./utils";
 import { getMatches } from "../getMatches";
@@ -17,6 +17,7 @@ import {
   a98Regex,
   rgbRegex,
   Color,
+  namedColorRegex,
 } from "color-translate";
 
 export interface RGBA {
@@ -75,7 +76,7 @@ export function matchColors(text: string) {
           regex = rgbRegex;
           break;
         case ColorFormatFrom.NAMED:
-          regex = namedColorsRegex;
+          regex = namedColorRegex;
           break;
         default:
           break;
@@ -265,7 +266,7 @@ export function getFormatRegex(format: ColorFormatTo) {
     case ColorFormatTo.LCH:
       return lchRegex;
     case ColorFormatTo.NAMED:
-      return namedColorsRegex;
+      return namedColorRegex;
     case ColorFormatTo.OKLAB:
       return oklabRegex;
     case ColorFormatTo.OKLCH:

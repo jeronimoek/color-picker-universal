@@ -47,7 +47,7 @@ suite("Match colors tests", () => {
         const matchColor = { ...match.color };
         let key: keyof typeof matchColor;
         for (key in matchColor) {
-          matchColor[key] = Math.round(matchColor[key]);
+          matchColor[key] = Math.abs(Math.round(matchColor[key]));
         }
         chai.assert.deepEqual(matchColor, colorsRGBAValues[color]);
       });

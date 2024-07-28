@@ -1,4 +1,3 @@
-import { NamedColors, namedColorsLAB } from "./shared/constants";
 import ColorTranslator from "color-translate";
 import { getSetting } from "./utils/helpers";
 
@@ -27,29 +26,6 @@ export class ColorTranslatorExtended extends ColorTranslator {
   constructor(...input: ConstructorParameters<typeof ColorTranslator>) {
     const maxDigits = getSetting<number>("maxDigits");
     const [colorInput, options] = input;
-    if (
-      typeof colorInput === "string" &&
-      NamedColors[colorInput as keyof typeof NamedColors]
-    ) {
-      super(NamedColors[colorInput as keyof typeof NamedColors], options);
-    } else {
-      super(colorInput, { ...options, maxDigits });
-    }
-  }
-
-  get named(): string {
-    let minDelta = Number.POSITIVE_INFINITY;
-    let closestNamedColor = Object.keys(namedColorsLAB)[0];
-
-    Object.entries(namedColorsLAB).forEach(([namedColor, namedColorLAB]) => {
-      const { l, a, b } = this.lab;
-      const delta = deltaE([l, a, b], namedColorLAB);
-      if (delta < minDelta) {
-        minDelta = delta;
-        closestNamedColor = namedColor;
-      }
-    });
-
-    return closestNamedColor;
+    super(colorInput, { ...options, maxDigits });
   }
 }
