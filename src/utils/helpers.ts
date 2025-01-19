@@ -284,7 +284,10 @@ export async function getReferences(
   const symbolReferences: vscode.Location[] = [];
 
   for (const childSym of symbol.children) {
-    symbolReferences.push(...(await getReferences(childSym, uri)));
+    const childSymbols = await getReferences(childSym, uri);
+    if (childSymbols) {
+      symbolReferences.push(...childSymbols);
+    }
   }
 
   const references = await vscode.commands.executeCommand<vscode.Location[]>(
