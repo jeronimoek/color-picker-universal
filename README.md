@@ -2,7 +2,9 @@
 
 ## 🌐 Links
 
-[Website](https://jeronimoek.github.io/color-translate-web/)
+[🔧 Core Dependency](https://github.com/jeronimoek/color-translate)
+
+[🛜 Website](https://jeronimoek.github.io/color-translate-web/)
 
 [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=JeronimoEkerdt.color-picker-universal)
 
