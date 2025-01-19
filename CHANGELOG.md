@@ -1,3 +1,12 @@
+## [2.6.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.1...v2.6.2) (2025-01-19)
+
+
+### Bug Fixes
+
+* update dependency ([a43f008](https://github.com/jeronimoek/color-picker-universal/commit/a43f00801c0c4bad57147fce1960d4017fe8f26f))
+
+
+
 ## [2.6.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.0...v2.6.1) (2025-01-19)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * improve readme ([3d601e2](https://github.com/jeronimoek/color-picker-universal/commit/3d601e2df02efd3071fb7cc10429314b6b29f13d))
-
-
-
-# [2.5.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.4.4...v2.5.0) (2024-07-28)
-
-
-### Features
-
-* allow to disable color picker only on duplicated pickers ([529df18](https://github.com/jeronimoek/color-picker-universal/commit/529df183a4e2e4788f1b681d29d65a75fee4eee0))
 
 
 
