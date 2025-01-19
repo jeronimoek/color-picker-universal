@@ -158,10 +158,7 @@ class Picker implements vscode.Disposable {
         }
 
         const formatsFiltered = colorFormatsTo.filter((format) =>
-          isSettingEnabled(
-            formatsTo.map((f) => f.toLocaleUpperCase()),
-            format
-          )
+          isSettingEnabled(formatsTo, format)
         );
 
         let representations = formatsFiltered.map((reprType) =>
