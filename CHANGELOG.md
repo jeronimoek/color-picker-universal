@@ -1,3 +1,7 @@
+## [2.6.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.4...v2.6.5) (2025-01-19)
+
+
+
 ## [2.6.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.3...v2.6.4) (2025-01-19)
 
 
@@ -26,15 +30,6 @@
 ### Bug Fixes
 
 * formatsTo uppercase issue ([c8e8dd1](https://github.com/jeronimoek/color-picker-universal/commit/c8e8dd1810bcc0bb9a68fc1b84c27b91efd04f7f))
-
-
-
-# [2.6.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.5.2...v2.6.0) (2024-07-28)
-
-
-### Features
-
-* update color-translate dependency and remove unnecessary code ([4c768ed](https://github.com/jeronimoek/color-picker-universal/commit/4c768edb4972d7e3d289b481b827e6ce7141f73d))
 
 
 
