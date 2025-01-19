@@ -1,3 +1,12 @@
+## [2.6.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.0...v2.6.1) (2025-01-19)
+
+
+### Bug Fixes
+
+* formatsTo uppercase issue ([c8e8dd1](https://github.com/jeronimoek/color-picker-universal/commit/c8e8dd1810bcc0bb9a68fc1b84c27b91efd04f7f))
+
+
+
 # [2.6.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.5.2...v2.6.0) (2024-07-28)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * allow to disable color picker only on duplicated pickers ([529df18](https://github.com/jeronimoek/color-picker-universal/commit/529df183a4e2e4788f1b681d29d65a75fee4eee0))
-
-
-
-## [2.4.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.4.3...v2.4.4) (2024-07-21)
-
-
-### Bug Fixes
-
-* update readme ([242843a](https://github.com/jeronimoek/color-picker-universal/commit/242843a82dcb4b109b4369ee4bfea0d4f01f1e27))
 
 
 
