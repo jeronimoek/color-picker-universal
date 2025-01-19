@@ -1,3 +1,12 @@
+## [2.6.6](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.5...v2.6.6) (2025-01-19)
+
+
+### Bug Fixes
+
+* possible undefined array ([e8f714f](https://github.com/jeronimoek/color-picker-universal/commit/e8f714fb624aa86f31b1d0bc860b89961fa8d29a))
+
+
+
 ## [2.6.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.4...v2.6.5) (2025-01-19)
 
 
@@ -21,15 +30,6 @@
 ### Bug Fixes
 
 * update dependency ([a43f008](https://github.com/jeronimoek/color-picker-universal/commit/a43f00801c0c4bad57147fce1960d4017fe8f26f))
-
-
-
-## [2.6.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.0...v2.6.1) (2025-01-19)
-
-
-### Bug Fixes
-
-* formatsTo uppercase issue ([c8e8dd1](https://github.com/jeronimoek/color-picker-universal/commit/c8e8dd1810bcc0bb9a68fc1b84c27b91efd04f7f))
 
 
 
