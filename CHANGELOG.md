@@ -1,3 +1,7 @@
+## [2.6.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.3...v2.6.4) (2025-01-19)
+
+
+
 ## [2.6.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.2...v2.6.3) (2025-01-19)
 
 
@@ -31,15 +35,6 @@
 ### Features
 
 * update color-translate dependency and remove unnecessary code ([4c768ed](https://github.com/jeronimoek/color-picker-universal/commit/4c768edb4972d7e3d289b481b827e6ce7141f73d))
-
-
-
-## [2.5.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.5.1...v2.5.2) (2024-07-28)
-
-
-### Bug Fixes
-
-* improve readme ([6e0bb12](https://github.com/jeronimoek/color-picker-universal/commit/6e0bb12342c7d038b90444444c289f9dc4aa9742))
 
 
 
