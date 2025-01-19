@@ -41,9 +41,11 @@ export async function getMatches(
         )
       : [];
 
+  const symbolsFiltered = symbols.filter((symbol) => symbol.kind !== 1);
+
   const allReferences: vscode.Location[] = [];
 
-  for (const symbol of symbols) {
+  for (const symbol of symbolsFiltered) {
     allReferences.push(
       ...(await getReferences(symbol, activeEditor.document.uri))
     );
