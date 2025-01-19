@@ -1,3 +1,12 @@
+## [2.6.8](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.7...v2.6.8) (2025-01-19)
+
+
+### Bug Fixes
+
+* update readme ([cd89620](https://github.com/jeronimoek/color-picker-universal/commit/cd89620813dc0411dc1dae9c2cefcbbeac665600))
+
+
+
 ## [2.6.7](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.6...v2.6.7) (2025-01-19)
 
 
@@ -21,15 +30,6 @@
 
 
 ## [2.6.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.3...v2.6.4) (2025-01-19)
-
-
-
-## [2.6.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.2...v2.6.3) (2025-01-19)
-
-
-### Bug Fixes
-
-* detect css colors inside modules ([6a58c24](https://github.com/jeronimoek/color-picker-universal/commit/6a58c24d0c572179e1323f9b3ea4dd42c1f5e899))
 
 
 
