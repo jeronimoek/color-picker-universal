@@ -35,10 +35,10 @@ export async function getMatches(
   // "activeEditor.document.uri" should only be undefined when testing
   const symbols: vscode.DocumentSymbol[] =
     activeEditor.document.uri && ignoreVariableName
-      ? await vscode.commands.executeCommand<vscode.DocumentSymbol[]>(
+      ? (await vscode.commands.executeCommand<vscode.DocumentSymbol[]>(
           "vscode.executeDocumentSymbolProvider",
           activeEditor.document.uri
-        )
+        )) || []
       : [];
 
   const symbolsFiltered = symbols.filter((symbol) => symbol.kind !== 1);
