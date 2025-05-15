@@ -19,6 +19,7 @@ import {
   Color,
   namedColorRegex,
 } from "color-translate";
+import { CustomRegexesSetting } from "../models/settings";
 
 export interface RGBA {
   r: number;
@@ -36,6 +37,7 @@ export function matchColors(text: string) {
 
   // Create regex of enabled formats with prefixes. e.g. "rgb(...)"
   colorFormatsFrom
+    // TODO: add support for language specific formats
     .filter((format) => isSettingEnabled(formatsFrom, format))
     .forEach((format) => {
       let regex = new RegExp("");
@@ -97,8 +99,8 @@ export function matchColors(text: string) {
   return matches;
 }
 
-export function customMatchColors(text: string) {
-  const customRegexesSetting: Record<string, string[]> =
+export function customMatchColors(text: string, languageId: string) {
+  const customRegexesSetting: CustomRegexesSetting =
     getSetting("customRegexes") ?? {};
 
   const matches = {} as { [key in ColorFormatTo]: RegExpExecArray[] };
@@ -106,12 +108,23 @@ export function customMatchColors(text: string) {
   for (const format in customRegexesSetting) {
     const regexes = customRegexesSetting[format];
     if (isColorFormat(format)) {
-      for (const regexString of regexes) {
-        const regex = new RegExp(regexString, "gid");
-        const regexMatches = [...text.matchAll(regex)];
-        if (regexMatches.length) {
-          matches[format] ??= [];
-          matches[format].push(...regexMatches);
+      for (const regexData of regexes) {
+        // if regexData is a string OR
+        // if regexData is an object, and the current languageId is in the languages array
+        let regexString = "";
+        if (typeof regexData === "string") {
+          regexString = regexData;
+        } else if (isSettingEnabled(regexData.languages, languageId)) {
+          regexString = regexData.regex;
+        }
+
+        if (regexString) {
+          const regex = new RegExp(regexString, "gid");
+          const regexMatches = [...text.matchAll(regex)];
+          if (regexMatches.length) {
+            matches[format] ??= [];
+            matches[format].push(...regexMatches);
+          }
         }
       }
     }
@@ -166,16 +179,26 @@ export function isValidDocument({ languageId }: vscode.TextDocument) {
   return isSettingEnabled(languages, languageId);
 }
 
-export function isSettingEnabled(settings: string[], target: string) {
+export function isSettingEnabled(
+  settings: string[],
+  target: string,
+  target2?: string
+) {
   let isValid = false;
 
-  if (settings.indexOf("*") > -1) {
+  if (settings.includes("*")) {
     isValid = true;
   }
-  if (settings.indexOf(target) > -1) {
+  if (settings.includes(target)) {
     isValid = true;
   }
-  if (settings.indexOf(`!${target}`) > -1) {
+  if (settings.includes(`!${target}`)) {
+    isValid = false;
+  }
+  if (target2 && settings.includes(`${target}:${target2}`)) {
+    isValid = true;
+  }
+  if (target2 && settings.includes(`!${target}:${target2}`)) {
     isValid = false;
   }
 
@@ -230,13 +253,15 @@ export function getSetting<T>(setting: string) {
 }
 
 export function findCustomFormat(text: string) {
-  const customRegexesSetting: Record<string, string[]> =
+  const customRegexesSetting: CustomRegexesSetting =
     getSetting("customRegexes") ?? {};
 
   for (const format in customRegexesSetting) {
-    const regexes = customRegexesSetting[format];
+    const regexes = customRegexesSetting[format] ?? [];
     if (isColorFormat(format)) {
-      for (const regexString of regexes) {
+      for (const regexData of regexes) {
+        const regexString =
+          typeof regexData === "string" ? regexData : regexData.regex;
         const regex = new RegExp(regexString, "gid");
         const [regexMatch] = [...text.matchAll(regex)];
         if (regexMatch) {

@@ -117,6 +117,27 @@ Here is a rgb regex example where we match r, g, and b values, and an optional a
 - The regex capture groups must only capture the required values, and the optional one (alpha) if desired
 - https://regexper.com/ This website is a great way to visualize and tweak regexes. [Here](https://regexper.com/#my-rgb%5C%28%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%20%5C%24%20%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%20%5C%24%20%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%28%3F%3A%20%5C%24%20%28%5Cd%2B%28%3F%3A%5C.%5Cd%2B%29%3F%29%29%3F%5C%29) is the regex above visualized there. Note that **escape backslashes (\\) MUST be removed** when entering the regex there
 
+### Language Conditional
+
+To add custom regexes for specific languages, the following setting value format must be used: (see `regex2`)
+
+```
+{
+    <format1>: [
+        <regex1>,
+        {
+            regex: <regex2>,
+            languages: [<language1>, <language2>]
+        }
+    ],
+    <format2>: [
+        <regex3>
+    ]
+}
+```
+
+For the `languages` values, it works like the [`languages` setting](#-settings)
+
 ## Duplication Issue
 
 [#68](https://github.com/jeronimoek/color-picker-universal/issues/68) When working with **css**, **less**, **sass**, and **scss** files, the color picker is duplicated due to the default built-in Vscode color picker. To avoid this, you can set the `color-picker-universal.avoidDuplicate` setting to **true** (see [Settings](#-settings)). Note that by doing this, on these default built-in color pickers, the extension's formats and configurations won't apply

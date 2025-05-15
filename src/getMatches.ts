@@ -120,10 +120,10 @@ function parseAlpha(alpha: string) {
   return alpha === "" ? "1" : alpha;
 }
 
-export function getCustomMatches(text: string) {
+export function getCustomMatches(text: string, languageId: string) {
   const result: vscode.ColorInformation[] = [];
 
-  const matches = customMatchColors(text);
+  const matches = customMatchColors(text, languageId);
 
   for (const format in matches) {
     const matchesValues = matches[format as ColorFormatTo];
