@@ -76,4 +76,4 @@ export const colorsRGBAValues = {
   },
 } satisfies Record<TestedColors, Color>;
 
-export const formatsBuiltinPicker = ["css", "less", "sass", "scss"];
+export const formatsBuiltinPicker = ["css", "less", "sass", "scss", "vue"];
