@@ -1,3 +1,12 @@
+# [2.7.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.10...v2.7.0) (2025-05-15)
+
+
+### Features
+
+* custom regexes conditional by language ([956110b](https://github.com/jeronimoek/color-picker-universal/commit/956110b9d4830a49e5576d29cd5451080700bf48))
+
+
+
 ## [2.6.10](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.9...v2.6.10) (2025-05-15)
 
 
@@ -26,15 +35,6 @@
 ### Bug Fixes
 
 * undefined symbol array fix ([c532f8b](https://github.com/jeronimoek/color-picker-universal/commit/c532f8bf7ec98bea59185859ca27a38cba058b21))
-
-
-
-## [2.6.6](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.5...v2.6.6) (2025-01-19)
-
-
-### Bug Fixes
-
-* possible undefined array ([e8f714f](https://github.com/jeronimoek/color-picker-universal/commit/e8f714fb624aa86f31b1d0bc860b89961fa8d29a))
 
 
 
