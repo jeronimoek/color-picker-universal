@@ -83,7 +83,10 @@ class Picker implements vscode.Disposable {
 
         const text = document.getText();
 
-        let matches = [...(await getMatches(text)), ...getCustomMatches(text)];
+        let matches = [
+          ...(await getMatches(text)),
+          ...getCustomMatches(text, document.languageId),
+        ];
 
         const avoidDuplicate = getSetting<boolean>("avoidDuplicate");
         if (
@@ -158,6 +161,7 @@ class Picker implements vscode.Disposable {
         }
 
         const formatsFiltered = colorFormatsTo.filter((format) =>
+          // TODO: add support for language specific formats
           isSettingEnabled(formatsTo, format)
         );
 
@@ -194,9 +198,9 @@ class Picker implements vscode.Disposable {
               .slice(2, indices.length + 3)
               .filter((v) => v);
 
+            const diff = indices.length - formatValues.length;
             indices.forEach(([start, end], i) => {
               if (i === indices.length) return;
-              const diff = indices.length - formatValues.length;
               let value = formatValues[formatValues.length - i - 1 + diff];
               if (i === 0 && diff === 1) {
                 value = "1";
