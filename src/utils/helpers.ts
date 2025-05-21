@@ -18,8 +18,10 @@ import {
   rgbRegex,
   Color,
   namedColorRegex,
+  CustomOutputs,
+  RecursivePartial,
 } from "color-translate";
-import { CustomRegexesSetting } from "../models/settings";
+import { CustomOutputsSetting, CustomRegexesSetting } from "../models/settings";
 
 export interface RGBA {
   r: number;
@@ -112,18 +114,34 @@ export function customMatchColors(text: string, languageId: string) {
         // if regexData is a string OR
         // if regexData is an object, and the current languageId is in the languages array
         let regexString = "";
+        let remap: number[] = [];
         if (typeof regexData === "string") {
           regexString = regexData;
         } else if (isSettingEnabled(regexData.languages, languageId)) {
           regexString = regexData.regex;
+          if (regexData.remap) {
+            remap = regexData.remap;
+          }
         }
 
         if (regexString) {
           const regex = new RegExp(regexString, "gid");
           const regexMatches = [...text.matchAll(regex)];
-          if (regexMatches.length) {
+          const regexMatchesRemapped = remap?.length
+            ? regexMatches.map((match) => {
+                const matchCopy = [...match];
+                for (let i = 0; i < remap.length; i++) {
+                  const remapIndex = remap[i];
+                  match[i + 1] = matchCopy[remapIndex + 1];
+                }
+                return match;
+              })
+            : regexMatches;
+          if (regexMatchesRemapped.length) {
             matches[format] ??= [];
-            matches[format].push(...regexMatches);
+            matches[format].push(
+              ...(regexMatchesRemapped as RegExpExecArray[])
+            );
           }
         }
       }
@@ -324,4 +342,27 @@ export async function getReferences(
   symbolReferences.push(...references);
 
   return symbolReferences;
+}
+
+export function processCustomOutputs(
+  customOutputsSetting: CustomOutputsSetting,
+  languageId: string
+) {
+  const customOutputs = {} as RecursivePartial<CustomOutputs>;
+
+  for (const formatKey in customOutputsSetting) {
+    const format = formatKey as keyof CustomOutputsSetting;
+    const formatSettings = customOutputsSetting[format];
+    const validFormatSettings = formatSettings?.find((formatSetting) => {
+      return (
+        !formatSetting.files ||
+        isSettingEnabled(formatSetting.files, languageId)
+      );
+    });
+    if (validFormatSettings) {
+      customOutputs[format] = validFormatSettings;
+    }
+  }
+
+  return customOutputs;
 }

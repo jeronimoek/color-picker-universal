@@ -7,12 +7,14 @@ import {
   getSetting,
   isSettingEnabled,
   isValidDocument,
+  processCustomOutputs,
   replaceAllColors,
 } from "./utils/helpers";
 import { ColorFormatTo, CommandType } from "./utils/enums";
 import { translateColors } from "./commands/translateColors";
 import { ColorTranslatorExtended } from "./colorTranslatorExtended";
 import { replaceRange } from "./utils/utils";
+import { CustomOutputsSetting } from "./models/settings";
 class Picker implements vscode.Disposable {
   constructor() {
     this.register();
@@ -71,6 +73,12 @@ class Picker implements vscode.Disposable {
       }
     };
 
+    const avoidDuplicate = getSetting<boolean>("avoidDuplicate");
+    const formatsToSetting = getSetting<string[]>("formatsTo");
+    const preferLegacy = getSetting<boolean>("preferLegacy");
+    const customOutputsSetting =
+      getSetting<CustomOutputsSetting>("customOutputs");
+
     vscode.commands.registerCommand(command, commandHandler);
     vscode.languages.registerColorProvider("*", {
       async provideDocumentColors(document: vscode.TextDocument) {
@@ -88,7 +96,6 @@ class Picker implements vscode.Disposable {
           ...getCustomMatches(text, document.languageId),
         ];
 
-        const avoidDuplicate = getSetting<boolean>("avoidDuplicate");
         if (
           avoidDuplicate &&
           matches.length &&
@@ -144,18 +151,23 @@ class Picker implements vscode.Disposable {
           isCustomFormat = true;
         }
 
-        const formatsToSetting = getSetting<string[]>("formatsTo");
         const formatsTo = formatsToSetting?.length ? formatsToSetting : ["*"];
 
         const { red: r, green: g, blue: b, alpha } = colorRaw;
-        const color = new ColorTranslatorExtended({
-          r: r * 255,
-          g: g * 255,
-          b: b * 255,
-          alpha,
-        });
+        const color = new ColorTranslatorExtended(
+          {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255,
+            alpha,
+          },
+          {
+            customOutputs: customOutputsSetting
+              ? processCustomOutputs(customOutputsSetting, document.languageId)
+              : undefined,
+          }
+        );
 
-        const preferLegacy = getSetting<boolean>("preferLegacy");
         if (preferLegacy) {
           color.updateOptions({ legacy: true });
         }
