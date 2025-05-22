@@ -26,6 +26,8 @@ This extension can be used through its color pickers, commands, or context menu 
 
 To see settings press `CTRL + ,` OR `⌘ + ,`
 
+To see some advanced examples see [here](https://github.com/jeronimoek/color-picker-universal/blob/main/docs/SETTINGS.md)
+
 | Id                                        | Description                                                                                                                                        | Default | Available values                                                                                            | Example                                                                                                                   |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | color-picker-universal.disable            | Disables the extension                                                                                                                             | false   | true false                                                                                                  | true                                                                                                                      |
