@@ -1,3 +1,12 @@
+## [2.8.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.0...v2.8.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* new setting documentation and readme improvement ([1df3468](https://github.com/jeronimoek/color-picker-universal/commit/1df3468dac4613bd68246ffa1f2db980474eb00c))
+
+
+
 # [2.8.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.7.0...v2.8.0) (2025-05-21)
 
 
@@ -26,15 +35,6 @@
 ### Bug Fixes
 
 * compatibility with vue extension ([33e4800](https://github.com/jeronimoek/color-picker-universal/commit/33e4800a7f54c6cda3887be0c8fcf324c9362fe6))
-
-
-
-## [2.6.8](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.7...v2.6.8) (2025-01-19)
-
-
-### Bug Fixes
-
-* update readme ([cd89620](https://github.com/jeronimoek/color-picker-universal/commit/cd89620813dc0411dc1dae9c2cefcbbeac665600))
 
 
 
