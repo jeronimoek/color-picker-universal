@@ -1,3 +1,12 @@
+## [2.8.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.4...v2.8.5) (2025-05-23)
+
+
+### Bug Fixes
+
+* update extension description ([141f1d1](https://github.com/jeronimoek/color-picker-universal/commit/141f1d142462e8f6250ff6093da169806599caa3))
+
+
+
 ## [2.8.4](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.3...v2.8.4) (2025-05-23)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * new setting documentation and readme improvement ([1df3468](https://github.com/jeronimoek/color-picker-universal/commit/1df3468dac4613bd68246ffa1f2db980474eb00c))
-
-
-
-# [2.8.0](https://github.com/jeronimoek/color-picker-universal/compare/v2.7.0...v2.8.0) (2025-05-21)
-
-
-### Features
-
-* implemented conditional custom outputs ([7689943](https://github.com/jeronimoek/color-picker-universal/commit/7689943440526e95429b0bf554d998d7aebc0472))
 
 
 
