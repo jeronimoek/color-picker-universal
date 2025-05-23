@@ -1,3 +1,12 @@
+## [2.8.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.2...v2.8.3) (2025-05-23)
+
+
+### Bug Fixes
+
+* readme improvement ([e7f87f1](https://github.com/jeronimoek/color-picker-universal/commit/e7f87f130b9cee30c7d33e20b829071dbe467ed3))
+
+
+
 ## [2.8.2](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.1...v2.8.2) (2025-05-22)
 
 
@@ -31,10 +40,6 @@
 ### Features
 
 * custom regexes conditional by language ([956110b](https://github.com/jeronimoek/color-picker-universal/commit/956110b9d4830a49e5576d29cd5451080700bf48))
-
-
-
-## [2.6.10](https://github.com/jeronimoek/color-picker-universal/compare/v2.6.9...v2.6.10) (2025-05-15)
 
 
 
