@@ -93,7 +93,7 @@ This takes an object with the following schema:
 }
 ```
 
-Keep in mind that this could give outputs that are not compatible as inputs for the extension itself. In this cases a possible solution is adding a Custom Regex for the given format, in the given file languages
+Keep in mind that this could give outputs that are not compatible as inputs for the extension itself. In these cases, a possible solution is adding a Custom Regex for the given format in the given file languages.
 
 ## 🔧 Custom Regexes
 
