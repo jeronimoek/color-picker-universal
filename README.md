@@ -18,6 +18,8 @@ Pick and translate between multiple color formats, in any file.
 
 Formats supported: rgb/a, a98, hex/a, hsl/a, hwb/a, cmyk/a, hex 0x, lab, lch, oklab, oklch and named colors.
 
+Some variations of these might be possible with the correct settings. For example [XAML a/Hex](https://github.com/jeronimoek/color-picker-universal/blob/main/docs/SETTINGS.md#xaml-ahex-support)
+
 This extension can be used through its color pickers, commands, or context menu options.
 
 ![Demo](images/demo.gif)
