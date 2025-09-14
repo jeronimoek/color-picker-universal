@@ -16,7 +16,13 @@ import { ColorTranslatorExtended } from "./colorTranslatorExtended";
 import { replaceRange } from "./utils/utils";
 import { CustomOutputsSetting } from "./models/settings";
 class Picker implements vscode.Disposable {
-  constructor() {
+  private colorsCache = new Map<string, vscode.ColorInformation[]>();
+  private colorPresentationsCache = new Map<
+    string,
+    vscode.ColorPresentation[]
+  >();
+
+  constructor(private context: vscode.ExtensionContext) {
     this.register();
   }
 
@@ -79,9 +85,18 @@ class Picker implements vscode.Disposable {
     const customOutputsSetting =
       getSetting<CustomOutputsSetting>("customOutputs");
 
-    vscode.commands.registerCommand(command, commandHandler);
-    vscode.languages.registerColorProvider("*", {
-      async provideDocumentColors(document: vscode.TextDocument) {
+    const disposableCommand = vscode.commands.registerCommand(
+      command,
+      commandHandler
+    );
+    this.context.subscriptions.push(disposableCommand);
+
+    const disposableProvider = vscode.languages.registerColorProvider("*", {
+      provideDocumentColors: async (document: vscode.TextDocument) => {
+        const docKey = `${document.uri.toString()}#${document.version}`;
+        const cached = this.colorsCache.get(docKey);
+        if (cached) return cached;
+
         if (disabled) {
           disabled = false;
           return;
@@ -135,11 +150,21 @@ class Picker implements vscode.Disposable {
           });
         }
 
+        this.colorsCache.set(docKey, matches);
+
         return matches;
       },
 
-      provideColorPresentations(colorRaw, { range, document }) {
+      provideColorPresentations: (colorRaw, { range, document }) => {
         if (!isValidDocument(document)) return;
+
+        const colorKey = `${document.uri.toString()}#${document.version}-${
+          range.start.line
+        }-${range.start.character}-${range.end.line}-${range.end.character}-${
+          colorRaw.red
+        }-${colorRaw.green}-${colorRaw.blue}-${colorRaw.alpha}`;
+        const cached = this.colorPresentationsCache.get(colorKey);
+        if (cached) return cached;
 
         const text = document.getText(range);
 
@@ -234,17 +259,19 @@ class Picker implements vscode.Disposable {
           )
         );
 
+        this.colorPresentationsCache.set(colorKey, finalRepresentations);
         return finalRepresentations;
       },
     });
+    this.context.subscriptions.push(disposableProvider);
   }
 
   public dispose() {
-    //intentional
+    this.colorsCache.clear();
+    this.colorPresentationsCache.clear();
   }
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  const picker = new Picker();
-  context.subscriptions.push(picker);
+  new Picker(context);
 }
