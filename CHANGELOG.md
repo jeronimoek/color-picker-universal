@@ -1,3 +1,13 @@
+## [2.8.6](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.5...v2.8.6) (2025-09-14)
+
+
+### Bug Fixes
+
+* add setting change reset of cache ([ec0ebba](https://github.com/jeronimoek/color-picker-universal/commit/ec0ebbaf67f3e47ce68b62a3cacf55f420e478c7))
+* implement cache and disposable providers ([c01588a](https://github.com/jeronimoek/color-picker-universal/commit/c01588a232e238ca50c801cdfdb8378bb1ef0a50))
+
+
+
 ## [2.8.5](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.4...v2.8.5) (2025-05-23)
 
 
@@ -31,15 +41,6 @@
 ### Bug Fixes
 
 * add settings examples markdown ([b33cd49](https://github.com/jeronimoek/color-picker-universal/commit/b33cd497797aaea12a2fff3ddda862c580e7e5ea))
-
-
-
-## [2.8.1](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.0...v2.8.1) (2025-05-22)
-
-
-### Bug Fixes
-
-* new setting documentation and readme improvement ([1df3468](https://github.com/jeronimoek/color-picker-universal/commit/1df3468dac4613bd68246ffa1f2db980474eb00c))
 
 
 
