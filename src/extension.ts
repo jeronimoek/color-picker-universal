@@ -264,6 +264,16 @@ class Picker implements vscode.Disposable {
       },
     });
     this.context.subscriptions.push(disposableProvider);
+
+    const disposableSettings = vscode.workspace.onDidChangeConfiguration(
+      (event) => {
+        if (event.affectsConfiguration("color-picker-universal")) {
+          this.colorsCache.clear();
+          this.colorPresentationsCache.clear();
+        }
+      }
+    );
+    this.context.subscriptions.push(disposableSettings);
   }
 
   public dispose() {
