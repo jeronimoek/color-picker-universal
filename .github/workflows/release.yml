@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
           cache: "npm"
 
       - run: npm ci
@@ -42,7 +42,7 @@ jobs:
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-          npm i -g vsce@2.14.0
+          npm i -g @vscode/vsce
           npm run package
 
       - name: Release
