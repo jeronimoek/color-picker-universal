@@ -1,3 +1,7 @@
+## [2.8.8](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.7...v2.8.8) (2025-09-15)
+
+
+
 ## [2.8.7](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.6...v2.8.7) (2025-09-14)
 
 
@@ -27,15 +31,6 @@
 ### Bug Fixes
 
 * readme typo ([106e762](https://github.com/jeronimoek/color-picker-universal/commit/106e7623d41643dc974150aab12c2bff6e7fa9d3))
-
-
-
-## [2.8.3](https://github.com/jeronimoek/color-picker-universal/compare/v2.8.2...v2.8.3) (2025-05-23)
-
-
-### Bug Fixes
-
-* readme improvement ([e7f87f1](https://github.com/jeronimoek/color-picker-universal/commit/e7f87f130b9cee30c7d33e20b829071dbe467ed3))
 
 
 
